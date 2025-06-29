@@ -1,4 +1,3 @@
-# lumisx/management/commands/get_security.py
 import os
 from pathlib import Path
 from django.core.management.base import BaseCommand
