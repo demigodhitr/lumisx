@@ -1,0 +1,151 @@
+{% load custom_filters %}
+{% load humanize %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Withdrawal Request Submitted</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #fafafa;
+            margin: 0;
+            padding: 0;
+        }
+
+        img {
+            width: 80px;
+            height: auto;
+            margin: 20px 0;
+        }
+
+        h1,
+        h3,
+        h4,
+        h5,
+        p,
+        strong {
+            margin: 10px 0;
+            padding: 0;
+        }
+
+        h1 {
+            color: #333;
+            font-size: 24px;
+        }
+
+        h4 {
+            color: #555;
+            font-size: 18px;
+        }
+
+        h5 {
+            color: #777;
+            font-size: 16px;
+            line-height: 1.5;
+        }
+
+        strong {
+            color: #6f1cf5;
+        }
+
+        a.button {
+            text-decoration: none;
+            padding: 10px 20px;
+            background-color: #6f1cf5;
+            color: #ffffff;
+            border-radius: 8px;
+            display: inline-block;
+            margin-top: 20px;
+        }
+
+        p.footer {
+            text-align: center;
+            margin-top: 20px;
+            color: #888;
+            font-size: 14px;
+        }
+
+        img.footer-logo {
+            width: 100%;
+            height: auto;
+            margin-top: 20px;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #fff;
+            border-radius: 10px;
+            padding: 20px;
+        }
+        th{
+            background-color: #6f1cf5;
+            color: #fff;
+        }
+    </style>
+</head>
+
+<body>
+    <div style="text-align: center;" class="container">
+        <div style="display: flex; align-items: center; justify-content: center;">
+            <img style="width: 100%;" src="https://i.ibb.co/VpSQgDpg/lumistake.png" alt="Logo">
+        </div>
+
+        <h1>Hello {{ instance.user.get_full_name }},</h1>
+        <h4 style="color: #6f1cf5;">Your withdrawal request was submitted successfully, please wait while it's being processed!</h4>
+
+        <div style="width: 100%; overflow-x: auto;">
+            <table border="1" style="width: 300px; overflow: auto; border-collapse: collapse;">
+                <tr>
+                    <th>WITHDRAWAL AMOUNT</th>
+                    <th>WITHDRAWAL NETWORK</th>
+                    <th>WITHDRAWAL ADDRESS</th>
+                    <th>WITHDRAWAL STATUS</th>
+                    <th>WITHDRAWAL ID</th>
+                    <th>WITHDRAWAL DATE</th>
+                </tr>
+                <tr>
+                    <td>
+                        {{ user.profiles.preferred_currency.code }}
+                        {% with user.profiles.preferred_currency.symbol as to_currency %}
+                            {% if to_currency != "GBP" %}
+                                {% if to_currency == "USD" %}
+                                    {{ instance.amount|converter:"GBP_USD"|intcomma }}
+                                {% elif to_currency == "EUR" %}
+                                    {{ instance.amount|converter:"GBP_EUR"|intcomma }}
+                                {% endif %}
+                            {% else %}
+                                {{ instance.amount|intcomma }}
+                            {% endif %}
+                        {% endwith %}
+                    </td>
+                    <td>{{ instance.network }}</td>
+                    <td>{{ instance.address }}</td>
+                    <td>{{ instance.status }}</td>
+                    <td>#{{ instance.RequestID }}</td>
+                    <td>{{ instance.created_at|date:"F d, Y H:i:s" }}</td>
+                </tr>
+            </table>
+        </div>
+            <p>To track your request status, log into your account and check your transaction history section.</p>
+            <p>If approved, you will be paid through the network and address you specified during your request within 30 minutes - 7 days max.</p>
+
+            <h5>If you didn't initiate this, <a class="button" href="mailto:helpdesk247@lumisx.exchange">contact us</a>immediately.</h5>
+
+            <h5>Thank you.</h5>
+            <h5>Best regards,</h5>
+            <h5><a href="https://lumisx.exchange">LumisX</a></h5>
+
+            <p class="footer">
+                <em>Copyright © LumisX 2025. All rights reserved.</em>
+            </p>
+
+        </div>
+
+    </div>
+
+</body>
+
+</html>

@@ -1,0 +1,46 @@
+{% load custom_filters %}
+{% load humanize %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #fff;
+            border-radius: 10px;
+            padding: 20px;
+        }
+    </style>
+</head>
+<body style="font-family: Arial, sans-serif; background-color: #fafafa;">
+    <div class="container">
+        
+
+        <div style="max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #ccc; border-radius: 10px;">
+            <div style="display: flex; align-items: center; justify-content: center;">
+                <img style="width: 100%;" src="https://i.ibb.co/VpSQgDpg/lumistake.png" alt="Logo">
+            </div>
+
+        <h2 style="color: #6f1cf5;">KYC Verification </h2>
+
+        <p>
+            {{ message}}
+        </p>
+
+        <p>
+            If you have any questions or need additional assistance, please don't hesitate to contact our support team at helpdesk247@lumistakes.com
+        </p>
+
+        <p>
+            Best regards, <br>
+            <a href="https://lumisx.exchange">LumisX Team</a>
+        </p>
+
+    </div>
+
+</body>
+</html>

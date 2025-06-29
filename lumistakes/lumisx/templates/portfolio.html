@@ -1,0 +1,364 @@
+{% load humanize %}
+{% load static %}
+{% load custom_filters %}
+<!doctype html>
+<html lang="en">
+
+<head>
+    <style>
+        #searchInput {
+            width: 0;
+            opacity: 0;
+            transition: width 0.4s ease, opacity 0.3s ease;
+        }
+    </style>
+   
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, viewport-fit=cover" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#000000">
+    <title>portfolio</title>
+    <meta name="description"
+        content="Lumistakes is a trading platform that offers online trading of complex derivative cryptocurrencies with leverage and copy trading. Log in to your personal area to access your accounts, deposit or withdraw funds, and claim bonuses.">
+    <meta name="keywords"
+        content="Crypto, Cryptocurrency, best cryptocurrency, best performing crypto, best exchange 2025, worldwide trading, investments, how to invest safely, how to invest, how to invest online, how to invest, 2025, best cryptocurrency, how to withdraw crypto, buy crypto, sell crypto, convert crypto" />
+    <meta name="author" content="Lumistakes Team" />
+    <link rel="icon" type="image/png" href="{% static 'assets/img/favicon.png' %}" sizes="32x3">
+    <link rel="apple-touch-icon" sizes="180x180" href="{% static 'assets/img/icon/192x192.png' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/style.css' %}">
+    <link rel="manifest" href="{% static '__manifest.json' %}">
+</head>
+
+<body>
+
+    <!-- loader -->
+    <div id="loader">
+        <img src="{% static 'assets/img/loading-icon.png' %}" alt="icon" class="loading-icon">
+    </div>
+    <!-- * loader -->
+
+    <!-- App Header -->
+    <div class="appHeader">
+        <div class="left">
+            <a href="#" class="headerButton goBack">
+                <ion-icon name="chevron-back-outline"></ion-icon>
+            </a>
+        </div>
+        <div class="pageTitle">
+            STOCKS
+        </div>
+        <div id="searchContainer" class="right">
+            <input id="searchInput" type="text" class="form-control searchInput" id="text4" placeholder="Type to search stocks">
+            <ion-icon id="searchIcon" class="headerButton" name="search-outline"></ion-icon>
+        </div>
+    </div>
+    <!-- * App Header -->
+
+
+    <!-- App Capsule -->
+    <div id="appCapsule">
+
+        <!-- Top stocks -->
+        <div class="section mt-2">
+            <div class="text-center section-title">NASDAQ - US Stocks Exchange</div>
+            <div class="card">
+                <ul id="stocks-container" class="listview flush transparent no-line image-listview detailed-list mt-1 mb-1">
+                    <!-- item -->
+                     {% for x in stocks %}
+                            <li style="cursor: pointer;" data-id="{{x.id}}" onclick="window.location='{% url 'stock_detail' x.id %}'">
+                                <div class="item">
+                                    <div class="icon-box text-{% if x.change_percent|startswith:'-' %}danger{% else %}success{% endif %}">
+                                        <ion-icon name="trending-{% if x.change_percent|startswith:'-' %}down{% else %}up{% endif %}-outline"></ion-icon>
+                                    </div>
+                                    <div class="in">
+                                        <div>
+                                            <strong>{{ x.name }}</strong>
+                                            <div class="text-small text-secondary">{{x.change}}</div>
+                                        </div>
+                                        <div class="text-end">
+                                            <strong>
+                                                ${{ x.price|intcomma }}
+                                            </strong>
+                                            <div class="text-small">
+                                                <span
+                                                    class="badge badge-{% if x.change_percent|startswith:'-' %}danger{% else %}success{% endif %}">
+                                                    <ion-icon
+                                                        name="arrow-{% if x.change_percent|startswith:'-' %}down{% else %}up{% endif %}-outline"></ion-icon>
+                                                    {{x.change_percent}}%
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                            <hr>
+                    {% empty %}
+                        <li>
+                            <div class="item">
+                                <div class="icon-box text-success">
+                                    <ion-icon name="trending-up-outline"></ion-icon>
+                                </div>
+                                <div class="in">
+                                    <div>
+                                        <strong>No Stocks Listing</strong>
+                                        <div class="text-small text-secondary">0.00%</div>
+                                    </div>
+                                    <div class="text-end">
+                                        <strong>
+                                            {{ user.profiles.preferred_currency.code }}
+                                            0.00
+                                        </strong>
+                                        <div class="text-small">
+                                            <span class="badge badge-success">
+                                                <ion-icon name="arrow-up-outline"></ion-icon>
+                                                2.59%
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                    {% endfor %}
+                </ul>
+                <button data-page="2" type="button" id="load-more-btn" class="btn btn-outline-primary btn-block">
+                    <span style="display: none;" id="preloader" class="spinner-border mx-2 spinner-border-sm" role="status" aria-hidden="true"></span>
+                    LOAD MORE STOCKS
+                </button>
+            </div>
+        </div>
+        <!-- Top stocks -->
+    </div>
+    <!-- * App Capsule -->
+
+
+    <!-- App Bottom Menu -->
+        <div class="appBottomMenu" style="position: fixed; z-index: 1; bottom: 0;">  
+            <a href="{% url 'home' %}" class="item ">
+                <div class="col">
+                    <ion-icon name="pie-chart-outline"></ion-icon>
+                    <strong>Overview</strong>
+                </div>
+            </a>
+            <a href="{% url 'cards' %}" class="item ">
+                <div class="col">
+                    <ion-icon name="card-outline"></ion-icon>
+                    <strong>My Cards</strong>
+                </div>
+            </a>
+            <a href="{% url 'menu' %}" class="item">
+                <div class="col">
+                    <div class="action-button">
+                        <ion-icon name="home"></ion-icon>
+                    </div>
+                </div>
+            </a>
+            <a href="{% url 'transactions' %}" class="item">
+                <div class="col">
+                    <ion-icon name="document-text-outline"></ion-icon>
+                    <strong>History</strong>
+                </div>
+            </a>
+            <a href="{% url 'settings' %}" class="item">
+                <div class="col">
+                    <ion-icon name="person-outline"></ion-icon>
+                    <strong>Me</strong>
+                </div>
+            </a>
+        </div>
+    <!-- * App Bottom Menu -->
+
+
+
+    <!-- ========= JS Files =========  -->
+    <!-- Bootstrap -->
+    <script src="{% static 'assets/js/lib/bootstrap.bundle.min.js' %}"></script>
+    <!-- Ionicons -->
+    <script type="module" src="https://cdnjs.cloudflare.com/ajax/libs/ionicons/5.5.2/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://cdnjs.cloudflare.com/ajax/libs/ionicons/5.5.2/ionicons/ionicons.js"></script>
+    <!-- Splide -->
+    <script src="{% static 'assets/js/plugins/splide/splide.min.js' %}"></script>
+    <!-- Base Js File -->
+    <script src="{% static 'assets/js/base.js' %}"></script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            let loadMoreBtn = document.getElementById("load-more-btn");
+            const preloader = document.getElementById("preloader");
+
+            loadMoreBtn.addEventListener("click", function () {
+                let page = this.dataset.page;
+                preloader.style.display = "flex";
+
+                setTimeout(() => {
+                    fetch(`{% url 'portfolio' %}?page=${page}`, {
+                        headers: {
+                            "X-Requested-With": "XMLHttpRequest"
+                        }
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.stocks.length > 0) {
+                            let stocksContainer = document.getElementById("stocks-container");
+
+                            data.stocks.forEach(stock => {
+                                let stockItem = document.createElement("li");
+                                stockItem.style.cursor = "pointer";
+                                stockItem.setAttribute("data-id", stock.id);
+
+                                stockItem.addEventListener("click", function () {
+                                    window.location.href = "{% url 'stock_detail' 0 %}".replace("0", stock.id);
+                                });
+
+                                let isNegative = stock.change < 0;
+
+                                let textClass = isNegative ? "danger" : "success";
+                                let iconDirection = isNegative ? "down" : "up";
+
+                                
+                                let priceDisplay = stock.price; 
+                                let currencySymbol = "{{user.profiles.preferred_currency.symbol}}"; 
+                                let currencyCode = "{{user.profiles.preferred_currency.code}}";
+
+                                stockItem.innerHTML = `
+                                    <div class="item">
+                                        <div class="icon-box text-${textClass}">
+                                            <ion-icon name="trending-${iconDirection}-outline"></ion-icon>
+                                        </div>
+                                        <div class="in">
+                                            <div>
+                                                <strong>${stock.name}</strong>
+                                                <div class="text-small text-secondary">${stock.change}</div>
+                                            </div>
+                                            <div class="text-end">
+                                                <strong>$${priceDisplay}</strong>
+                                                <div class="text-small">
+                                                    <span class="badge badge-${textClass}">
+                                                        <ion-icon name="arrow-${iconDirection}-outline"></ion-icon>
+                                                        ${stock.change_percent}%
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                `;
+                                stocksContainer.appendChild(stockItem);
+                                let divider = document.createElement('hr');
+                                stocksContainer.appendChild(divider);
+                                
+                            });
+
+
+                            if (data.has_next) {
+                                loadMoreBtn.setAttribute("data-page", parseInt(page) + 1);
+                            } else {
+                                loadMoreBtn.style.display = "none"; // Hide button if no more pages
+                            }
+                        }
+                    })
+                    .catch(error => console.error("Error loading more stocks:", error))
+                    .finally(() => {
+                        setTimeout(() => {
+                            preloader.style.display = "none";
+                        }, 1500);
+                    });
+                }, 800)
+            });
+        
+            const searchInput = document.getElementById("searchInput");
+            const searchIcon = document.getElementById("searchIcon");
+            const searchContainer = document.getElementById("searchContainer");
+            const searchResultsContainer = document.getElementById("search-results");
+
+            searchIcon.addEventListener("click", () => {
+                searchInput.style.opacity = '1';
+                searchInput.style.width = '200px';
+                searchInput.focus();
+            });
+
+            searchInput.addEventListener("keyup", async function(e){
+                const searchKeyword = e.target.value.trim();
+                const existingStocksList = document.getElementById("stocks-container").innerHTML;
+                if (searchKeyword){
+
+                    let url = "{% url 'query_stocks' 'keyword' %}";
+                     url = url.replace("keyword", searchKeyword);
+
+                    const request = await fetch(url);
+                    const result = await request.json();
+                    
+                    let stocksContainer = document.getElementById("stocks-container");
+
+                    if (result.exists && result.stocks.length > 0){
+                        stocksContainer.innerHTML = "";
+
+                        result.stocks.forEach(stock => {
+                            let stockItem = document.createElement("li");
+                            stockItem.style.cursor = "pointer";
+                            stockItem.setAttribute("data-id", stock.id);
+
+                            stockItem.addEventListener("click", function () {
+                                window.location.href = "{% url 'stock_detail' 0 %}".replace("0", stock.id);
+                            });
+
+                            let isNegative = stock.change < 0;
+
+                            let textClass = isNegative ? "danger" : "success";
+                            let iconDirection = isNegative ? "down" : "up";
+
+
+                            let priceDisplay = stock.price.toLocaleString();
+                            let currencySymbol = "{{user.profiles.preferred_currency.symbol}}";
+                            let currencyCode = "{{user.profiles.preferred_currency.code}}";
+
+                            stockItem.innerHTML = `
+                                <div class="item">
+                                    <div class="icon-box text-${textClass}">
+                                        <ion-icon name="trending-${iconDirection}-outline"></ion-icon>
+                                    </div>
+                                    <div class="in">
+                                        <div>
+                                            <strong>${stock.name}</strong>
+                                            <div class="text-small text-secondary">${stock.change}</div>
+                                        </div>
+                                        <div class="text-end">
+                                            <strong>$${priceDisplay}</strong>
+                                            <div class="text-small">
+                                                <span class="badge badge-${textClass}">
+                                                    <ion-icon name="arrow-${iconDirection}-outline"></ion-icon>
+                                                    ${stock.change_percent}%
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            `;
+                            stocksContainer.appendChild(stockItem);
+                            let divider = document.createElement('hr');
+                            stocksContainer.appendChild(divider);
+
+                        });
+                    }
+                } else {
+                    document.getElementById("stocks-container").innerHTML = "";
+                    document.getElementById("stocks-container").innerHTML = existingStocksList
+                }
+            })
+
+            document.addEventListener("click", function(e){
+                if (!searchContainer.contains(e.target)){
+                    searchInput.style.opacity = '0';
+                    searchInput.style.width = '0';
+                    searchInput.blur();
+                }
+            })
+        
+        });
+    </script>
+
+
+
+</body>
+
+</html>

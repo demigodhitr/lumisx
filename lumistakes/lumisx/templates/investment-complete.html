@@ -1,0 +1,181 @@
+{% load humanize %}
+{% load static %}
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, viewport-fit=cover" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#000000">
+    <title>Investment Completed</title>
+    <meta name="description"
+        content="Lumistakes is a trading platform that offers online trading of complex derivative cryptocurrencies with leverage and copy trading. Log in to your personal area to access your accounts, deposit or withdraw funds, and claim bonuses.">
+    <meta name="keywords"
+        content="Crypto, Cryptocurrency, best cryptocurrency, best performing crypto, best exchange 2025, worldwide trading, investments, how to invest safely, how to invest, how to invest online, how to invest, 2025, best cryptocurrency, how to withdraw crypto, buy crypto, sell crypto, convert crypto" />
+    <meta name="author" content="Lumistakes Team" />
+    <link rel="icon" type="image/png" href="{% static 'assets/img/favicon.png' %}" sizes="32x3">
+    <link rel="apple-touch-icon" sizes="180x180" href="{% static 'assets/img/icon/192x192.png' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/style.css' %}">
+    <link rel="manifest" href="{% static '__manifest.json' %}">
+</head>
+
+<body>
+
+    <!-- loader -->
+    <div id="loader">
+        <img src="{% static 'assets/img/loading-icon.png' %}" alt="icon" class="loading-icon">
+    </div>
+    <!-- * loader -->
+
+    <!-- App Header -->
+    <div class="appHeader">
+        <div class="left">
+            <a href="#" class="headerButton goBack">
+                <ion-icon name="chevron-back-outline"></ion-icon>
+            </a>
+        </div>
+        <div class="pageTitle">
+            Transaction Detail
+        </div>
+        <div class="right">
+            <a href="#" class="headerButton" data-bs-toggle="modal" data-bs-target="#DialogBasic">
+                <ion-icon name="trash-outline"></ion-icon>
+            </a>
+        </div>
+    </div>
+    <!-- * App Header -->
+
+    <!-- Dialog Basic -->
+    <div class="modal fade dialogbox" id="DialogBasic" data-bs-backdrop="static" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Delete</h5>
+                </div>
+                <div class="modal-body">
+                    Are you sure?
+                </div>
+                <div class="modal-footer">
+                    <div class="btn-inline">
+                        <a href="#" class="btn btn-text-secondary" data-bs-dismiss="modal">CANCEL</a>
+                        <a href="#" class="btn btn-text-primary" data-bs-dismiss="modal">DELETE</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- * Dialog Basic -->
+
+    <!-- App Capsule -->
+    <div id="appCapsule" class="full-height">
+
+        <div class="section mt-2 mb-2">
+
+
+            <div class="listed-detail mt-3">
+                <div class="icon-wrapper">
+                    <div class="bg-success iconbox">
+                        <ion-icon name="arrow-forward-outline"></ion-icon>
+                    </div>
+                </div>
+                <h3 class="text-center mt-2">Application <span class="status"> Submitted</span></h3>
+            </div>
+
+            <ul style="border-radius: 7px;" class="listview px-4 flush transparent simple-listview no-space mt-3">
+                <li>
+                    <strong>Status</strong>
+                    <span class="status text-success">Processing</span>
+                </li>
+                <li>
+                    <strong>Investment Plan</strong>
+                    <span class="plan">Jordi Santiago</span>
+                </li>
+                <li>
+                    <strong>Debit Account</strong>
+                    <span class="account">BTC</span>
+                </li>
+                <li>
+                    <strong>Amount</strong>
+                    <h3 class="m-0 text-danger"> - {{request.user.profiles.preferred_currency.code}} <span class="amount"> </span></h3>
+                </li>
+                <li>
+                    <strong>Duration</strong>
+                    <span class="duration"> </span>
+            </ul>
+        </div>
+
+    </div>
+    <!-- * App Capsule -->
+
+
+    <!-- App Bottom Menu -->
+        <div class="appBottomMenu" style="position: fixed; z-index: 1; bottom: 0;">  
+            <a href="{% url 'home' %}" class="item ">
+                <div class="col">
+                    <ion-icon name="pie-chart-outline"></ion-icon>
+                    <strong>Overview</strong>
+                </div>
+            </a>
+            <a href="{% url 'cards' %}" class="item ">
+                <div class="col">
+                    <ion-icon name="card-outline"></ion-icon>
+                    <strong>My Cards</strong>
+                </div>
+            </a>
+            <a href="{% url 'menu' %}" class="item">
+                <div class="col">
+                    <div class="action-button">
+                        <ion-icon name="home"></ion-icon>
+                    </div>
+                </div>
+            </a>
+            <a href="{% url 'transactions' %}" class="item">
+                <div class="col">
+                    <ion-icon name="document-text-outline"></ion-icon>
+                    <strong>History</strong>
+                </div>
+            </a>
+            <a href="{% url 'settings' %}" class="item">
+                <div class="col">
+                    <ion-icon name="person-outline"></ion-icon>
+                    <strong>Me</strong>
+                </div>
+            </a>
+        </div>
+        <!-- * App Bottom Menu -->
+
+
+    <!-- ========= JS Files =========  -->
+    <!-- Bootstrap -->
+    <script src="{% static 'assets/js/lib/bootstrap.bundle.min.js' %}"></script>
+    <!-- Ionicons -->
+    <script type="module" src="https://cdnjs.cloudflare.com/ajax/libs/ionicons/5.5.2/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://cdnjs.cloudflare.com/ajax/libs/ionicons/5.5.2/ionicons/ionicons.js"></script>
+    <!-- Splide -->
+    <script src="{% static 'assets/js/plugins/splide/splide.min.js' %}"></script>
+    <!-- Base Js File -->
+    <script src="{% static 'assets/js/base.js' %}"></script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function (e) {
+
+            const summary = sessionStorage.getItem("investmentSuccess");
+            if (summary) {
+                const data = JSON.parse(summary);
+                document.querySelector(".amount").textContent = data.investmentAmount;
+                document.querySelector(".plan").textContent = data.title;
+                document.querySelector(".account").textContent = data.debitAccount;
+                document.querySelector(".duration").textContent = data.investmentDuration + ' days';
+                sessionStorage.removeItem("investmentSuccess");
+            } else {
+                window.location.href = "{% url 'home' %}";
+            }
+        })
+    </script>
+
+</body>
+
+</html>

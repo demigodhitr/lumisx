@@ -1,0 +1,261 @@
+{% load static   %}
+<!doctype html>
+<html lang="en">
+
+<head>
+    <script>
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('{% static "__service-worker.js" %}').then(function (registration) {
+                console.log('Service worker registration succeeded from template:', registration);
+            }, function (error) {
+                console.log('Service worker registration failed:', error);
+            });
+        } else {
+            console.log('Service workers are not supported.');
+        }
+    </script>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, viewport-fit=cover" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#000000">
+    <title>Lumis X - Your Financial Companion</title>
+    <meta name="description" content="Lumis X is a powerful and flexible web application designed to streamline your financial management and growth.">
+    <meta name="keywords" content="Lumis X Installation, How to Download Lumis X, Lumis X, Lumis X App download" />
+    <link rel="icon" type="image/png" href="{% static  'assets/img/favicon.png' %}" sizes="32x32">
+    <link rel="apple-touch-icon" sizes="192x192" href="{% static  'assets/img/icon/192x192.png' %}">
+    <link rel="stylesheet" href="{% static  'assets/css/style.css' %}">
+    <link rel="manifest" href="{% static '__manifest.json' %}">
+</head>
+
+<body class="bg-white">
+
+    <!-- loader -->
+    <div id="loader">
+        <img src="{% static 'assets/img/loading-icon.png' %}" alt="icon" class="loading-icon">
+    </div>
+    <!-- * loader -->
+
+    <!-- App Header -->
+    <div class="appHeader no-border">
+        <div class="left">
+            <a href="#" class="headerButton goBack">
+                <ion-icon name="chevron-back-outline"></ion-icon>
+            </a>
+        </div>
+        <div class="pageTitle">
+           Lumis X Installation
+        </div>
+        <div class="right">
+        </div>
+    </div>
+    <!-- * App Header -->
+
+    <!-- App Capsule -->
+    <div id="appCapsule">
+
+        <div class="section">
+            <div class="splash-page mt-5 mb-5">
+                <div class="mb-3"><img src="{% static 'assets/img/icon/384x384.png' %}" alt="image" class="imaged w-50 square">
+                </div>
+                <h2 class="mb-2">Lumis X</h2>
+                <p>
+                    Lumis X is a powerful and flexible web application by Lumistakes.It is a web application designed to streamline your financial management and growth as well as enhance your usage experience.
+                </p>
+            </div>
+        </div>
+
+        <div id="barButtons" style="display: none;" class="fixed-bar">
+            <div class="row">
+                <div class="col-6">
+                    <a href="{% url 'signup' %}" class="btn btn-lg btn-outline-secondary btn-block">Get Started</a>
+                </div>
+                <div class="col-6">
+                    <a href="{% url 'signin' %}" class="btn btn-lg btn-primary btn-block">Login</a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <!-- * App Capsule -->
+
+    <!-- iOS Add to Home Action Sheet -->
+    <div class="modal inset fade action-sheet ios-add-to-home" id="iosModal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Add to Home Screen</h5>
+                    <a href="#" class="close-button" data-bs-dismiss="modal">
+                        <ion-icon name="close"></ion-icon>
+                    </a>
+                </div>
+                <div class="modal-body">
+                    <div class="action-sheet-content text-center">
+                        <div class="mb-1"><img src="{% static 'assets/img/icon/192x192.png' %}" alt="image" class="imaged w64 mb-2">
+                        </div>
+                        <div>
+                            Install <strong>Lumis X</strong> on your iPhone natively.
+                        </div>
+                        <div>
+                            Tap <ion-icon name="share-outline"></ion-icon> and tap on 'Add to homescreen'.
+                        </div>
+                        <div class="mt-2">
+                            <p style="text-align: center;">OR</p>
+                            <button onclick="document.getElementById('barButtons').style.display = 'block';" class="my-2 install-btn btn btn-outline-primary btn-block" data-bs-dismiss="modal">Continue on the web</button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- * iOS Add to Home Action Sheet -->
+
+
+    <!-- Android Add to Home Action Sheet -->
+    <div class="modal inset fade action-sheet " id="androidModal" tabindex="-1"
+        role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Install Lumis X</h5>
+                    <a href="#" class="close-button" data-bs-dismiss="modal">
+                        <ion-icon name="close"></ion-icon>
+                    </a>
+                </div>
+                <div class="modal-body">
+                    <div class="action-sheet-content text-center">
+                        <div class="mb-1">
+                            <img src="{% static 'assets/img/icon/192x192.png' %}" alt="image" class="imaged w64 mb-2">
+                        </div>
+                        <div>
+                            Install <strong>Lumis X</strong> on your Android's home screen.
+                        </div>
+                        <div>
+                            <button id="desktopInstall" class="install-btn btn btn-primary btn-block" data-bs-dismiss="modal">Install Now</button>
+                        </div>
+                        <div class="mt-2">
+                            <p style="text-align: center;">OR</p>
+                            <button onclick="document.getElementById('barButtons').style.display = 'block';" class="my-2 btn btn-outline-primary btn-block" data-bs-dismiss="modal">Continue with Browser</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- * Android Add to Home Action Sheet -->
+
+    <!-- Desktop Add to Home Action Sheet -->
+    <div class="modal inset fade action-sheet android-add-to-home" id="desktopModal" tabindex="-1"
+        role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Install Lumis X</h5>
+                    <a href="#" class="close-button" data-bs-dismiss="modal">
+                        <ion-icon name="close"></ion-icon>
+                    </a>
+                </div>
+                <div class="modal-body">
+                    <div class="action-sheet-content text-center">
+                        <div class="mb-1">
+                            <img src="{% static 'assets/img/icon/192x192.png' %}" alt="image" class="imaged w64 mb-2">
+                        </div>
+                        <div>
+                            Install <strong>Lumis X</strong> on your Desktop to enjoy smoother user experience.
+                        </div>
+                        <div>
+                            click Install Now below to install <strong>Lumis X</strong> on your Desktop.
+                        </div>
+                        <div class="mt-2">
+                            <button id="desktopInstall" class="install-btn btn btn-primary btn-block" data-bs-dismiss="modal">Install Now</button>
+                            <p class="my-2">OR</p>
+                            <button onclick="document.getElementById('barButtons').style.display = 'block';" class="my-2 btn btn-outline-primary btn-block" data-bs-dismiss="modal">Continue on the web</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- * Desktop Add to Home Action Sheet -->
+
+
+    <!-- ========= JS Files =========  -->
+    <!-- Bootstrap -->
+    <script src="{% static 'assets/js/lib/bootstrap.bundle.min.js' %}"></script>
+    <!-- Ionicons -->
+    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+    <!-- Splide -->
+    <script src="{% static 'assets/js/plugins/splide/splide.min.js' %}"></script>
+    <!-- Base Js File -->
+    <script src="{% static 'assets/js/base.js' %}"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            if (window.matchMedia('(display-mode: standalone)').matches || window.matchMedia('display-mode') == 'standalone') {
+                window.location.href = "{% url 'signin' %}";
+            }
+
+            function showModal(id) {
+                const modal = new bootstrap.Modal(document.getElementById(id));
+                modal.show();
+            }
+
+
+            const userAgent = navigator.userAgent || navigator.vendor || window.opera;
+
+            if (/windows phone/i.test(userAgent)) {
+                showModal('desktopModal');
+            } else if (/android/i.test(userAgent)) {
+                showModal('androidModal');
+            } else if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) {
+                showModal('iosModal');
+            } else {
+                // Default to windows if no match found
+                showModal('desktopModal');
+            }
+
+            // Handle the PWA install prompt
+            let deferredPrompt;
+            window.addEventListener('beforeinstallprompt', (e) => {
+                deferredPrompt = e;
+                document.querySelectorAll('.install-btn').forEach(button => {
+                    button.addEventListener('click', (e) => {
+                        document.getElementById('barButtons').style.display = 'block';
+                        e.preventDefault();
+                        deferredPrompt.prompt();
+                        deferredPrompt.userChoice.then((choiceResult) => {
+                            if (choiceResult.outcome === 'accepted') {
+                                console.log('User accepted the install prompt');
+                            } else {
+                                console.log('User dismissed the install prompt');
+                            }
+                            deferredPrompt = null;
+                        });
+                    });
+                });
+                document.getElementById("androidInstall").addEventListener('click', (e) => {
+                    e.preventDefault();
+                    deferredPrompt.prompt();
+                    document.getElementById('barButtons').style.display = 'block';
+                    deferredPrompt.userChoice.then((choiceResult) => {
+                        if (choiceResult.outcome === 'accepted') {
+                            console.log('User accepted the install prompt');
+                        } else {
+                            console.log('User dismissed the install prompt');
+                        }
+                        deferredPrompt = null;
+                    });
+                });
+
+
+            });
+        });
+        
+    </script>
+
+
+</body>
+
+</html>

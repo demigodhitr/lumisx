@@ -1,0 +1,1891 @@
+{% load custom_filters %}
+{% load humanize %}
+{% load static %}
+<!doctype html>
+<html lang="en">
+
+<head>
+    <style>
+        input[type="range"] {
+            -webkit-appearance: none;
+            width: 80%;
+            height: 15px;
+            background: linear-gradient(to right, rgb(0, 191, 255), rgb(157, 0, 255));
+            border-radius: 10px;
+            outline: none;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 20px;
+            height: 20px;
+            background: radial-gradient(circle, hsl(320, 90%, 50%), rgb(125, 7, 111));;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+
+        input[type="range"]::-moz-range-thumb {
+            width: 20px;
+            height: 20px;
+            background: #007bff;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+    </style>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, viewport-fit=cover" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#000000">
+    <title>Lumis X</title>
+    <meta name="description"
+        content="Lumistakes is a trading platform that offers online trading of complex derivative cryptocurrencies with leverage and copy trading. Log in to your personal area to access your accounts, deposit or withdraw funds, and claim bonuses.">
+    <meta name="keywords"
+        content="Crypto, Cryptocurrency, best cryptocurrency, best performing crypto, best exchange 2025, worldwide trading, investments, how to invest safely, how to invest, how to invest online, how to invest, 2025, best cryptocurrency, how to withdraw crypto, buy crypto, sell crypto, convert crypto" />
+    <link rel="icon" type="image/png" href="{% static 'assets/img/favicon.png' %}" sizes="32x3">
+    <link rel="apple-touch-icon" sizes="180x180" href="{% static 'assets/img/icon/192x192.png' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/style.css' %}">
+    <link rel="manifest" href="{% static '__manifest.json' %}">
+</head>
+
+<body>
+
+    <!-- loader -->
+    <div id="loader">
+        <img src="{% static 'assets/img/loading-icon.png' %}" alt="icon" class="loading-icon">
+    </div>
+    <!-- * loader -->
+
+    <!-- App Header -->
+    <div class="appHeader bg-primary text-light">
+        <div class="left">
+            <a href="#" class="headerButton" data-bs-toggle="modal" data-bs-target="#sidebarPanel">
+                <ion-icon name="menu-outline"></ion-icon>
+            </a>
+        </div>
+        <div class="pageTitle">
+            <img src="{% static 'assets/img/logo.png' %}" alt="logo" class="logo">
+        </div>
+        <div class="right">
+            <a href="{% url 'notifications' %}" class="headerButton">
+                <ion-icon class="icon" name="notifications-outline"></ion-icon>
+                {% if count > 0 %}
+                    <span class="badge badge-danger">{{ count }}</span>
+                {% endif %}
+                </a>
+            <a href="{% url 'settings' %}" class="headerButton">
+                <img src="{{ user.profiles.profile_pic.url }}" alt="image" class="imaged w32">
+            </a>
+        </div>
+    </div>
+    <!-- * App Header -->
+
+
+    <!-- App Capsule -->
+    <div id="appCapsule">
+
+        <!-- Wallet Card -->
+        <div class="section wallet-card-section pt-1">
+            <div class="wallet-card">
+                <!-- Balance -->
+                <div class="balance">
+                    <div class="left">
+                        <span class="title">Total Balance</span>
+                        <h1 class="total">{{preferred_currency.code}} {{balance.total_balance|intcomma}}</h1>
+                    </div>
+                    <div class="right">
+                        <a href="#" class="button" data-bs-toggle="modal" data-bs-target="#depositActionSheet">
+                            <ion-icon name="add-outline"></ion-icon>
+                        </a>
+                    </div>
+                </div>
+                <!-- * Balance -->
+                <!-- Wallet Footer -->
+                <div class="wallet-footer">
+                    <div class="item">
+                        <a href="#" data-bs-toggle="modal" data-bs-target="#withdrawActionSheet">
+                            <div class="icon-wrapper bg-danger">
+                                <ion-icon name="arrow-up-outline"></ion-icon>
+                            </div>
+                            <strong>Withdraw</strong>
+                        </a>
+                    </div>
+                    {% if user.accesssettings.can_transfer %}
+                        <div class="item">
+                            <a href="#" data-bs-toggle="modal" data-bs-target="#sendActionSheet">
+                                <div class="icon-wrapper">
+                                    <ion-icon name="arrow-forward-outline"></ion-icon>
+                                </div>
+                                <strong>Transfer</strong>
+                            </a>
+                        </div>
+                    {% else %}
+                        <div class="item">
+                            <a disabled href="#" onclick="toastbox('transferFeedback')">
+                                <div class="icon-wrapper">
+                                    <ion-icon name="arrow-forward-outline"></ion-icon>
+                                </div>
+                                <strong>Transfer</strong>
+                            </a>
+                        </div>
+                    {% endif %}
+                    
+                    <div class="item">
+                        <a href="{% url 'cards' %}">
+                            <div class="icon-wrapper bg-success">
+                                <ion-icon name="card-outline"></ion-icon>
+                            </div>
+                            <strong>Cards</strong>
+                        </a>
+                    </div>
+                    <div class="item">
+                        {% if user.accesssettings.can_invest %}
+                            <a href="#" data-bs-toggle="modal" data-bs-target="#exchangeActionSheet">
+                            <div class="icon-wrapper bg-warning">
+                                <ion-icon name="swap-vertical"></ion-icon>
+                            </div>
+                            <strong>Invest</strong>
+                            </a>
+                        {% else %}
+                            <a  onclick="toastbox('investFeedback')" href="#" data-bs-toggle="modal" >
+                            <div class="icon-wrapper bg-warning">
+                                <ion-icon name="swap-vertical"></ion-icon>
+                            </div>
+                            <strong>Invest</strong>
+                            </a>
+                        {% endif %}
+                    </div>
+
+                </div>
+                <!-- * Wallet Footer -->
+            </div>
+        </div>
+        <!-- Wallet Card -->
+
+        <!-- Deposit Action Sheet -->
+        <div class="modal fade action-sheet" id="depositActionSheet" tabindex="-1" role="dialog">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Add Balance</h5>
+                    </div>
+                    <div class="modal-body">
+                        <div class="action-sheet-content">
+                            <form method="post" id="depositForm">
+                                <div class="form-group basic">
+                                    <div class="input-wrapper">
+                                        <label class="label" for="depositCrypto">Crypto</label>
+                                        <select data-name="Crypto to deposit" name="depositCrypto" class="form-control custom-select" id="depositCrypto">
+                                            {% for x in addresses %}
+                                                <option data-name="{{x.name}}" data-network="{{x.network}}" value="{{x.wallet_address}}">{{ x.name }}</option>
+                                            {% empty %}
+                                                <option disabled value="">loading...</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group basic">
+                                    <label class="label">Enter Amount</label>
+                                    <div class="input-group mb-2">
+                                        <span class="input-group-text" id="basic-addona1">{{preferred_currency.code}}</span>
+                                        <input data-name="Deposit amount" id="depositAmount" name="depositAmount" type="text" class="form-control" placeholder="Enter an amount" 
+                                        {% with user.profiles.preferred_currency.symbol as to_currency %}
+                                        {% if to_currency == "USD" %}
+                                            value="{{ user.accesssettings.deposit_limit|converter:'GBP_USD'|intcomma}}"
+                                        {% elif to_currency == 'EUR' %}
+                                            value="{{ user.accesssettings.deposit_limit|converter:'GBP_EUR'|intcomma}}"
+                                        {% else %}
+                                            value="{{ user.accesssettings.deposit_limit|intcomma }}"
+                                        {% endif %}
+                                        {% endwith %}
+                                            >
+                                    </div>
+                                </div>
+                                <div class="form-group basic">
+                                    <button type="submit" class="btn btn-primary btn-block btn-lg">Deposit</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- * Deposit Action Sheet -->
+
+        <!-- Withdraw Action Sheet -->
+        <div class="modal fade action-sheet" id="withdrawActionSheet" tabindex="-1" role="dialog">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Withdraw Money</h5>
+                    </div>
+                    <div class="modal-body">
+                        <div class="action-sheet-content">
+                            <form id="withdrawalForm" method="post">
+                                <div class="form-group basic">
+                                    <div class="input-wrapper">
+                                        <label class="label" for="account">Withdraw From</label>
+                                        <select  name="account" class="form-control custom-select" id="withdrawalAccount">
+                                            <option value="deposit">Deposit Wallet</option>
+                                            <option value="profit">Profits Wallet </option>
+                                            <option value="bonus">Bonus</option>
+                                            <option value="everything">All Balance</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group basic">
+                                    <div class="input-wrapper">
+                                        <label class="label" for="address">Recipient address</label>
+                                        {% if user.accesssettings.recipient_type != 'ADDRESS' %}
+                                            <select name="address" id="address" class="form-control custom-select">
+                                                {% for x in connected_wallets %}
+                                                    <option value="{{x.exchange|truncatechars:6}}{{x.key|truncatechars:10}}">{{x.exchange|upper}}</option>
+                                                {% empty %}
+                                                    <option disabled value="">No connected wallets</option>
+                                                {% endfor %}
+                                            </select>
+                                        {% else %}
+                                            <input name="address" type="text" class="form-control" id="address" placeholder="Enter recipient crypto address">
+                                            <i class="clear-input">
+                                                <ion-icon name="close-circle"></ion-icon>
+                                            </i>
+                                        {% endif %}
+                                    </div>
+                                </div>
+
+                                <div class="input-wrapper">
+                                    <label class="label" for="network">Select Network</label>
+                                    <select name="network" class="form-control custom-select" id="network">
+                                        <option value="BTC">Bitcoin </option>
+                                        <option value="USDT">Tether USDT </option>
+                                        <option value="ETH">Ethereum</option>
+                                        <option value="MATIC">Polygon Matic</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group basic">
+                                    <label class="label">Enter Amount</label>
+                                    <div class="input-group mb-2">
+                                        <span class="input-group-text">{{ user.profiles.preferred_currency.code }}</span>
+                                        <input id="withdrawalAmount" name="amount" type="number" class="form-control" placeholder="Enter an amount"
+                                            value="500">
+                                    </div>
+                                </div>
+
+                                <div class="form-group basic">
+                                    <button data-btntext="Withdraw" type="submit" class="btn btn-primary btn-block btn-lg">
+                                        <span id="withdrawalLoader" style="display: none; height: 30px; width: 30px;" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                                        Withdraw
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- * Withdraw Action Sheet -->
+
+        <!-- Send Action Sheet -->
+        <div class="modal fade action-sheet" id="sendActionSheet" tabindex="-1" role="dialog">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Send Money</h5>
+                        <p>Send money to family and friends on the Lumis X network. (Transactions are processed locally, ensure recipient email address belongs to a valid Lumis X user)</p>
+                    </div>
+                    <div class="modal-body">
+                        <div class="action-sheet-content">
+                            <form id="transferForm" method="post">
+                                <div class="form-group basic">
+                                    <div class="input-wrapper">
+                                        <label class="label" for="account2">Transfer from</label>
+                                        <select name="transferAccount" class="form-control custom-select" id="transferAccount">
+                                            <option value="deposit">Deposit Wallet</option>
+                                            <option value="profit">Profits Wallet</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group basic">
+                                    <div class="input-wrapper">
+                                        <label class="label" for="text11">Recipient Email</label>
+                                        <input name="recipientEmail" type="email" class="form-control" id="recipientEmail" placeholder="Enter recipient email address">
+                                        <i class="clear-input">
+                                            <ion-icon name="close-circle"></ion-icon>
+                                        </i>
+                                    </div>
+                                </div>
+
+                                <div class="form-group basic">
+                                    <label class="label">Enter Amount</label>
+                                    <div class="input-group mb-2">
+                                        <span class="input-group-text" id="basic-addon1">{{user.profiles.preferred_currency.code}} </span>
+                                        <input name="transferAmount" type="number" class="form-control" placeholder="Enter an amount">
+                                    </div>
+                                </div>
+
+                                <div class="form-group basic">
+                                    <button type="submit" class="btn btn-primary btn-block btn-lg">
+                                        <span id="transferLoader" style="display: none; height: 30px; width: 30px;" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                                        Send</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- * Send Action Sheet -->
+
+        <!-- Investment Action Sheet -->
+        <div style="overflow: auto; height: 400px !important;" class="modal fade modalbox" id="exchangeActionSheet" tabindex="-1" role="dialog">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Invest</h5>
+                        <a href="#" data-bs-dismiss="modal">Close</a>
+                    </div>
+                    <div class="modal-body">
+                        <p>Stay hands-free and earn effortlessly with our expert team of traders. They handle the complexities of trading, making it accessible to everyone. Simply invest, relax, and watch your portfolio grow as our in-house professionals manage your trades seamlessly..</p>
+                        <div class="action-sheet-content">
+
+                            <form id="investmentForm" method="post">
+                                <div class="row">
+                                    <div class="col-6">
+                                        <div class="form-group basic">
+                                            <div class="input-wrapper">
+                                                <label class="label" for="currency2">Investment Plan</label>
+                                                <select data-name="Investment Plan" name="plan" class="form-control custom-select" id="currency2">
+                                                    {% for plan in investment_plans %}
+                                                        <option data-title="{{plan.title}}" value="{{ plan.id }}">{{ plan.title}} (min: {{preferred_currency.code}}{{plan.converted_min|intcomma}} - max: {{preferred_currency.code}}{{plan.converted_max|intcomma}})</option>
+                                                    {% empty %}
+                                                        <option disabled value="">loading...</option>
+                                                    {% endfor %}
+                                                    
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="form-group basic">
+                                            <div class="input-wrapper">
+                                                <label class="label" for="debitAccount">Debit wallet</label>
+                                                <select data-name="Debit Account" name="debitAccount" class="form-control custom-select" id="debitAccount">
+                                                    <option value="profit">Profits Wallet</option>
+                                                    <option value="deposit">Deposit Wallet</option>
+                                                    <option value="bonus">Bonuses</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group basic">
+                                    <label class="label">Enter Amount</label>
+                                    <div class="input-group mb-2">
+                                        <span class="input-group-text" id="basic-addon2">{{preferred_currency.code}}</span>
+                                        <input data-name="Investment Amount" name="investmentAmount" type="number" class="form-control" placeholder="Enter an amount">
+                                    </div>
+                                </div>
+
+                                <div class="form-group basic">
+                                    <label class="label">Set Investment duration</label>
+                                    <div style="display: flex; align-items: center; justify-content: space-between;" class="input-group mb-2">
+                                        <input data-name="Investment Duration" name="investmentDuration" id="investmentDuration" type="range" value="5" min="5" step="5" max="365" class="">
+                                        <span class="input-group-text" id="rangeValue">5 days</span>
+                                    </div>
+                                </div>
+
+                                <div class="form-group basic">
+                                    <div class="input-wrapper">
+                                        <label class="label" for="manager">Contract Manager</label>
+                                        <select data-name="Manager" name="manager" class="form-control custom-select" id="manager">
+                                            {% for x in managers %}
+                                                <option value="{{ x.id }}">{{ x.name }}</option>
+                                            {% empty %}
+                                                <option disabled value="">loading...</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group basic">
+                                    <button type="submit" class="btn btn-primary btn-block btn-lg"
+                                        >Submit Contract</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- * Investment Action Sheet -->
+
+        <!-- Stats -->
+        <div class="section">
+            <div class="row mt-2">
+                <div class="col-6">
+                    <div class="stat-box">
+                        <div class="title">Income</div>
+                        <div class="value text-success">{{preferred_currency.code}} {{balance.profits|intcomma}}
+                        </div>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="stat-box">
+                        <div class="title">Actively Trading</div>
+                        <div class="value text-danger">{{preferred_currency.code}}{{investment_sum|intcomma}}</div>
+                        {% if user.profiles.trade_status == "Active" %}
+                            <div style="display: flex; flex-direction: column;">
+                                <div style="display: flex;">
+                                    <small style="color: red; font-size: 12px; margin-right: 12px;">-{{preferred_currency.code}}{{total_losses|intcomma}}</small>
+                                    <small style="color: #1DCC70; font-size: 12px;">+{{preferred_currency.code}}{{total_earnings|intcomma}}</small>
+                                </div>
+                                <small style="font-size: 8px; font-style: italic;">stats for current trades(losses & earnings)</small>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            <div class="row mt-2">
+                <div class="col-6">
+                    <div class="stat-box">
+                        <div class="title">Bonuses</div>
+                        <div class="value">{{preferred_currency.code}} {{balance.bonus|intcomma}}</div>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="stat-box">
+                        <div class="title">Stocks</div>
+                        <a href="{% url 'stock-list' %}">
+                            <div class="value">{{preferred_currency.code}} {{stock_value|intcomma}}<ion-icon style="font-size: 14px; color: coral;" name="alert-circle"></ion-icon></div> 
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- * Stats -->
+
+        <!-- Transactions -->
+        <div class="section mt-4">
+            <div class="mb-2 section-heading">
+                <h2 class="title">Transactions</h2>
+                {% if transaction_length > 4 %}
+                    <a href="{% url 'transactions' %}" class="link">View All</a>
+                {% endif %}
+            </div>
+            <div class="transactions">
+                {% for x in transactions|slice:":4" %}
+                    <!-- item -->
+                    <a href="{% url 'transaction-details' x.activity_type x.id %}" class="item">
+                        <div class="detail">
+                            <img src="{% static 'assets/img/sample/brand/1.jpg' %}" alt="img" class="image-block imaged w48">
+                            <div>
+                                <strong>{% if x.activity_type == 'Activity' %} {{ x.activity }}
+                                    {% elif x.activity_type == 'Stock' %}{% if x.transaction_type == "BUY" %}Bought{% else %}Sold{% endif %} {{ x.stock.symbol }} {% else %} {{ x.activity_type }} {% endif %}
+                                </strong>
+                                <p class="{% if x.status|in_list:'Completed,Confirmed,Approved,Paid' %} text-success{% elif x.status|in_list:'Processing,In progress,In Progress,Under review,Active' %} text-warning {% elif x.status|in_list:'Failed,Rejected' %} text-danger {% endif %}">
+                                    {{ x.status }}
+                                </p>
+                            </div>
+                        </div>
+                        <div class="right">
+                            <div
+                                class="price {% if x.activity_type|in_list:'Deposit,Earnings' %} text-success {% elif x.activity_type == 'Stock' %} {% if x.transaction_type == 'BUY' %} text-danger {% else %} text-success {% endif %} {% else %} text-danger {% endif %}">
+                                {% with user.profiles.preferred_currency.symbol as to_currency %}
+                                {% if x.activity_type|in_list:'Deposit,Earnings' %}
+                                + {% elif x.activity_type == 'Stock' %}
+                                        {% if x.transaction_type == "BUY" %} -  {% else %} + {% endif %}
+                                    {% else %}
+                                - {% endif %}
+                                {{ user.profiles.preferred_currency.code }}
+                                {% if to_currency == 'USD' %}
+                                    {{ x.amount|converter:"GBP_USD"|intcomma }}
+                                {% elif to_currency == 'EUR' %}
+                                    {{ x.amount|converter:"GBP_EUR"|intcomma }}
+                                {% else %}
+                                    {{ x.amount }}
+                                {% endif %}
+                                {% endwith %}
+                                <p class="text-end">{{x.activity_date|time_since}}</p>
+                            </div>
+                        </div>
+                    </a>
+                    <!-- * item -->
+                {% empty %}
+                    <!-- item -->
+                    <a href="javascript:void(0)" class="item">
+                        <div class="detail">
+                            <img src="{% static 'assets/img/sample/brand/1.jpg' %}" alt="img" class="image-block imaged w48">
+                            <div>
+                                <strong>No Transactions</strong>
+                                <p>You have not made any transaction yet...</p>
+                            </div>
+                        </div>
+                        <div class="right">
+                            <div class="price text-danger"> - {{user.profiles.preferred_currency.code}} 0.00</div>
+                        </div>
+                    </a>
+                    <!-- * item -->
+                {% endfor %}
+            </div>
+        </div>
+        <!-- * Transactions -->
+
+        <!-- my cards -->
+        <div class="section full mb-4 mt-4">
+            <div class="section-heading padding">
+                <h2 class="title">My Preferred card</h2>
+            </div>
+
+            <!-- carousel single -->
+            <div class="carousel-single splide">
+                <div class="splide__track">
+                    <ul class="splide__list">
+                        {% if preferred_card %}
+                        {% with preferred_card as x %}
+                            <li class="splide__slide">
+                                <!-- card block -->
+                                <div class="card-block bg-primary">
+                                    <div class="card-main">
+                                        <div class="card-button dropdown">
+                                            <button type="button" class="btn btn-link btn-icon" data-bs-toggle="dropdown">
+                                                <ion-icon name="ellipsis-horizontal"></ion-icon>
+                                            </button>
+                                            <div class="dropdown-menu dropdown-menu-end">
+                                                <a data-bs-toggle="modal" data-bs-target="#withdrawActionSheet" class="dropdown-item" href="#">
+                                                    <ion-icon name="pencil-outline"></ion-icon>Withdraw
+                                                </a>
+                                            </div>
+                                        </div>
+                                        <div class="balance">
+                                            <span class="label">BALANCE</span>
+                                            <h1 class="title">{{preferred_currency.code}}{{x.converted_balance|intcomma}}</h1>
+                                        </div>
+                                        <div class="in">
+                                            <div class="card-number">
+                                                <span class="label">Card Number</span>
+                                                {{ x.card_number|mask_number}}
+                                            </div>
+                                            <div class="bottom">
+                                                <div class="card-expiry">
+                                                    <span class="label">Expiry</span>
+                                                    {{ x.expiry_date|date:"m/Y"}}
+                                                </div>
+                                                <div class="card-ccv">
+                                                    <span class="label">CCV</span>
+                                                    {{x.cvv}}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- * card block -->
+                            </li>
+                        {% endwith %}
+                        {% else %}
+                            <li class="splide__slide">
+                                <!-- card block -->
+                                <div class="card-block bg-primary">
+                                    <div class="card-main">
+                                        <div class="balance">
+                                            <span class="label">BALANCE</span>
+                                            <h1 class="title"> {{user.profiles.preferred_currency.code }} 0.00</h1>
+                                        </div>
+                                        <div class="in">
+                                            <div class="card-number">
+                                                <span class="label">Card Number</span>
+                                                •••• 9905
+                                            </div>
+                                            <div class="bottom">
+                                                <div class="card-expiry">
+                                                    <span class="label">Expiry</span>
+                                                    12 / 25
+                                                </div>
+                                                <div class="card-ccv">
+                                                    <span class="label">CCV</span>
+                                                    Unactivated
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- * card block -->
+                            </li>
+                        {% endif %}
+
+                    </ul>
+                </div>
+            </div>
+            <!-- * carousel single -->
+
+        </div>
+        <!-- * my cards -->
+         <!-- TradingView Widget BEGIN -->
+        <div class="section tradingview-widget-container">
+        <div class="tradingview-widget-container__widget"></div>
+        <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-hotlists.js" async>
+            {
+            "colorTheme": "dark",
+            "dateRange": "12M",
+            "exchange": "US",
+            "showChart": true,
+            "locale": "en",
+            "width": "100%",
+            "height": "550",
+            "largeChartUrl": "",
+            "isTransparent": false,
+            "showSymbolLogo": true,
+            "showFloatingTooltip": true,
+            "plotLineColorGrowing": "rgba(41, 98, 255, 1)",
+            "plotLineColorFalling": "rgba(41, 98, 255, 1)",
+            "gridLineColor": "rgba(42, 46, 57, 0)",
+            "scaleFontColor": "rgba(219, 219, 219, 1)",
+            "belowLineFillColorGrowing": "rgba(41, 98, 255, 0.12)",
+            "belowLineFillColorFalling": "rgba(41, 98, 255, 0.12)",
+            "belowLineFillColorGrowingBottom": "rgba(41, 98, 255, 0)",
+            "belowLineFillColorFallingBottom": "rgba(41, 98, 255, 0)",
+            "symbolActiveColor": "rgba(255, 0, 255, 0.12)"
+            }
+        </script>
+        </div>
+        <!-- TradingView Widget END -->
+
+        <!-- Stocks -->
+        <div class="section mt-4">
+            <div class="section-heading">
+                <h2 class="title">My Stocks</h2>
+                {% if stocks_length > 4 %}
+                    <a href="{% url 'stock-list' %}" class="link">View All</a>
+                {% endif %}
+            </div>
+            <div class="card">
+                <ul class="listview flush transparent no-line image-listview detailed-list mt-1 mb-1">
+                    <!-- item -->
+                    {% for x in stocks|slice:":4" %}
+                    <li>
+                        <a href="{% url 'stock_detail' x.stock.id %}" class="item">
+                            <div class="icon-box bg-success">
+                                <ion-icon name="cash"></ion-icon>
+                            </div>
+                            <div class="in">
+                                <div>
+                                    <strong>{{ x.stock.symbol|upper}}</strong>
+                                    <div class="text-small text-secondary">
+                                        {{x.date_added|date:"d M Y, H:i:s"}}
+                                    </div>
+                                </div>
+                                <div class="text-end">
+                                    <strong>
+                                        {{x.quantity|intcomma}}
+                                    </strong>
+                                    <div class="text-small">
+                                        {{user.profiles.preferred_currency.code}}
+        
+                                        {{x.total_worth|intcomma}}
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    </li>
+                    {% empty %}
+                    <li>
+                        <a href="{% url 'portfolio' %}" class="item">
+                            <div class="icon-box bg-danger">
+                                <ion-icon name="sad-outline"></ion-icon>
+                            </div>
+                            <div class="in">
+                                <div>
+                                    <strong>No holdings yet</strong>
+                                    <div class="text-small text-secondary">Click to find and buy your favorite stocks</div>
+                                </div>
+                                <div class="text-end">
+                                    <strong>--:--</strong>
+                                    <div class="text-small">
+                                        
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+        <!-- Stocks -->
+
+        <!-- Investment Goals -->
+        <div class="section my-4">
+            <div class="section-heading">
+                <h2 class="title">My Investment stakes</h2>
+                <a href="{% url 'savings' %}" class="link">View All</a>
+            </div>
+            <div class="goals">
+                {% for x in investments|slice:":4" %}
+                    <!-- item -->
+                    <a class="my-4" href="{% url 'transaction-details' 'Investment' x.id %}">
+                        <div class="item">
+                            <div class="in">
+                                <div>
+                                    <h4>{{ x.plan }}</h4>
+                                    <p class="{% if x.status|in_list:'Completed,Confirmed,Approved,Paid' %} text-success{% elif x.status|in_list:'Processing,In progress,In Progress,Under review,Active' %} text-warning {% elif x.status|in_list:'Failed,Rejected' %} text-danger {% endif %}">{{ x.status}}</p>
+                                    <p class="btn-text-secondary">{{ x.days_remaining }} days remaining</p>
+                                </div>
+                                <div class="text-danger price"> - {{preferred_currency.code }}
+                                    {% with user.profiles.preferred_currency.symbol as to_currency %}
+                                        {% if to_currency == 'USD' %}
+                                            {{ x.amount|converter:"GBP_USD"|intcomma }}
+                                        {% elif to_currency == 'EUR' %}
+                                            {{ x.amount|converter:"GBP_EUR"|intcomma }}
+                                        {% else %}
+                                            {{ x.amount|intcomma }}
+                                        {% endif %}
+                                    {% endwith %}
+                                </div>
+                            </div>
+                            <div class="progress">
+                                <div 
+                                class="progress-bar" 
+                                role="progressbar" 
+                                style="width: {{ x.progress_percentage }}%"
+                                aria-valuenow="{{ x.progress_percentage }}" 
+                                aria-valuemin="0" 
+                                aria-valuemax="100">
+                                    {{ x.progress_percentage }}%</div>
+                            </div>
+                        </div>
+                    </a>
+                    <hr>
+
+                    <!-- * item -->
+                {% empty %}
+                    <div class="item">
+                        <div class="in">
+                            <div>
+                                <h4>No investments found</h4>
+                                <p>You don't have any investments.</p>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+        <!-- * Investment Goals -->
+
+        <div style="height: 500px;" class="section">
+            <!-- TradingView Widget BEGIN -->
+            <div class="tradingview-widget-container" style="height:100%;width:100%">
+                <div class="tradingview-widget-container__widget" style="height:calc(100% - 32px);width:100%"></div>
+                <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js"
+                    async>
+                        {
+                            "autosize": true,
+                            "symbol": "FX:GBPUSD",
+                            "interval": "D",
+                            "timezone": "Etc/UTC",
+                            "theme": "dark",
+                            "style": "1",
+                            "locale": "en",
+                            "withdateranges": true,
+                            "hide_side_toolbar": false,
+                            "allow_symbol_change": true,
+                            "watchlist": [
+                                "OANDA:EURUSD",
+                                "CAPITALCOM:GOLD",
+                                "BINANCE:ETHUSDT"
+                            ]
+                        }
+                    </script>
+            </div>
+            <!-- TradingView Widget END -->
+        <!-- TradingView Widget END -->
+        </div>
+
+        <!-- Stock listing -->
+        <div class="section my-4">
+            <div class="text-center section-title">NASDAQ - US Stocks Exchange</div>
+            <div class="card">
+                <ul id="stocks-container" class="listview flush transparent no-line image-listview detailed-list mt-1 mb-1">
+                    <!-- item -->
+                    {% for x in all_stocks %}
+                    <li style="cursor: pointer;" data-id="{{x.id}}" onclick="window.location='{% url 'stock_detail' x.id %}'">
+                        <div class="item">
+                            <div
+                                class="icon-box text-{% if x.change_percent|startswith:'-' %}danger{% else %}success{% endif %}">
+                                <ion-icon name="trending-{% if x.change_percent|startswith:'-' %}down{% else %}up{% endif %}-outline"></ion-icon>
+                            </div>
+                            <div class="in">
+                                <div>
+                                    <strong>{{ x.name }}</strong>
+                                    <div class="text-small text-secondary">{{x.change}}</div>
+                                </div>
+                                <div class="text-end">
+                                    <strong>
+                                        ${{ x.price|intcomma }}
+                                    </strong>
+                                    <div class="text-small">
+                                        <span
+                                            class="badge badge-{% if x.change_percent|startswith:'-' %}danger{% else %}success{% endif %}">
+                                            <ion-icon
+                                                name="arrow-{% if x.change_percent|startswith:'-' %}down{% else %}up{% endif %}-outline"></ion-icon>
+                                            {{x.change_percent}}%
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <hr>
+                    {% endfor %}
+                    <a href="{% url 'stock-list' %}" type="button" id="load-more-btn" class="btn btn-outline-primary btn-block">
+                        
+                        SEE MORE NASDAQ LISTINGS
+                    </a>
+                </ul>
+                
+            </div>
+        </div>
+        <!-- * Stock listing -->
+
+        <!-- Slider -->
+             <div class="section my-4 full">
+                <div class="carousel-single splide">
+                    <div class="splide__track">
+                        <ul class="splide__list">
+
+                            <li class="splide__slide">
+                                <div class="card card-with-icon">
+                                    <div class="card-body pt-3 pb-3 text-center">
+                                        <div class="card-icon bg-success mb-2">
+                                            <ion-icon name="link"></ion-icon>
+                                        </div>
+                                        <h3 class="card-titlde mb-1">Refer a Friend</h3>
+
+                                        <p>Invite your friends and earn prizes!</p>
+                                        <div class="row">
+                                            <div class="col">
+                                                <a id="copyRefId" href="#" data-url="{% url 'referral_link' user.referrals.referral_id  %}" class="btn btn-secondary">
+                                                    <ion-icon id="copyIcon" name="copy-outline"></ion-icon>
+                                                    Invite now
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+
+                            <!-- <li class="splide__slide">
+                                <div class="card card-with-icon">
+                                    <div class="card-body pt-3 pb-3 text-center">
+                                        <div class="card-icon mb-2">
+                                            <ion-icon name="chatbox-ellipses"></ion-icon>
+                                        </div>
+                                        <h3 class="card-titlde mb-1">Join Our Group Chat</h3>
+
+                                        <p>Let's talk about the market and strategiest!</p>
+                                        <div class="row">
+                                            <div class="col">
+                                                <a href="component-messages.html" class="btn btn-block btn-primary">
+                                                    Join now
+                                                </a>
+                                            </div>
+                                            <div class="col">
+                                                <a href="component-messages.html" class="btn btn-block btn-secondary">
+                                                    View groups
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+
+                            <li class="splide__slide">
+                                <div class="card card-with-icon">
+                                    <div class="card-body pt-3 pb-3 text-center">
+                                        <div class="card-icon bg-secondary mb-2">
+                                            <ion-icon name="share-social-outline"></ion-icon>
+                                        </div>
+                                        <h3 class="card-titlde mb-1">Follow Us</h3>
+
+                                        <p>Follow us on social media!</p>
+                                        <div class="row">
+                                            <div class="col">
+                                                <a href="#" class="btn btn-block btn-facebook">
+                                                    <ion-icon name="logo-facebook"></ion-icon>
+                                                    Facebook
+                                                </a>
+                                            </div>
+                                            <div class="col">
+                                                <a href="#" class="btn btn-block btn-twitter">
+                                                    <ion-icon name="logo-twitter"></ion-icon>
+                                                    Twitter
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li> -->
+
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+        <!-- * Slider -->
+
+        <!-- app footer -->
+        <div class="appFooter">
+            <div class="footer-title">
+                Copyright © Lumistakes <div class="yearEl">2025</div>. All Rights Reserved.
+                <script>
+                    var yearEl = document.querySelector('.yearEl');
+                    var currentYear = new Date().getFullYear();
+                    yearEl.innerHTML = currentYear;
+                </script>
+            </div>
+        </div>
+        <!-- * app footer -->
+
+    </div>
+    <!-- * App Capsule -->
+
+
+    <!-- App Bottom Menu -->
+        <div class="appBottomMenu" style="position: fixed; z-index: 1; bottom: 0;">  
+            <a href="{% url 'home' %}" class="item">
+                <div class="col">
+                    <div class="action-button">
+
+                        <ion-icon name="pie-chart"></ion-icon>
+                    </div>
+                    </div>
+            </a>
+            <a href="{% url 'cards' %}" class="item">
+                <div class="col">
+                    <ion-icon name="card-outline"></ion-icon>
+                    <strong>My Cards</strong>
+                </div>
+            </a>
+            <a href="{% url 'menu' %}" class="item">
+                <div class="col">
+                    <ion-icon name="home-outline"></ion-icon>
+                    
+                </div>
+            </a>
+            <a href="{% url 'transactions' %}" class="item">
+                <div class="col">
+                    <ion-icon name="document-text-outline"></ion-icon>
+                    <strong>History</strong>
+                </div>
+            </a>
+            <a href="{% url 'settings' %}" class="item">
+                <div class="col">
+                    <ion-icon name="person-outline"></ion-icon>
+                    <strong>Me</strong>
+                </div>
+            </a>
+        </div>
+    <!-- * App Bottom Menu -->
+
+    <!-- App Sidebar -->
+    <div class="modal fade panelbox panelbox-left" id="sidebarPanel" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-body p-0">
+                    <!-- profile box -->
+                    <div class="profileBox pt-2 pb-2">
+                        <div class="image-wrapper">
+                            <img src="{{ user.profiles.profile_pic.url }}" alt="image" class="imaged  w36">
+                        </div>
+                        <div class="in">
+                            <strong>{{ user.get_full_name }}</strong>
+                            <div class="text-primary">verification: {{ user.profiles.verification.status }}</div>
+                        </div>
+                        <a href="#" class="btn btn-link btn-icon sidebar-close" data-bs-dismiss="modal">
+                            <ion-icon name="close-outline"></ion-icon>
+                        </a>
+                    </div>
+                    <!-- * profile box -->
+                    <!-- balance -->
+                    <div class="sidebar-balance">
+                        <div class="listview-title">Deposit Balance</div>
+                        <div class="in">
+                            <h1 class="amount">{{ preferred_currency.code }} {{ balance.deposits|intcomma }}
+                            
+                            </h1>
+                        </div>
+                    </div>
+                    <!-- * balance -->
+
+               
+
+                    <!-- menu -->
+                    <div class="listview-title mt-1">Menu</div>
+                    <ul class="listview flush transparent no-line image-listview">
+                        <li>
+                            <a href="{% url 'portfolio' %}" class="item">
+                                <div class="icon-box bg-primary">
+                                    <ion-icon name="cash"></ion-icon>
+                                </div>
+                                <div class="in">
+                                    Stocks
+                                </div>
+                            </a>
+                        </li>
+                        
+                    </ul>
+                    <!-- * menu -->
+
+                    <!-- others -->
+                    <div class="listview-title mt-1">Others</div>
+                    <ul class="listview flush transparent no-line image-listview">
+                        <li>
+                            <a href="{% url 'settings' %}" class="item">
+                                <div class="icon-box bg-primary">
+                                    <ion-icon name="settings-outline"></ion-icon>
+                                </div>
+                                <div class="in">
+                                    Settings
+                                </div>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{% url 'contact' %}" class="item">
+                                <div class="icon-box bg-primary">
+                                    <ion-icon name="chatbubble-outline"></ion-icon>
+                                </div>
+                                <div class="in">
+                                    Support
+                                </div>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{% url 'terms-of-service' %}" class="item">
+                                <div class="icon-box bg-primary">
+                                    <ion-icon name="book-outline"></ion-icon>
+                                </div>
+                                <div class="in">
+                                    Terms and Conditons
+                                </div>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{% url 'homepage' %}" target="_blank" class="item">
+                                <div class="icon-box bg-primary">
+                                    <ion-icon name="globe-outline"></ion-icon>
+                                </div>
+                                <div class="in">
+                                    Company Official Website
+                                </div>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{% url 'logout' %}" class="item">
+                                <div class="icon-box bg-primary">
+                                    <ion-icon name="log-out-outline"></ion-icon>
+                                </div>
+                                <div class="in">
+                                    Log out
+                                </div>
+                            </a>
+                        </li>
+
+
+                    </ul>
+                    <!-- * others -->
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- * App Sidebar -->
+
+    <!-- toast danger -->
+        <div id="investFedback" class="toast-box toast-bottom bg-danger">
+            <div class="in">
+                <div class="text">
+                    You cannot place an investment request at this time. Please check back later
+                </div>
+            </div>
+            <button type="button" class="btn btn-sm btn-text-light close-button">OK</button>
+        </div>
+    <!-- * toast danger -->
+
+    <!-- toast danger -->
+        <div id="transferFeedback" class="toast-box toast-bottom bg-danger">
+            <div class="in">
+                <div class="text">
+                   You're not eligible to use this feature at this moment. Contact support if you have any questions.
+                </div>
+            </div>
+            <button type="button" class="btn btn-sm btn-text-light close-button">OK</button>
+        </div>
+    <!-- * toast danger -->
+
+
+
+    <!-- iOS Add to Home Action Sheet -->
+    <div class="modal inset fade action-sheet ios-add-to-home" id="ios-add-to-home-screen" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Add to Home Screen</h5>
+                    <a href="#" class="close-button" data-bs-dismiss="modal">
+                        <ion-icon name="close"></ion-icon>
+                    </a>
+                </div>
+                <div class="modal-body">
+                    <div class="action-sheet-content text-center">
+                        <div class="mb-1"><img src="{% static 'assets/img/icon/192x192.png' %}" alt="image" class="imaged w64 mb-2">
+                        </div>
+                        <div>
+                            Install <strong>Lumis X</strong> on your iPhone's home screen.
+                        </div>
+                        <div>
+                            Tap <ion-icon name="share-outline"></ion-icon> and click on 'Add to homescreen'.
+                        </div>
+                        <div class="mt-2">
+                            <button class="btn btn-primary btn-block" data-bs-dismiss="modal">Later</button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- * iOS Add to Home Action Sheet -->
+
+
+    <!-- Android Add to Home Action Sheet -->
+    <div class="modal inset fade action-sheet android-add-to-home" id="android-add-to-home-screen" tabindex="-1"
+        role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Install Lumis X</h5>
+                    <a href="#" class="close-button" data-bs-dismiss="modal">
+                        <ion-icon name="close"></ion-icon>
+                    </a>
+                </div>
+                <div class="modal-body">
+                    <div class="action-sheet-content text-center">
+                        <div class="mb-1">
+                            <img src="{% static 'assets/img/icon/192x192.png' %}" alt="image" class="imaged w64 mb-2">
+                        </div>
+                        <div>
+                            Install <strong>Lumis X</strong> on your Android's home screen.
+                        </div>
+                        <div>
+                            Tap <ion-icon name="ellipsis-vertical"></ion-icon> and Add to homescreen.
+                        </div>
+                        <div class="mt-2">
+                            <button class="btn btn-primary btn-block" data-bs-dismiss="modal">Later</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- * Android Add to Home Action Sheet -->
+
+
+    <!-- cookie action sheet -->
+    <div id="cookiesbox" class="offcanvas offcanvas-bottom cookies-box" tabindex="-1" data-bs-scroll="true"
+        data-bs-backdrop="false">
+        <div class="offcanvas-header">
+            <h5 class="offcanvas-title">We use cookies</h5>
+        </div>
+        <div class="offcanvas-body">
+            <div>
+                We use cookies to enhance your browsing experience, analyze site traffic, and improve our services. By continuing to use
+                this site, you consent to our use of cookies.
+            </div>
+            <div class="buttons">
+                <a href="#" class="btn btn-primary btn-block" data-bs-dismiss="offcanvas">I understand</a>
+            </div>
+        </div>
+    </div>
+    <!-- * cookie action sheet -->
+
+
+        <!-- Alert Success Action Sheet -->
+    <div class="modal fade action-sheet" id="successModal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div class="action-sheet-content">
+                        <div class="iconbox text-success">
+                            <ion-icon name="checkmark-circle"></ion-icon>
+                        </div>
+                        <div class="text-center p-2">
+                            <h3>Success</h3>
+                            <p class="message">Authentication successful, fetching your balances, please wait...</p>
+                        </div>
+                        <!-- <a href="#" class="btn btn-primary btn-lg btn-block" data-bs-dismiss="modal">Done</a> -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- * Alert Success Action Sheet :data-bs-toggle="modal" data-bs-target="#successModal" -->
+    
+    <!-- Alert Error Action Sheet -->
+    <div class="modal fade action-sheet" id="responseModal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div class="action-sheet-content">
+                        <div class="iconbox text-danger">
+                            <ion-icon name="alert-circle"></ion-icon>
+                        </div>
+                        <div class="text-center p-2">
+                            <h3>Error</h3>
+                            <p class="message">Something went wrong.</p>
+                        </div>
+                        <a id="action-button" href="#" class="btn btn-primary btn-lg btn-block" data-bs-dismiss="modal">Done</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- * Alert Error Action Sheet -->
+
+    <!-- ========= JS Files =========  -->
+    <!-- Bootstrap -->
+    <script src="{% static 'assets/js/lib/bootstrap.bundle.min.js' %}"></script>
+    <!-- Ionicons -->
+    <script type="module" src="https://cdnjs.cloudflare.com/ajax/libs/ionicons/5.5.2/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://cdnjs.cloudflare.com/ajax/libs/ionicons/5.5.2/ionicons/ionicons.js"></script>
+
+    <!-- Splide -->
+    <script src="{% static 'assets/js/plugins/splide/splide.min.js' %}"></script>
+    <!-- Base Js File -->
+    <script src="{% static 'assets/js/base.js' %}"></script>
+
+    <script>
+        // Add to Home with 2 seconds delay.
+        AddtoHome("2000", "once");
+
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    // Does this cookie string begin with the name we want?
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+        const csrftoken = getCookie('csrftoken');
+        const responseModal = document.getElementById('responseModal');
+        const preloader = document.getElementById('withdrawalLoader')
+
+        const withdrawalForm = document.getElementById('withdrawalForm');
+        withdrawalForm.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const errors = this.querySelectorAll('small');
+            if(errors){
+                errors.forEach(error => error.remove());
+            }
+            const button = this.querySelector('button[type="submit"]');
+            const formElements = this.elements;
+            
+            for (let i = 0; i < formElements.length; i++) {
+                const element = formElements[i];
+                if (element.type !== 'submit' && element.name !== 'amount' && element.value === ''){
+                    const text = `${element.name} is missing...`;
+                    const small = document.createElement('small');
+                    small.style.color = 'red';
+                    small.textContent = text;
+                    element.parentElement.appendChild(small);
+                    element.addEventListener('input', function(e) {
+                        this.parentElement.querySelector('small').remove();
+                    }, {'once': true});
+                    element.scrollIntoView({
+                        behavior:'smooth',
+                        block:'center',
+                        inline:'nearest'
+
+                    });
+                    return false;
+                } 
+                
+            }
+            if (formElements["account"].value !== "everything" && formElements["amount"].value === "") {
+                formElements["amount"].parentElement.parentElement.display =  "block";
+                const text = `Please enter the withdrawal amount...`;
+                const small = document.createElement('small');
+                small.style.color = 'red';
+                small.textContent = text;
+                formElements["amount"].parentElement.appendChild(small);
+                formElements["amount"].addEventListener('input', function(e) {
+                    this.parentElement.querySelector('small').remove();
+                }, {'once': true});
+                formElements["amount"].scrollIntoView({
+                    behavior:'smooth',
+                    block:'center',
+                    inline:'nearest'
+                });
+                return false;
+
+            }
+            const recipientType = '{{user.accesssettings.recipient_type}}'
+            if (recipientType.toLowerCase() === 'address' && /\s/.test(formElements['address'].value)) {
+                const msg = 'Invalid recipient address...[provide one of the following crypto network addresses: BITCOIN, ETHEREUM, TETHER USDT(TRC20), USDT ETHEREUM(erc20).]';
+            
+                const small = document.createElement('small');
+                small.style.color ='red';
+                small.textContent = msg;
+                formElements['address'].parentElement.appendChild(small);
+                formElements['address'].addEventListener('input', function(e) {
+                    this.parentElement.querySelector('small').remove();
+                }, {'once': true});
+                formElements['address'].scrollIntoView({
+                    behavior:'smooth',
+                    block:'center',
+                    inline:'nearest'
+                });
+                return false;
+            }
+            button.innerHTML = ''
+            button.appendChild(preloader);
+            button.disabled = true;
+            preloader.style.display = 'block';
+
+            const amount = formElements['amount'].value;
+            const account = formElements['account'].value;
+            const url = '{% url "checkbalance" %}'
+
+            try{
+                const balance = await fetch(url, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': csrftoken
+                    },
+                    body: JSON.stringify({ 'amount': amount, 'account': account })
+                });
+                const balanceResult = await balance.json();
+                if (!balanceResult.is_enough || !balanceResult.success) { 
+                    const msg = balanceResult.error || 'Failed to verify balance...';
+                    const small = document.createElement('small');
+                    small.style.color ='red';
+                    small.textContent = msg;
+                    formElements['amount'].parentElement.appendChild(small);
+                    formElements['amount'].addEventListener('input', function(e) {
+                        this.parentElement.querySelector('small').remove();
+                    }, {'once': true});
+                    formElements['amount'].scrollIntoView({
+                        behavior:'smooth',
+                        block:'center',
+                        inline:'nearest'
+                    });
+                    return false;
+                }
+
+                const formData = new FormData(this);
+                const formDataObj = {}
+                for (let [key, value] of formData.entries()){
+                    formDataObj[key] = value;
+                }
+                console.log(formDataObj);
+                sessionStorage.setItem('withdrawalForm', JSON.stringify(formDataObj));
+                setTimeout(() => {
+                    withdrawalForm.reset();
+                    window.location.href = '{% url "transaction-verification" %}';
+                }, 1500)
+            }catch(e){
+                responseModal.querySelector('.message').innerHTML = 'An error occurred while processing your transaction';
+                showModal(responseModal.id);
+            }
+            finally {
+                setTimeout(() => {
+                    button.textContent = 'Withdraw';
+                    button.disabled = false;
+                    preloader.style.display = 'none';
+                }, 800)
+            }
+    
+        });
+
+        const withdrawalAccount = document.getElementById("withdrawalAccount");
+        const withdrawalAmount = document.getElementById("withdrawalAmount");
+
+        withdrawalAccount.addEventListener("change", (e) =>  {
+            const value = e.target.value;
+            if(value === "everything"){
+                withdrawalAmount.parentElement.parentElement.style.display = "none";
+                withdrawalAmount.value = "";
+            } else {
+                withdrawalAmount.parentElement.parentElement.style.display = "block";
+            }
+        })
+        
+        function showModal(modalID, timeout=5000){
+            const modal = new bootstrap.Modal(document.getElementById(modalID));
+            modal.show();
+            setTimeout(() => {
+                modal.hide();
+            }, timeout);
+        }
+
+        const transferForm = document.getElementById('transferForm');
+        const transferLoader = document.getElementById('transferLoader');
+        transferForm.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const errors = this.querySelectorAll('small');
+            if(errors){
+                errors.forEach(error => error.remove());
+            }
+            const button = this.querySelector('button[type="submit"]');
+            const formElements = this.elements;
+
+            for (let i = 0; i < formElements.length; i++) {
+                const element = formElements[i];
+                if (element.type!== 'submit' && element.value === ''){
+                    const text = `${element.name} is missing...`;
+                    const small = document.createElement('small');
+                    small.style.color ='red';
+                    small.textContent = text;
+                    element.parentElement.appendChild(small);
+                    element.addEventListener('input', function(e) {
+                        this.parentElement.querySelector('small').remove();
+                    }, {'once': true});
+                    element.scrollIntoView({
+                        behavior:'smooth',
+                        block:'center',
+                        inline:'nearest'
+                    });
+                    return false;
+                }
+
+            }
+
+            button.innerHTML = ''
+            button.appendChild(transferLoader);
+            button.disabled = true;
+            transferLoader.style.display = 'block';
+
+            const amount = formElements['transferAmount'].value;
+            const account = formElements['transferAccount'].value;
+            const url = '{% url "checkbalance" %}'
+
+            try{
+                const balance = await fetch(url, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': csrftoken
+                    },
+                    body: JSON.stringify({ 'amount': amount, 'account': account })
+                });
+                const balanceResult = await balance.json();
+                if (!balanceResult.is_enough ||!balanceResult.success) {
+                    const msg = balanceResult.error || 'Failed to verify balance...';
+                    const small = document.createElement('small');
+                    small.style.color ='red';
+                    small.textContent = msg;
+                    formElements['transferAmount'].parentElement.appendChild(small);
+                    formElements['transferAmount'].addEventListener('input', function(e) {
+                        this.parentElement.querySelector('small').remove();
+                    }, {'once': true});
+                    formElements['transferAmount'].scrollIntoView({
+                        behavior:'smooth',
+                        block:'center',
+                        inline:'nearest'
+                    });
+                    return false;
+                }
+                const validRecipient = await fetch('{% url "validate-recipient" %}', {
+                    method: 'POST',
+                    body: JSON.stringify({'email': formElements['recipientEmail'].value}),
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': csrftoken
+                    }
+                });
+                const recipientResult = await validRecipient.json();
+                if (!recipientResult.success || !recipientResult.details) {
+                    const msg = recipientResult.error || 'Failed to validate recipient...';
+                    const small = document.createElement('small');
+                    small.style.color ='red';
+                    small.textContent = msg;
+                    formElements['recipientEmail'].parentElement.parentElement.appendChild(small);
+                    formElements['recipientEmail'].addEventListener('input', function(e) {
+                        this.parentElement.querySelector('small').remove();
+                    }, {'once': true});
+                    formElements['transferAccount'].scrollIntoView({
+                        behavior:'smooth',
+                        block:'center',
+                        inline:'nearest'
+                    });
+                    return false;
+                }
+                const formData = new FormData(this);
+                formData.append('name', recipientResult.details.name);
+                formData.append('address', recipientResult.details.email);
+                const formDataObj = {}
+                for (let [key, value] of formData.entries()) {
+                    formDataObj[key] = value;
+                }
+                console.log(formDataObj);
+                sessionStorage.setItem('transferSummary', JSON.stringify(formDataObj));
+                setTimeout(() => {
+                    transferForm.reset();
+                    window.location.href = '{% url "transfer-verification" %}';
+                }, 1500)
+
+            }catch(e){
+                responseModal.querySelector('.message').innerHTML = 'An error occurred while processing your transaction';
+                console.log(e);
+                showModal(responseModal.id);
+            }
+            finally {
+                setTimeout(() => {
+                    button.textContent = 'SEND';
+                    button.disabled = false;
+                    preloader.style.display = 'none';
+                }, 800)
+            }
+
+
+        })
+        
+        const investmentForm = document.getElementById('investmentForm');
+        const investmentLoader = preloader;
+        investmentForm.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const errors = this.querySelectorAll('small');
+            if(errors){
+                errors.forEach(error => error.remove());
+            }
+            const button = this.querySelector('button[type="submit"]');
+            const formElements = this.elements;
+            for (let i = 0; i < formElements.length; i++) {
+                const element = formElements[i];
+                if (element.type !== 'submit' && element.value === ''){
+                    const text = `${element.dataset.name.toLowerCase()} is missing...`;
+                    const small = document.createElement('small');
+                    small.style.color = 'red';
+                    small.textContent = text;
+                    element.parentElement.appendChild(small);
+                    element.addEventListener('input', function(e) {
+                        this.parentElement.querySelector('small').remove();
+                    }, {'once': true});
+                    element.scrollIntoView({
+                        behavior:'smooth',
+                        block:'center',
+                        inline:'nearest'
+                    });
+                    return false;
+                }
+            }
+            button.innerHTML = ''
+            button.appendChild(investmentLoader);
+            button.disabled = true;
+            investmentLoader.style.display = 'block';
+
+            const amount = formElements['investmentAmount'].value;
+            const account = formElements['debitAccount'].value;
+
+            const url = '{% url "checkbalance" %}'
+            try{
+                const balance = await fetch(url, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': csrftoken
+                    },
+                    body: JSON.stringify({ 'amount': amount, 'account': account })
+                });
+                const balanceResult = await balance.json();
+                if (!balanceResult.is_enough || !balanceResult.success) {
+                    const msg = balanceResult.error || 'Failed to verify balance...';
+                    const small = document.createElement('small');
+                    small.style.color ='red';
+                    small.textContent = msg;
+                    formElements['investmentAmount'].parentElement.appendChild(small);
+                    formElements['investmentAmount'].addEventListener('input', function(e) {
+                        this.parentElement.querySelector('small').remove();
+                    }, {'once': true});
+                    formElements['investmentAmount'].scrollIntoView({
+                        behavior:'smooth',
+                        block:'center',
+                        inline:'nearest'
+                    });
+                    return false;
+                }
+                const plan = formElements['plan'].value;
+                const checkplan = await fetch("{% url 'checkplan' %}", {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': csrftoken
+                    },
+                    body: JSON.stringify({ 'plan': plan, 'amount':amount })
+                })
+                const planResult = await checkplan.json();
+                if (!planResult.success) {
+                    const msg = planResult.error || 'Failed to validate plan...';
+                    const small = document.createElement('small');
+                    small.style.color ='red';
+                    small.textContent = msg;
+                    formElements['investmentAmount'].parentElement.appendChild(small);
+                    formElements['investmentAmount'].addEventListener('input', function(e) {
+                        this.parentElement.querySelector('small').remove();
+                    }, {'once': true});
+                    formElements['investmentAmount'].scrollIntoView({
+                        behavior:'smooth',
+                        block:'center',
+                        inline:'nearest'
+                    });
+                    return false;
+                }
+                const formData = new FormData(this);
+                const selectedPlan = formElements['plan'].options[formElements['plan'].selectedIndex];
+                formData.append('title', selectedPlan.dataset.title);
+                const formDataObj = {}
+                for (let [key, value] of formData.entries()){
+                    formDataObj[key] = value;
+                }
+                console.log(formDataObj);
+                sessionStorage.setItem('investmentSummary', JSON.stringify(formDataObj));
+                setTimeout(() => {
+                    investmentForm.reset();
+                    window.location.href = '{% url "investment-verification" %}';
+                }, 1500)
+            }catch(e){
+                responseModal.querySelector('.message').innerHTML = 'An error occurred while processing your transaction';
+                console.log(e);
+                showModal(responseModal.id);
+            } finally {
+                setTimeout(() => {
+                    button.textContent = 'Submit Contract Application';
+                    button.disabled = false;
+                    investmentLoader.style.display = 'none';
+                }, 800)
+            }
+
+
+        });
+
+        document.getElementById('investmentDuration').addEventListener('input', function () {
+            const duration = parseInt(this.value);
+            const rangeValue = document.getElementById('rangeValue');
+
+            if (isNaN(duration) || duration <= 0) {
+                rangeValue.innerHTML = "Invalid duration";
+                return;
+            }
+
+            const years = Math.floor(duration / 365);
+            const remainingDaysAfterYears = duration % 365;
+            const months = Math.floor(remainingDaysAfterYears / 30);
+            const days = remainingDaysAfterYears % 30;
+
+            let formattedDuration = "";
+
+            if (years > 0) {
+                formattedDuration += years + (years === 1 ? " year" : " years");
+            }
+
+            if (months > 0) {
+                if (formattedDuration) formattedDuration += " & ";
+                formattedDuration += months + (months === 1 ? " month" : " months");
+            }
+
+            if (days > 0) {
+                if (formattedDuration) formattedDuration += " & ";
+                formattedDuration += days + (days === 1 ? " day" : " days");
+            }
+
+            rangeValue.innerHTML = formattedDuration || "0 days";
+        });
+
+        
+        document.getElementById('depositAmount').addEventListener('input', (e) => {
+            const value = e.target.value;
+            if (!/^\d*\.?\d*$/.test(value)) {
+                e.target.value = value.slice(0, -1);
+            }
+        })
+
+        const depositForm = document.getElementById('depositForm');
+        const depositLoader = preloader;
+        depositForm.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const errors = this.querySelectorAll('small');
+            if(errors){
+                errors.forEach(error => error.remove());
+            }
+            const button = this.querySelector('button[type="submit"]');
+            const formElements = this.elements;
+
+            for (let i = 0; i < formElements.length; i++) {
+                const element = formElements[i];
+                if (element.type !== 'submit' && element.value.trim() === ''){
+                    const text = `${element.dataset.name.toLowerCase()} is missing...`;
+                    const small = document.createElement('small');
+                    small.style.color ='red';
+                    small.textContent = text;
+                    element.parentElement.appendChild(small);
+                    element.addEventListener('input', function(e) {
+                        this.parentElement.querySelector('small').remove();
+                    }, {'once': true});
+                    element.scrollIntoView({
+                        behavior:'smooth',
+                        block:'center',
+                        inline:'nearest'
+                    });
+                    return false;
+                }
+            }
+            if (isNaN(formElements['depositAmount'].value)){
+                const text = `Invalid deposit amount...`;
+                const small = document.createElement('small');
+                small.style.color ='red';
+                small.textContent = text;
+                formElements['depositAmount'].parentElement.appendChild(small);
+                formElements['depositAmount'].addEventListener('input', function(e) {
+                    this.parentElement.querySelector('small').remove();
+                }, {'once': true});
+                formElements['depositAmount'].scrollIntoView({
+                    behavior:'smooth',
+                    block:'center',
+                    inline:'nearest'
+                });
+                return false;
+            }
+            const preferredCurrency = "{{user.profiles.preferred_currency.symbol}}";
+            const code = "{{user.profiles.preferred_currency.code}}";
+            let minimumDeposit;
+            if(preferredCurrency == 'USD'){
+                minimumDeposit = "{{user.accesssettings.deposit_limit|converter:'GBP_USD' }}";
+            } else if (preferredCurrency == 'EUR'){
+                minimumDeposit = "{{user.accesssettings.deposit_limit|converter:'GBP_EUR' }}";
+            } else {
+                minimumDeposit = "{{user.accesssettings.deposit_limit}}";
+            }
+            const minimum = parseFloat(minimumDeposit);
+            const depositAmount = parseFloat(formElements['depositAmount'].value);
+
+            if (depositAmount < minimum) {
+                const text = `less than minimum: ${code}${minimum.toFixed(2)}`;
+                const small = document.createElement('small');
+                small.style.color ='red';
+                small.textContent = text;
+                formElements['depositAmount'].parentElement.appendChild(small);
+                formElements['depositAmount'].addEventListener('input', function(e) {
+                    this.parentElement.querySelector('small').remove();
+                }, {'once': true});
+                formElements['depositAmount'].scrollIntoView({
+                    behavior:'smooth',
+                    block:'center',
+                    inline:'nearest'
+                });
+                return false;
+            }
+            try{
+                button.innerHTML = '';
+                button.appendChild(depositLoader);
+                button.disabled = true;
+                depositLoader.style.display = 'flex';
+
+                const coinElement = formElements['depositCrypto'];
+                const selectedIndex = coinElement.options[coinElement.selectedIndex]
+
+                const name = selectedIndex.dataset.name;
+                const network = selectedIndex.dataset.network;
+
+                const formData = new FormData(this);
+                formData.append('name', name);
+                formData.append('network', network);
+                formData.append('currency', code)
+                let formDataObj = {};
+
+                for (let [key, value] of formData.entries()) {
+                    formDataObj[key] = value;
+                    console.log(`${key}: ${value}`);
+                }
+
+                console.log(formDataObj);
+                sessionStorage.setItem('depositSummary', JSON.stringify(formDataObj));
+                setTimeout(() => {
+                    depositForm.reset();
+                    window.location.href = '{% url "deposit-verification" %}';
+                }, 1500)
+            }catch(e){
+                responseModal.querySelector('.message').innerHTML = 'An error occurred while processing your transaction';
+                console.log(e);
+                showModal(responseModal.id);
+            } finally {
+                setTimeout(() => {
+                    button.textContent = 'Deposit';
+                    button.disabled = false;
+                    depositLoader.style.display = 'none';
+                }, 800)
+            }
+
+        })
+
+
+        const referralElement = document.getElementById('copyRefId');
+        referralElement.addEventListener('click', function(e){
+            const icon = document.getElementById('copyIcon');
+            const referral_code = this.getAttribute('data-url')
+
+            const domain = window.location.origin
+            const path = `${referral_code}`
+            const url = `${domain}${path}`
+
+            const tempInput = document.createElement('input')
+            tempInput.value = url;
+            document.body.appendChild(tempInput);
+            tempInput.select();
+            tempInput.setSelectionRange(0, 99999)
+            document.execCommand("copy");
+            document.body.removeChild(tempInput);
+            icon.name = 'checkmark-done-circle-outline';
+            this.style.opacity = '0.3';
+            setTimeout(() => {
+                this.style.opacity = '1';
+                icon.name = 'copy-outline';
+            }, 1500)
+
+        })
+    
+        document.addEventListener('DOMContentLoaded', () => {
+            function setConsentCookie() {
+                const expires = new Date(Date.now() + 180 * 24 * 60 * 60 * 1000).toUTCString(); // 6 months
+                document.cookie = `cookie_consent=yes; expires=${expires}; path=/`;
+                console.log('Cookie consent set')
+            }
+
+            function hasConsentCookie() {
+                return document.cookie.includes('cookie_consent=yes');
+            }
+
+            if (!hasConsentCookie()) {
+                CookiesBox(3000); 
+
+                const dismissBtn = document.querySelector('#cookiesbox [data-bs-dismiss="offcanvas"]');
+                if (dismissBtn) {
+                dismissBtn.addEventListener('click', () => {
+                    setConsentCookie();
+                }, { once: true });
+                }
+            }
+        });
+    
+    </script>
+
+</body>
+
+</html>

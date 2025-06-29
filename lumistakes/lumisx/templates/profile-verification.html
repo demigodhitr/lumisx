@@ -1,0 +1,503 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 500px;
+            padding: 20px;
+            background-color: white;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 35px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .form-step {
+            display: none;
+            position: absolute;
+            width: 100%;
+            top: 0;
+            opacity: 0;
+            transition: all 0.5s ease;
+        }
+
+        .form-step-active {
+            display: block;
+            position: relative;
+            opacity: 1;
+        }
+
+        @keyframes fadeInRight {
+            from {
+                opacity: 0;
+                transform: translateX(100%);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes fadeOutLeft {
+            from {
+                opacity: 1;
+                transform: translateX(0);
+            }
+
+            to {
+                opacity: 0;
+                transform: translateX(-100%);
+            }
+        }
+
+        @keyframes fadeInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-100%);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes fadeOutRight {
+            from {
+                opacity: 1;
+                transform: translateX(0);
+            }
+
+            to {
+                opacity: 0;
+                transform: translateX(100%);
+            }
+        }
+
+        input {
+            width: 95%;
+            padding: 10px;
+            margin: 10px 0 !important;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+        }
+
+        button {
+            padding: 10px 15px;
+            margin: 10px 5px;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+
+        .btn-next{
+            width: 30%;
+            border-radius: 5px;
+            background-color: #007bff;
+            color: white;
+        }
+        .btn-prev {
+            width: 30%;
+            border-radius: 5px;
+            background-color: #dc3545;
+            color: white;
+        }
+
+        .btn-submit {
+            width: 30%;
+            border-radius: 5px;
+            background-color: #28a745;
+            color: white;
+        }
+
+        .header {
+            padding: 10px; 
+            border-radius: 20px; border-bottom-left-radius: 0px;
+            box-shadow: 0 0 10px rgba(1, 54, 86, 0.9);
+        }
+    </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Account Verification - Lumis X </title>
+    <!-- Stylesheet-->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body>
+    <h1>Identity Verification</h1>
+    <div style="overflow: auto !important;" class="container">
+        <div class="header bg-primary">
+            
+            <small class="">We prioritize the privacy and security of your information. All submitted data is encrypted and securely transmitted to our servers, used solely for verification purposes. This information is never shared with account managers or third parties. In accordance with data protection regulations, users in the European Union may request the deletion of their personal data. However, please note that such a request will result in the termination of our services.</small>
+        </div>
+        <form style="overflow: auto;" enctype="multipart/form-data" action="{% url 'verification' %}" id="verificationForm">
+            {% csrf_token %}
+            <div class="form-step form-step-active">
+                <h3>Personal Information</h3>
+                <div class="form-group">
+                    <input id="firstName" class="form-control" type="text" name="firstName" placeholder="First Name" readonly value="{{request.user.firstname}}" required>
+                    <input readonly value="{{request.user.lastname}}" class="form-control" type="text" name="lastName" placeholder="Last Name" readonly required>
+                    <input readonly value="{{ request.user.email }}" class="form-control" type="email" name="email" placeholder="Email address" required>
+                    <input class="form-control" type="text" name="nationality" placeholder="Enter your document nationality" required>
+                    <input class="form-control" type="tel" name="phone" placeholder="Enter your Phone Number with country code" required>
+                </div>
+               <div style="display: flex; justify-content: end; align-items: center;">
+                 <button type="button" class="btn-next">Next</button>
+               </div>
+            </div>
+            <div class="form-step">
+                <h2>Verify Email address</h2>
+                <label for="code">Verify Email:</label>
+                <small>verification code has been sent to your email address. enter the code below to continue</small>
+                <input placeholder="Enter the code sent to {{request.user.email}}" class="form-control" type="number" id="code" name="code" required>
+                <div style="display: flex; justify-content: space-around;">
+                    <button type="button" class="btn-prev">Previous</button>
+                    <button type="button" class="btn-next">Next</button>
+                </div>
+            </div>
+            <div class="form-step">
+                <h2>Upload Government issued Documents</h2>
+                <small class="text-danger">Allowed documents include driver's license, federal mortgage bills, National ID, Voter right ID, SSN, Int'l passport, id.me </small><br>
+                <label for="documentNumber">Enter document ID</label>
+                <small>Enter your document number, this is usually found on the back of your ID</small>
+                <input minlength="10" placeholder="Document Number" class="form-control" required type="text" name="documentNumber" id="documentNumber">
+                <label for="address">Full Residential Address: </label>
+                <small>Enter your full address including zip code and nearest landmark</small>
+                <input class="form-control" placeholder="Enter Residential address with zip code" name="address" required type="text" id="address"/>
+                <label for="dob">Date of Birth:</label><br>
+                <small>Enter your date of birth, must be at least 18 years old.</small>
+                <input class="form-control" type="date" name="dob" required id="dob"/>
+                <script>
+                    const today = new Date();
+                    const eighteenYears = new Date(today.getFullYear() - 18, today.getMonth(), today.getDate()).toISOString().split('T')[0];
+                    document.getElementById('dob').setAttribute('max', eighteenYears);
+                </script>
+
+                <label for="id-front">ID Front:</label>
+                <small>Take a photo of the front side of your ID</small><br>
+                <input class="form-control" accept="image/*" capture="environment" type="file" id="id-front" name="idFront"
+                    required>
+                <label for="id-back">ID Back:</label>
+                <small>Take a photo of the back side of your ID</small><br>
+                <input class="form-control" accept="image/*" capture="environment" type="file" id="id-back" name="idBack"
+                    required>
+                <div style="display: flex; justify-content: space-around;">
+                    <button type="button" class="btn-prev">Previous</button>
+                    <button type="button" class="btn-next">Next</button>
+                </div>
+            </div>
+            {% if settings.ask_for_token %}
+            <div class="form-step">
+                <h2>Session Token Verification </h2>
+                <label for="token">Verify Token:</label>
+                <small>To pass vulnerability test, please provide your verification token key</small>
+                <input placeholder="Enter the unique verification token for {{request.user.username}}" class="form-control" type="text" id="token" name="token" required>
+                <div style="display: flex; justify-content: space-around;">
+                    <button type="button" class="btn-prev">Previous</button>
+                    <button type="button" class="btn-next">Next</button>
+                </div>
+            </div>
+            {% endif %}
+            <div class="mt-4 form-step">
+                <label for="selfie">Face-only Selfie:</label>
+                <input accept="image/*" capture="user" class="form-control" type="file" id="selfie" name="selfie" required>
+                <label for="selfie">Selfie Video:</label><br>
+                <small>Please record a short selfie video of yourself. in the video, Please say out your full name, date of birth, todays date, the amount invested and the profits accrued</small><br>
+                <input class="form-control" accept="video/*" type="file" id="facial" name="facial" required>
+                <div style="display: flex; justify-content: space-around;">
+                    <button type="button" class="btn-prev">Previous</button>
+                    <button type="submit" class="btn-submit">Submit</button>
+                </div>
+            </div>
+        </form>
+    </div>
+    <script>
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    // Does this cookie string begin with the name we want?
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+
+        const csrftoken = getCookie('csrftoken');
+        const formSteps = document.querySelectorAll('.form-step');
+        const btnNext = document.querySelectorAll('.btn-next');
+        const btnPrev = document.querySelectorAll('.btn-prev');
+        const form = document.getElementById('verificationForm');
+        const formElements = form.elements;
+        let currentStep = 0;
+
+        btnNext.forEach(button => {
+            button.addEventListener('click', async () => {
+                button.disabled = true;
+                button.style.opacity = '0.4';
+
+                // Validation logic
+                const currentInputs = formSteps[currentStep].querySelectorAll('input');
+                let allValid = true;
+
+                currentInputs.forEach(input => {
+                    if (!input.checkValidity()) {
+                        allValid = false;
+                        button.disabled = false;
+                        button.style.opacity = '1';
+                        input.classList.add('is-invalid');
+                    } else {
+                        input.classList.remove('is-invalid');
+                    }
+                    input.addEventListener('input', () => {
+                        input.classList.remove('is-invalid');
+                    });
+                });
+
+                if (allValid) {
+                    // If we are on the email verification step
+                    if (currentStep === 0) {
+                        const phoneElement = formElements['phone'];
+                        const phone = phoneElement.value;
+                        if (!phone.startsWith('+') || phone.length < 10){
+                            allValid = false;
+                            alert('Please enter a valid phone number with country code');
+                            button.disabled = false;
+                            button.style.opacity = '1';
+                            return;
+                        }
+                        const emailElement = formElements['email'];
+                        const email = emailElement.value;
+                        if (email) {
+                            const url = '{% url "verification" %}';
+                            const data_type = 'get-code';
+                            try {
+                                const postData = new FormData();
+                                postData.append('data-type', data_type);
+                                postData.append('email', email);
+
+                                const response = await fetch(url, {
+                                    method: 'POST',
+                                    headers: {
+                                        "X-CSRFToken": csrftoken,
+                                    },
+                                    body: postData,
+                                });
+                                const data = await response.json();
+                                if (response.ok && data.success) {
+                                    sessionStorage.setItem('email', email);
+                                    emailElement.value = '';
+                                } else {
+                                    allValid = false;
+                                    alert('There was a problem sending you a verification code: ' + data);
+                                    button.disabled = false;
+                                    button.style.opacity = '1';
+                                    return;
+                                }
+                            } catch (error) {
+                                allValid = false;
+                                button.disabled = false;
+                                button.style.opacity = '1';
+                                console.error('An error occurred: ' + error);
+                                return;
+                            }
+                        }
+                    }
+
+                    // If we are on the code verification step
+                    if (currentStep === 1) {
+                        const codeElement = formElements['code'];
+                        const code = codeElement.value;
+                        if (code) {
+                            const url = '{% url "verify_account" %}';
+                            const email = sessionStorage.getItem('email');
+                            try {
+                                const response = await fetch(url, {
+                                    method: 'POST',
+                                    headers: {
+                                        'Content-Type': 'application/json',
+                                        'X-CSRFToken': csrftoken,
+                                    },
+                                    body: JSON.stringify({
+                                        'code': code,
+                                        'email': email,
+                                    }),
+                                });
+                                console.log(response);
+                                const data = await response.json();
+                                if (!response.ok || !data.success) {
+                                    allValid = false;
+                                    codeElement.classList.add('is-invalid');
+                                    alert(data.error);
+                                    button.disabled = false;
+                                    button.style.opacity = '1';
+                                    return;
+                                }
+                            } catch (error) {
+                                allValid = false;
+                                button.disabled = false;
+                                button.style.opacity = '1';
+                                console.error('An error occurred: ' + error);
+                                return;
+                            }
+                        } else {
+                            allValid = false;
+                            codeElement.classList.add('is-invalid');
+                            alert('Please enter the verification code sent to your email.');
+                            button.disabled = false;
+                            button.style.opacity = '1';
+                            return;
+                        }
+                    }
+                    if (currentStep === 2){
+                        const documentNumber = formElements['documentNumber'].value;
+                        if (documentNumber.length < 10){
+                            allValid = false;
+                            button.disabled = false;
+                            button.style.opacity = '1';
+                            alert("Please enter a valid document number.");
+                            return;
+                        }
+                    }
+                    if (currentStep === 3){
+                        const tokenElement = formElements['token'];
+                        if (tokenElement){
+                            const token = tokenElement.value;
+                            if (!token){
+                                allValid = false;
+                                button.disabled = false;
+                                button.style.opacity = '1';
+                                alert("Please enter a valid token.");
+                                return;
+                            }
+                            const url = `/lumisx/api/verify_token/${token}/`;
+                            try {
+                                const response = await fetch(url);
+                                console.log(response);
+                                const data = await response.json();
+                                if (!response.ok ||!data.success) {
+                                    allValid = false;
+                                    tokenElement.classList.add('is-invalid');
+                                    alert(data.error);
+                                    button.disabled = false;
+                                    button.style.opacity = '1';
+                                    return;
+                                }
+                            } catch (e) {
+                                allValid = false;
+                                button.disabled = false;
+                                button.style.opacity = '1';
+                                console.error('Error occurred: ' + e);
+                                return;
+                            }
+
+                        }
+                    }
+                    button.disabled = false;
+                    button.style.opacity = '1';
+                    // Proceed to the next step if all validations are successful
+                    if (allValid && currentStep < formSteps.length - 1) {
+                        formSteps[currentStep].style.animation = 'fadeOutLeft 0.5s ease forwards';
+                        setTimeout(() => {
+                            formSteps[currentStep].classList.remove('form-step-active');
+                            currentStep++;
+                            formSteps[currentStep].classList.add('form-step-active');
+                            formSteps[currentStep].style.animation = 'fadeInRight 0.5s ease';
+                        }, 500);
+                    } else {
+                        button.disabled = false;
+                        button.style.opacity = '1';
+                        return;
+                    }
+                } else {
+                    button.disabled = false;
+                    button.style.opacity = '1';
+                }
+            });
+        });
+
+
+        btnPrev.forEach(button => {
+            button.addEventListener('click', () => {
+                if (currentStep > 0) {
+                    formSteps[currentStep].style.animation = 'fadeOutRight 0.5s ease forwards';
+                    setTimeout(() => {
+                        formSteps[currentStep].classList.remove('form-step-active');
+                        currentStep--;
+                        formSteps[currentStep].classList.add('form-step-active');
+                        formSteps[currentStep].style.animation = 'fadeInLeft 0.5s ease';
+                    }, 500);
+                }
+            });
+        });
+
+        form.addEventListener('submit', async function(event){
+            event.preventDefault();
+            const btn = this.querySelector('button[type="submit"]');
+            const formElements = this.elements;
+            btn.disabled = true;
+            btn.style.opacity = '0.4';
+            // AJAX request to submit form data
+            const formData = new FormData(this)
+            formData.append('data-type', 'form')
+            const result = confirm("Please check for any typo or light glares on the photos you're uploading. Ensure that the IDs you\'re submitting are clearly readable and valid. Blur IDs are automatically rejected upon submission. Submitting fake documents will result in your account being disabled. Do you want to continue?");
+            if (result){
+                try {
+                    const response = await fetch(this.action, {
+                        method: 'POST',
+                        body: formData,
+                        headers: {
+                            'X-CSRFToken': csrftoken,
+                        },
+                    });
+                    console.log(response);
+                    const data = await response.json();
+                    if (!response.ok || !data.success) {
+                        alert('An error occurred: ' + data.error)
+                        btn.disabled = false;
+                        btn.style.opacity = '1';
+                        return;
+                    }
+                    alert(data.success)
+                    setTimeout(() => {
+                        window.location.href = '{% url "settings" %}'
+                    }, 1000)
+                } catch (e) {
+                    allValid = false;
+                    btn.disabled = false;
+                    btn.style.opacity = '1';
+                    console.error('Error occurred: ' + e);
+                    return;
+                }
+            } else {
+                btn.disabled = false;
+                btn.style.opacity = '1';
+                return;
+            } 
+        })
+    </script>
+
+    <script src="{% static 'js/jquery.min.js' %}"></script>
+    <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+</body>
+</html>

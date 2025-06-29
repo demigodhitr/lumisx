@@ -1,0 +1,47 @@
+{% load custom_filters %}
+{% load humanize %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            padding: 20px;
+        }
+    
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #fff;
+            border-radius: 10px;
+            padding: 20px;
+        }
+    
+        h1 {
+            color: #cc1100;
+        }
+    
+        p {
+            margin-bottom: 10px;
+        }
+    </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verification Required!</title>
+</head>
+<body style="font-family: Arial, sans-serif; background-color: #fafafa;">
+    <div class="container">
+        <img style="width: 100%;" src="https://i.ibb.co/VpSQgDpg/lumistake.png" alt="Logo">
+    <h2>Hello {{ user.get_full_name  }}</h2>
+    <h4>You're receiving this email because we've detected that you're yet to complete full account verification.</h4>
+    <h4>Complying with the Anti Money Laundering (AML) policy, we are required to verify your real identity before allowing you to access sensitive features on our platform.</h4>
+    <h4>To begin your verification, prepare your legal documents.<a href="https://lumisx.exchange/lumisx/verification">Click Here To Start.</a></h4>
+    <h5>We typically verify users within few hours. However , verification can take an extended period of time, often depending on the waiting queue. </h5>
+    <h5>Thank you for choosing Lumistakes!</h5>
+    <p style="text-align: center;">
+        <em>Copy rights ©Lumistakes . All rights reserved. </em>
+        </p>
+    </div>
+</body>
+</html>

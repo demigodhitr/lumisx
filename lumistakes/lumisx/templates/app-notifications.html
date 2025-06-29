@@ -1,0 +1,149 @@
+{% load humanize %}
+{% load static %}
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, viewport-fit=cover" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#000000">
+    <title>Notifications</title>
+    <meta name="description"
+        content="Lumistakes is a trading platform that offers online trading of complex derivative cryptocurrencies with leverage and copy trading. Log in to your personal area to access your accounts, deposit or withdraw funds, and claim bonuses.">
+    <meta name="keywords"
+        content="Crypto, Cryptocurrency, best cryptocurrency, best performing crypto, best exchange 2025, worldwide trading, investments, how to invest safely, how to invest, how to invest online, how to invest, 2025, best cryptocurrency, how to withdraw crypto, buy crypto, sell crypto, convert crypto" />
+    
+    <link rel="icon" type="image/png" href="{% static 'assets/img/favicon.png' %}" sizes="32x3">
+    <link rel="apple-touch-icon" sizes="180x180" href="{% static 'assets/img/icon/192x192.png' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/style.css' %}">
+    <link rel="manifest" href="{% static '__manifest.json' %}">
+</head>
+
+    <!-- App Header -->
+    <div class="appHeader">
+        <div class="left">
+            <a href="#" class="headerButton goBack">
+                <ion-icon name="chevron-back-outline"></ion-icon>
+            </a>
+        </div>
+        <div class="pageTitle">
+            All Notifications
+        </div>
+        <!-- <div class="right">
+            <a href="#" class="headerButton" onclick="toastbox('toast-example-1', 3000)">
+                <ion-icon name="notifications-off-outline"></ion-icon>
+            </a>
+        </div> -->
+    </div>
+    <!-- * App Header -->
+
+    <!-- toast bottom iconed -->
+    <div id="toast-example-1" class="toast-box toast-bottom bg-primary">
+        <div class="in">
+            <ion-icon name="notifications-off-outline"></ion-icon>
+            <div class="text">
+                Notification sounds have been muted
+            </div>
+        </div>
+        <button type="button" class="btn btn-sm btn-text-light close-button">OK</button>
+    </div>
+    <!-- * toast bottom iconed -->
+
+    <!-- App Capsule -->
+    <div id="appCapsule">
+
+        <div class="section full">
+
+            <ul class="listview image-listview flush">
+                {% for x in notifications %}
+                    <li class="{% if not x.seen%}active{% endif %}">
+                        <a href="{% url 'notification-details' x.id %}" class="item">
+                            <div class="icon-box bg-{% if not x.seen%}warning{% else %}primary{% endif %}">
+                                <ion-icon name="chatbubble-outline"></ion-icon>
+                            </div>
+                            <div class="in">
+                                <div>
+                                    <div class="mb-05"><strong>{{x.title}}</strong></div>
+                                    <div class="text-small mb-05">{{x.message|truncatechars:"10"}}</div>
+                                    <div class="text-xsmall">{{x.created_at|date:"d M Y, H:i:s"}}</div>
+                                </div>
+                            </div>
+                        </a>
+                    </li>
+                {% empty %}
+                    <li>
+                        <a href="#" class="item">
+                            <div class="icon-box bg-danger">
+                                <ion-icon name="chatbubble-outline"></ion-icon>
+                            </div>
+                            <div class="in">
+                                <div>
+                                    <div class="mb-05"><strong>No New Notification</strong></div>
+                                    <div class="text-small mb-05">New notifications will appear here when you receive them</div>
+                                </div>
+                            </div>
+                        </a>
+                    </li>
+                {% endfor %}
+            </ul>
+
+        </div>
+
+    </div>
+    <!-- * App Capsule -->
+
+
+    <!-- App Bottom Menu -->
+        <div class="appBottomMenu" style="position: fixed; z-index: 1; bottom: 0;">  
+            <a href="{% url 'home' %}" class="item">
+                <div class="col">
+                    <ion-icon name="pie-chart"></ion-icon>
+                    <strong>Overview</strong>
+                </div>
+            </a>
+            <a href="{% url 'cards' %}" class="item">
+                <div class="col">
+                    <ion-icon name="card-outline"></ion-icon>
+                    <strong>My Cards</strong>
+                </div>
+            </a>
+            <a href="{% url 'menu' %}" class="item">
+                <div class="col">
+                    <ion-icon name="home-outline"></ion-icon>
+                    
+                </div>
+            </a>
+            <a href="{% url 'transactions' %}" class="item">
+                <div class="col">
+                    <ion-icon name="document-text-outline"></ion-icon>
+                    <strong>History</strong>
+                </div>
+            </a>
+            <a href="{% url 'settings' %}" class="item">
+                <div class="col">
+                    <ion-icon name="person-outline"></ion-icon>
+                    <strong>Me</strong>
+                </div>
+            </a>
+        </div>
+    <!-- * App Bottom Menu -->
+
+
+    <!-- ========= JS Files =========  -->
+    <!-- Bootstrap -->
+    <script src="{% static 'assets/js/lib/bootstrap.bundle.min.js' %}"></script>
+    <!-- Ionicons -->
+    <script type="module" src="https://cdnjs.cloudflare.com/ajax/libs/ionicons/5.5.2/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://cdnjs.cloudflare.com/ajax/libs/ionicons/5.5.2/ionicons/ionicons.js"></script>
+    <!-- Splide -->
+    <script src="{% static 'assets/js/plugins/splide/splide.min.js' %}"></script>
+    <!-- Base Js File -->
+    <script src="{% static 'assets/js/base.js' %}"></script>
+
+
+</body>
+
+</html>

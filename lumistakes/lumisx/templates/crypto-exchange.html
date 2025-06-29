@@ -1,0 +1,886 @@
+{% load humanize %}
+{% load static %}
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, viewport-fit=cover" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#000000">
+    <title>Exchange</title>
+    <meta name="description"
+        content="Lumistakes is a trading platform that offers online trading of complex derivative cryptocurrencies with leverage and copy trading. Log in to your personal area to access your accounts, deposit or withdraw funds, and claim bonuses.">
+    <meta name="keywords"
+        content="Crypto, Cryptocurrency, best cryptocurrency, best performing crypto, best exchange 2025, worldwide trading, investments, how to invest safely, how to invest, how to invest online, how to invest, 2025, best cryptocurrency, how to withdraw crypto, buy crypto, sell crypto, convert crypto" />
+    <link rel="icon" type="image/png" href="{% static 'assets/img/favicon.png' %}" sizes="32x3">
+    <link rel="apple-touch-icon" sizes="180x180" href="{% static 'assets/img/icon/192x192.png' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/style.css' %}">
+    <link rel="manifest" href="{% static '__manifest.json' %}">
+</head>
+
+<body>
+
+    <!-- loader -->
+    <div id="loader">
+        <img src="{% static 'assets/img/loading-icon.png' %}" alt="icon" class="loading-icon">
+    </div>
+    <!-- * loader -->
+
+    <!-- App Header -->
+    <div class="appHeader">
+        <div class="left">
+            <a href="#" class="headerButton goBack">
+                <ion-icon name="chevron-back-outline"></ion-icon>
+            </a>
+        </div>
+        <div class="pageTitle">
+            Exchange
+        </div>
+        <div class="right">
+            <a href="#" class="headerButton" onclick="toastbox('toast-1', 2000)">
+                <ion-icon name="refresh"></ion-icon>
+            </a>
+        </div>
+    </div>
+    <!-- * App Header -->
+
+    <!-- toast top -->
+    <div id="toast-1" class="toast-box toast-top tap-to-close bg-primary">
+        <div class="in">
+            <div class="text">
+                Exchange rates have been updated!
+            </div>
+        </div>
+    </div>
+    <!-- * toast top -->
+
+
+    <!-- App Capsule -->
+    <div id="appCapsule">
+
+        <form method="post" id="fiatExchange" action="#">
+            <input type="hidden" id="conversion_type" name="conversion_type" value="fiat_to_crypto">
+            <div class="section mt-4">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="form-group basic p-0">
+                            <div class="exchange-heading">
+                                <label class="group-label" for="fiatAmount">From</label>
+                                <div class="exchange-wallet-info">
+                                    Balance : <strong id="fiatBalance"> {{preferred_currency.code}}{{balance.profits|intcomma}} </strong>
+                                </div>
+                            </div>
+                            <div class="exchange-group">
+                                <div class="input-col">
+                                    <input name="fiat-amount" type="text" class="form-control form-control-lg pe-0 border-0" id="fiatAmount" placeholder="0" maxlength="10">
+                                </div>
+                                <div class="select-col">
+                                    <select id="fiatAccount" name="fiat-account" class="form-select form-select-lg currency">
+                                        <option value="profits" selected>Profits Wallet</option>
+                                        <option value="deposits">Deposit Wallet</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="section">
+                <div class="exchange-line">
+                    <div class="exchange-icon">
+                        <ion-icon name="swap-vertical-outline"></ion-icon>
+                    </div>
+                </div>
+            </div>
+
+            <div id="toSection" class="section">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="form-group basic p-0">
+                            <div class="exchange-heading">
+                                <label class="group-label" for="toAmount">To</label>
+                                
+                            </div>
+                            <div class="exchange-group">
+                                <div class="input-col">
+                                    <input id="fiatTargetAmount" name="target-amount" type="text" class="form-control form-control-lg pe-0 border-0" id="cryptoTarget" placeholder="0" maxlength="10">
+                                </div>
+                                <div class="select-col">
+                                    <select id="fiatTargetCurrency" name="target-currency" class="form-select form-select-lg currency">
+                                        <option selected data-rate="{{rates.btc}}" value="BTC">BITCOIN</option>
+                                        <option data-rate="{{rates.eth}}" value="ETH">ETHEREUM</option>
+                                        <option data-rate="{{rates.usdt}}" value="USDT">USDT</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="section mt-2">
+                <div class="row fontsize-caption">
+                    <div class="col">
+                        <strong id="fiatRateDisplay">1 BTC = {{preferred_currency.code}}{{rates.btc|floatformat:2|intcomma}}</strong> 
+                    </div>
+                    <div  class="col text-end">
+                        Balance: <strong id="cryptoBalance">{{crypto_balance.btc}} BTC</strong>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-button-group transparent">
+                <button id="fiatFormSubmit" disabled type="submit" class="btn btn-outline-primary btn-block btn-lg">
+                    Exchange
+                </button>
+            </div>
+        </form>
+
+
+        <span id="quoteLoader" style="display: none; height: 15px; width: 15px;" class="spinner-border spinner-border-sm"
+            role="status" aria-hidden="true"></span>
+
+
+        <form style="display: none;" id="cryptoExchange" method="post" action="#">
+            <input type="hidden" id="conversion_type" name="conversion_type" value="crypto_to_fiat">
+
+            <div id="fromSection" class="section mt-4">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="form-group basic p-0">
+                            <div class="exchange-heading">
+                                <label class="group-label" for="---cryptoAmount">From</label>
+                                <div class="exchange-wallet-info">
+                                    Balance : <strong id="--cryptoBalance"> {{crypto_balance.btc}} BTC</strong>
+                                </div>
+                            </div>
+                            <div class="exchange-group">
+                                <div class="input-col">
+                                    <input name="crypto-amount" type="text" class="form-control form-control-lg pe-0 border-0" id="--cryptoAmount" placeholder="0.00" maxlength="10">
+                                </div>
+                                <div class="select-col">
+                                    <select id="--cryptoAccount" name="crypto-account" class="form-select form-select-lg currency">
+                                        <option data-balance="{{crypto_balance.btc}}" selected data-rate="{{rates.btc}}" value="BTC">BITCOIN</option>
+                                        <option data-balance="{{crypto_balance.eth}}" data-rate="{{rates.eth}}" value="ETH">ETHEREUM</option>
+                                        <option data-balance="{{crypto_balance.usdt}}" data-rate="{{rates.usdt}}" value="USDT">USDT</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="section">
+                <div class="exchange-line">
+                    <div class="exchange-icon">
+                        <ion-icon name="swap-vertical-outline"></ion-icon>
+                    </div>
+                </div>
+            </div>
+
+            <div id="toSection" class="section">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="form-group basic p-0">
+                            <div class="exchange-heading">
+                                <label class="group-label" for="cryptoTargetAmount">To</label>
+                            </div>
+                            <div class="exchange-group">
+                                <div class="input-col">
+                                    <input name="target-amount" type="text" class="form-control form-control-lg pe-0 border-0" id="cryptoTargetAmount" placeholder="0" maxlength="10">
+                                </div>
+                                <div class="select-col">
+                                    <select id="cryptoTargetCurrency" name="target-currency" class="form-select form-select-lg currency">
+                                        <option value="{{preferred_currency.symbol|upper}}">{{preferred_currency.name|upper}}</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="section mt-2">
+                <div class="row fontsize-caption">
+                    <div id="--cryptoRateDisplay" class="col">
+                        1 BTC = {{preferred_currency.code}}{{rates.btc|floatformat:2|intcomma}}
+                    </div>
+                    <div  class="col text-end">
+                        Balance : <strong id="--fiatBalanceDisplay">{{preferred_currency.code}}{{balance.total_balance}}</strong>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-button-group transparent">
+                <button disabled type="submit" class="btn btn-primary btn-block btn-lg">
+                    Get Quote
+                </button>
+            </div>
+        </form>
+
+    </div>
+    <!-- * App Capsule -->
+    <!-- Quote Action Sheet -->
+    <div class="modal fade action-sheet" id="quoteActionSheet" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Quote</h5>
+                </div>
+                <div class="modal-body text-center">
+                    <div class="action-sheet-content">
+                        <h2>CONVERT
+                            <span id="baseAmount">£500</span> to
+                            <span id="quoteCurrency">BTC</span>?
+                        </h2>
+                        <h5>You get: <span id="quoteAmount">0.8913320 BTC</span></h5>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button id="completeConversion" type="button" class="btn btn-primary btn-block btn-lg">
+                        Convert
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- * Quote Action Sheet-->
+
+    <!-- feedback toast top iconed -->
+    <div id="serverFeedback" class="toast-box bg-danger toast-top">
+        <div class="in">
+            <ion-icon id="toastIcon" style="font-size: 30px !important;" name="bug" class="text-dark"></ion-icon>
+            <div class="text">
+                
+            </div>
+        </div>
+        <button type="button" class="btn btn-sm btn-text-dark  close-button">OK</button>
+    </div>
+    <!-- * feedback top iconed -->
+
+    <!-- ========= JS Files =========  -->
+    <!-- Bootstrap -->
+    <script src="{% static 'assets/js/lib/bootstrap.bundle.min.js' %}"></script>
+    <!-- Ionicons -->
+    <script type="module" src="https://cdnjs.cloudflare.com/ajax/libs/ionicons/5.5.2/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://cdnjs.cloudflare.com/ajax/libs/ionicons/5.5.2/ionicons/ionicons.js"></script>
+    <!-- Splide -->
+    <script src="{% static 'assets/js/plugins/splide/splide.min.js' %}"></script>
+    <!-- Base Js File -->
+    <script src="{% static 'assets/js/base.js' %}"></script>
+
+    <script>
+
+        document.addEventListener('DOMContentLoaded', function () {
+            let modalInstance = null;
+            function init() {
+                const fiatSection = document.getElementById('fiatExchange');
+                const cryptoSection = document.getElementById('cryptoExchange');
+                const exchangeType = sessionStorage.getItem("exchangeType");
+                const pageTitle = sessionStorage.getItem("pageTitle");
+                if (!exchangeType) window.history.back();
+                document.querySelector('.pageTitle').innerHTML = pageTitle;
+                if (exchangeType === 'fiat_to_crypto') {
+                    fiatSection.style.display = 'block';
+                    cryptoSection.style.display = 'none';
+                } else if (exchangeType === 'crypto_to_fiat') {
+                    fiatSection.style.display = 'none';
+                    cryptoSection.style.display = 'block';
+                } else {
+                    window.history.back();
+                }
+            };
+            init();
+
+            function getCookie(name) {
+                let cookieValue = null;
+                if (document.cookie && document.cookie !== '') {
+                    const cookies = document.cookie.split(';');
+                    for (let i = 0; i < cookies.length; i++) {
+                        const cookie = cookies[i].trim();
+                        // Does this cookie string begin with the name we want?
+                        if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                            break;
+                        }
+                    }
+                }
+                return cookieValue;
+            }
+            const csrftoken = getCookie('csrftoken');
+            
+
+            // quote Modal & its button loader
+            const quoteModal = document.getElementById('quoteActionSheet');
+            modalInstance = new bootstrap.Modal(quoteModal);
+            const quoteLoader = document.getElementById('quoteLoader');
+
+            const feedbackToast = document.getElementById('serverFeedback');
+
+            const exchangeType = sessionStorage.getItem("exchangeType");
+
+            if (exchangeType === 'fiat_to_crypto') {
+                initFiatSection(); 
+            } else if (exchangeType === 'crypto_to_fiat') {
+                initCryptoSection(); 
+            } else {
+                window.history.back(); 
+            }
+
+            function showModal(timeout=null) {
+                if (modalInstance) {
+                    modalInstance.show(); 
+                    if (timeout) {
+                        setTimeout(() => {
+                            modalInstance.hide();
+                        }, timeout);
+                    }
+                }
+            }
+            
+            function hideModal(reset=undefined){
+                if (modalInstance) {
+                    modalInstance.hide();
+                    if (reset && reset == true) {
+                        const resetTarget = document.getElementById('completeConversion');
+                        resetTarget.innerHTML = 'Convert';
+                        resetTarget.disabled = false;
+                    }
+                }
+
+            }
+            
+            document.addEventListener('click', function (e) {
+                if (e.target.closest('.modal')) return;
+                document.getElementById('fiatFormSubmit').innerHTML = 'Exchange';
+                if (modalInstance) {
+                    modalInstance.hide();
+                }
+            });
+
+            function initFiatSection(){
+
+                // fiat exchange form and submit button.
+                const fiatForm = document.getElementById('fiatExchange');
+                const fiatSubmit = fiatForm.querySelector('button[type="submit"]');
+
+                // save button state before mod.
+                const buttonState = fiatSubmit.innerHTML;
+
+                // fiat balance element.
+                const fiatBalance = document.getElementById('fiatBalance');
+
+                // fiat (from elements)
+                const fiatAmount = document.getElementById('fiatAmount');
+                const fiatAccount = document.getElementById('fiatAccount');
+
+                // fiat (to elements)
+                const fiatTargetCurrency = document.getElementById('fiatTargetCurrency');
+                const fiatTargetAmount = document.getElementById('fiatTargetAmount');
+
+                // rate display element
+                const fiatRateDisplay = document.getElementById('fiatRateDisplay');
+
+                // crypto balance element
+                const cryptoBalanceElement = document.getElementById('cryptoBalance');
+
+                // confirm conversion button and its state
+                const completeConversion = document.getElementById('completeConversion');
+                const currentState = completeConversion.innerHTML;
+                
+                fiatAccount.addEventListener('change', function () {
+                    fiatAmount.value = '';
+                    fiatTargetAmount.value = '';
+                    fiatSubmit.textContent = buttonState;
+
+                    if (fiatAccount.value === 'profits') {
+                        fiatBalance.innerHTML = `{{preferred_currency.code}}{{balance.profits|intcomma}} `;
+                    }else if (fiatAccount.value === 'deposits'){
+                        fiatBalance.innerHTML = `{{preferred_currency.code}}{{balance.deposits|intcomma}}`;
+                    }
+                });
+
+                fiatAmount.addEventListener('input', function(e){
+                    const amount = parseFloat(e.target.value);
+                    if (isNaN(amount) || amount <= 0) {
+                        fiatTargetAmount.value = '';
+                        fiatTargetAmount.disabled = true;
+                        return;
+                    }
+                    if (amount < 100) {
+                        fiatTargetAmount.value = '';
+                        fiatSubmit.textContent = 'Minimum amount is 100';
+                        fiatSubmit.disabled = true;
+                        fiatTargetAmount.disabled = true;
+                        return;
+                    } else {
+                        fiatSubmit.textContent = buttonState;
+                        fiatSubmit.disabled = false;
+                    }
+                    let availableBalance;
+                    if (fiatAccount.value == 'deposits') {
+                        availableBalance = parseFloat("{{balance.deposits}}");
+                    }
+                    else if (fiatAccount.value == 'profits') {
+                        availableBalance = parseFloat("{{balance.profits}}");
+                    }
+                    if (amount > availableBalance) {
+                        fiatTargetAmount.value = '';
+                        fiatSubmit.textContent = 'Insufficient funds';
+                        fiatSubmit.disabled = true;
+                        fiatTargetAmount.disabled = true;
+                        return;
+                    } else {
+                        fiatSubmit.textContent = buttonState;
+                        fiatSubmit.disabled = false;
+                        fiatTargetAmount.disabled = false;
+                    }
+
+                    const targetCurrency = fiatTargetCurrency.options[fiatTargetCurrency.selectedIndex];
+                    const rate = targetCurrency.dataset.rate;
+
+                    fiatTargetAmount.value = (amount / parseFloat(rate).toFixed(8)).toLocaleString(undefined, {
+                        minimumFractionDigits: 8,
+                        maximumFractionDigits: 8
+                    });
+                });
+
+                fiatTargetCurrency.addEventListener('change', function () {
+                    fiatAmount.value = '';
+                    fiatTargetAmount.value = '';
+                    fiatSubmit.textContent = buttonState;
+
+                    const targetCurrency = fiatTargetCurrency.options[fiatTargetCurrency.selectedIndex];
+                    const rate = targetCurrency.dataset.rate;
+                    let cryptoBalance;
+
+                    console.log("current rate: " + rate);
+                    if (this.value === 'BTC') {
+                        fiatRateDisplay.innerHTML = `1 BTC = {{preferred_currency.code}}${parseFloat(rate).toLocaleString()}`;
+
+                        cryptoBalanceElement.innerHTML = `${parseFloat('{{crypto_balance.btc}}').toFixed(8)} BTC.`;
+
+                    } else if (this.value === 'ETH') {
+                        fiatRateDisplay.innerHTML = `1 ETH = {{preferred_currency.code}}${parseFloat(rate).toLocaleString()}`;
+
+                        cryptoBalanceElement.innerHTML = `${parseFloat('{{crypto_balance.eth}}').toFixed(8)} ETH.`;
+
+                    } else if (this.value === 'USDT') {
+                        fiatRateDisplay.innerHTML = `1 USDT = {{preferred_currency.code}}${parseFloat(rate).toLocaleString()}`;
+
+                        cryptoBalanceElement.innerHTML = `${parseFloat('{{crypto_balance.usdt}}').toFixed(6)} USDT.`;
+                    }
+                })
+
+                fiatTargetAmount.addEventListener('input', function (e) {
+                    const amount = parseFloat(e.target.value);
+                    if (isNaN(amount) || amount <= 0) {
+                        fiatAmount.value = '';
+                        fiatSubmit.disabled = true;
+                        return;
+                    }
+                    
+                    const targetCurrency = fiatTargetCurrency.options[fiatTargetCurrency.selectedIndex];
+
+                    const rate = parseFloat(targetCurrency.dataset.rate);
+                    const localAmount = (amount * rate).toFixed(2);
+
+                    let availableBalance;
+                    if (fiatAccount.value === 'deposits'){
+                        availableBalance = parseFloat("{{balance.deposits}}");
+                    } else if (fiatAccount.value === 'profits'){
+                        availableBalance = parseFloat("{{balance.profits}}");
+                    }
+                    if (localAmount > availableBalance) {
+                        fiatAmount.value = '';
+                        fiatSubmit.textContent = 'Insufficient funds';
+                        fiatSubmit.disabled = true;
+                        return;
+                    } else if (localAmount < 100) {
+                        fiatAmount.value = '';
+                        fiatSubmit.textContent = 'Minimum amount is 100';
+                        fiatSubmit.disabled = true;
+                        return;
+                    } else {
+                        fiatSubmit.textContent = buttonState;
+                        fiatSubmit.disabled = false;
+                    }
+                    fiatAmount.value = localAmount;
+                    const event = new Event('input', { bubbles: true });
+                    fiatAmount.dispatchEvent(event);
+                    fiatSubmit.textContent = buttonState;
+                    fiatSubmit.disabled = false;
+                });
+
+                // fiat to crypto form submission.
+                fiatForm.addEventListener('submit', function (e) {
+                    e.preventDefault();
+                    const elements = this.elements;
+                    for (let i = 0; i < elements.length; i++) {
+                        const element = elements[i];
+                        if (element.type !== 'submit' && element.value.trim() === '') {
+                            fiatSubmit.textContent = 'Form is imcomplete';
+                            fiatSubmit.disabled = true;
+                            return;
+                        }
+                    }
+                    try {
+                        const baseAmount = `{{preferred_currency.code}}${parseFloat(elements['fiat-amount'].value)}`;
+
+                        quoteModal.querySelector('#baseAmount').innerHTML = baseAmount;
+
+                        quoteModal.querySelector('#quoteCurrency').innerHTML = elements['target-currency'].value;
+
+                        const targetElement = this.querySelector('#fiatTargetCurrency');
+                        const selectedOption = targetElement.options[targetElement.selectedIndex];
+
+                        const rate = parseFloat(selectedOption.dataset.rate);
+
+                        const amount = parseFloat(elements['fiat-amount'].value);
+
+                        const sum = (amount / rate).toFixed(8);
+
+                        const quoteAmountElement = quoteModal.querySelector('#quoteAmount');
+                        quoteAmountElement.innerHTML = `${sum} ${elements['target-currency'].value}`;
+
+                        fiatSubmit.textContent = 'Please wait...';
+                        const delay = Math.floor(Math.random() * (4000 - 1000 + 1)) + 2000;
+
+                        setTimeout(() => {
+                            try{
+                                showModal();
+                                completeConversion.addEventListener('click', async function () {
+                                    this.innerHTML = "Converting...";
+                                    this.prepend(quoteLoader);
+                                    quoteLoader.style.display = 'flex';
+
+                                    this.disabled = true;
+
+                                    const formData = new FormData(fiatForm);
+
+                                    for (const [key, value] of formData.entries()) {
+                                        console.log(`${key}: ${value}`);
+                                    }
+
+                                    const url = '{% url "exchange" %}';
+                                    const conversion = await fetch(url, {
+                                        method: 'POST',
+                                        body: formData,
+                                        headers: {
+                                            'X-CSRFToken': csrftoken,
+                                        }
+                                    });
+                                    const result = await conversion.json();
+                                    
+                                    if (result.success) {
+                                        feedbackToast.querySelector('.text').innerHTML = result.success;
+
+                                        feedbackToast.classList.replace('bg-danger', 'bg-success');
+
+                                        feedbackToast.querySelector('#toastIcon').name = 'checkmark-circle-outline';
+                                        toastbox('serverFeedback', 7000);
+                                        setTimeout(() => window.location.reload(), 5000);
+                                        modalInstance.hide();
+                                    } else {
+                                        feedbackToast.querySelector('.text').innerHTML = result.error;
+                                        toastbox('serverFeedback', 7000);
+                                        modalInstance.hide();
+                                    }
+                                })
+                            }catch(e){
+                                console.error('Error:', e);
+                                feedbackToast.querySelector('.text').innerHTML = 'An error occurred. Please try again.';
+                                toastbox('serverFeedback', 7000);
+                                modalInstance.hide();
+                            }finally{
+                                modalInstance.hide();
+                                completeConversion.innerHTML = 'Convert';
+                                completeConversion.disabled = false;
+                            }
+                            
+                        }, delay);
+
+                    } 
+                    catch (e) {
+                        console.error('Error:', e);
+
+                        feedbackToast.querySelector('.text').innerHTML = 'An error occurred. Please try again.';
+
+                        feedbackToast.classList.replace('bg-success', 'bg-danger');
+                        
+                        feedbackToast.querySelector('#toastIcon').classList.replace('text-success', 'text-danger');
+                        
+                        feedbackToast.querySelector('button[type="button"]').classList.replace('text-success', 'text-danger');
+                        
+                        feedbackToast.querySelector('#toastIcon').name = 'bug';
+                        toastbox('serverFeedback', 7000);
+
+                    } 
+                    finally {
+                        setTimeout(() => {
+                            fiatSubmit.innerHTML = buttonState;
+                            fiatSubmit.disabled = false;
+                        }, 6000)
+                    }
+                });
+            }   
+        
+            function initCryptoSection(){
+                // crypto exchange form and submit btn.
+                const cryptoForm = document.getElementById('cryptoExchange');
+                const cryptoSubmit = cryptoForm.querySelector('button[type="submit"]');
+
+                const buttonState = cryptoSubmit.innerHTML;
+
+                // rate & balance displays.
+                const rateDisplay = document.getElementById("--cryptoRateDisplay");
+
+                const balanceDispay = document.getElementById("--cryptoBalance")
+
+                // crypto (from elements);
+                const cryptoAccount = document.getElementById("--cryptoAccount");
+
+                const cryptoAmount = document.getElementById('--cryptoAmount');
+
+
+                // crypto (to elements);
+                const cryptoTargetAccount = cryptoForm.querySelector("#cryptoTargetAccount");
+                const cryptoTargetAmount = cryptoForm.querySelector('#cryptoTargetAmount');
+                
+
+                cryptoAccount.addEventListener("change", function(){
+
+                    const selectedOption = this.options[this.selectedIndex];
+                    const availableBalance = parseFloat(selectedOption.dataset.balance).toFixed(6);
+                    const rate = parseFloat(selectedOption.dataset.rate);
+                    const currentRate = `1 ${this.value} = {{preferred_currency.code}}${rate.toFixed(2)}`;
+
+                    rateDisplay.innerHTML = currentRate;
+                    balanceDispay.innerHTML = `${availableBalance} ${this.value}`;
+                })
+
+
+                cryptoAmount.addEventListener("input", function(e){
+                    const selectedOption = cryptoAccount.options[cryptoAccount.selectedIndex];
+
+                    const availableBalance = parseFloat(selectedOption.dataset.balance).toFixed(6);
+
+                    const rate = parseFloat(selectedOption.dataset.rate);
+                    const amount = parseFloat(e.target.value);
+                    
+                    if (isNaN(amount) || amount <= 0) {
+                        cryptoTargetAmount.value = '';
+                        cryptoSubmit.disabled = true;
+                        cryptoSubmit.textContent = buttonState;
+                        
+                        return;
+                    }
+                    if (amount < 0.0001) {
+                        cryptoTargetAmount.value = '';
+                        cryptoSubmit.textContent = 'Minimum amount is 0.0001';
+                        cryptoSubmit.disabled = true;
+                        return;
+                    } else {
+                        cryptoSubmit.textContent = buttonState;
+                        cryptoSubmit.disabled = false;
+                    }
+                    
+                    if (amount > availableBalance) {
+                        cryptoTargetAmount.value = '';
+                        cryptoSubmit.textContent = 'Insufficient funds';
+                        cryptoSubmit.disabled = true;
+                        return;
+                    } else {
+                        cryptoSubmit.textContent = buttonState;
+                        cryptoSubmit.disabled = false;
+                    }
+                    const localAmount = (amount * rate).toFixed(2);
+                    cryptoTargetAmount.value = localAmount;
+                    // const event = new Event('input', { bubbles: true });
+                    // cryptoTargetAmount.dispatchEvent(event);
+                    cryptoSubmit.textContent = buttonState;
+                    cryptoSubmit.disabled = false;
+                })
+
+                
+                cryptoTargetAmount.addEventListener('input', function(e){
+                    const selectedOption = cryptoAccount.options[cryptoAccount.selectedIndex];
+                    const rate = parseFloat(selectedOption.dataset.rate);
+                    const amount = parseFloat(e.target.value);
+
+                    if (isNaN(amount) || amount <= 0) {
+                        cryptoAmount.value = '';
+                        cryptoSubmit.textContent = buttonState;
+                        cryptoSubmit.disabled = true;
+                        return;
+                    }
+                    const cryptoValue = (amount / rate).toFixed(10);
+                    if (cryptoValue < 0.0001) {
+                        cryptoAmount.value = '';
+                        cryptoSubmit.textContent = 'Minimum amount is 0.0001';
+                        cryptoSubmit.disabled = true;
+                        return;
+                    } else {
+                        cryptoSubmit.textContent = buttonState;
+                        cryptoSubmit.disabled = false;
+                    }
+                    if (cryptoValue > availableBalance) {
+                        cryptoAmount.value = '';
+                        cryptoSubmit.textContent = 'Insufficient funds';
+                        cryptoSubmit.disabled = true;
+                        return;
+                    } else {
+                        cryptoSubmit.textContent = buttonState;
+                        cryptoSubmit.disabled = false;
+                    }
+
+
+                    cryptoAmount.value = cryptoValue;
+                    
+
+
+
+                    const event = new Event('input', { bubbles: true });
+                    // cryptoAmount.dispatchEvent(event);
+                    cryptoSubmit.textContent = buttonState;
+                    cryptoSubmit.disabled = false;
+
+                })
+
+
+                cryptoForm.addEventListener("submit", function(e){
+                    e.preventDefault();
+                    const elements = this.elements;
+                    for (let i = 0; i < elements.length; i++) {
+                        const element = elements[i];
+                        if (element.type !== 'submit' && element.value.trim() === '') {
+                            cryptoSubmit.textContent = 'Form is imcomplete';
+                            cryptoSubmit.disabled = true;
+                            return;
+                        }
+                    }
+                    try {
+                        const baseAmount = `${elements['crypto-amount'].value} ${elements['crypto-account'].value}`;
+
+                        quoteModal.querySelector('#baseAmount').innerHTML = baseAmount;
+
+                        quoteModal.querySelector('#quoteCurrency').innerHTML = elements['target-currency'].value;
+
+                        
+                        const selectedOption = cryptoAccount.options[cryptoAccount.selectedIndex];
+
+                        const rate = parseFloat(selectedOption.dataset.rate);
+
+                        const amount = parseFloat(elements['crypto-amount'].value);
+
+                        const sum = (amount * rate).toFixed(2);
+
+                        const quoteAmountElement = quoteModal.querySelector('#quoteAmount');
+                        quoteAmountElement.innerHTML = `${sum} ${elements['target-currency'].value}`;
+
+                        cryptoSubmit.textContent = 'Please wait...';
+                        const delay = Math.floor(Math.random() * (4000 - 1000 + 1)) + 2000;
+
+                        const completeConversion = quoteModal.querySelector('button[type="button"]');
+
+                        setTimeout(() => {
+                            try{
+                                showModal();
+                                completeConversion.addEventListener('click', async function () {
+                                    this.innerHTML = "Converting...";
+                                    this.prepend(quoteLoader);
+                                    quoteLoader.style.display = 'flex';
+
+                                    this.disabled = true;
+
+                                    const formData = new FormData(cryptoForm);
+
+                                    for (const [key, value] of formData.entries()) {
+                                        console.log(`${key}: ${value}`);
+                                    }
+
+                                    const url = '{% url "exchange" %}';
+                                    const conversion = await fetch(url, {
+                                        method: 'POST',
+                                        body: formData,
+                                        headers: {
+                                            'X-CSRFToken': csrftoken,
+                                        }
+                                    });
+                                    const result = await conversion.json();
+                                    
+                                    if (result.success) {
+                                        feedbackToast.querySelector('.text').innerHTML = result.success;
+
+                                        feedbackToast.classList.replace('bg-danger', 'bg-success');
+
+                                        feedbackToast.querySelector('#toastIcon').name = 'checkmark-circle-outline';
+                                        toastbox('serverFeedback', 7000);
+                                        setTimeout(() => window.location
+                                        .reload(), 5000);
+                                        modalInstance.hide();
+                                    } else {
+                                        feedbackToast.querySelector('.text').innerHTML = result.error;
+                                        toastbox('serverFeedback', 7000);
+                                        modalInstance.hide();
+                                    }
+                                })
+                            }catch(e){
+                                console.error('Error:', e);
+                                feedbackToast.querySelector('.text').innerHTML = 'An error occurred. Please try again.';
+                                toastbox('serverFeedback', 7000);
+                                modalInstance.hide();
+                            }finally{
+                                modalInstance.hide();
+                                completeConversion.innerHTML = 'Convert';
+                                completeConversion.disabled = false;
+                            }
+                        }, delay);
+                    }
+                    catch(e){
+                        console.error('Outer Error:', e);
+
+                        feedbackToast.querySelector('.text').innerHTML = 'An error occurred. Please try again.';
+
+                        feedbackToast.classList.replace('bg-success', 'bg-danger');
+                        
+                        feedbackToast.querySelector('#toastIcon').classList.replace('text-success', 'text-danger');
+                        
+                        feedbackToast.querySelector('button[type="button"]').classList.replace('text-success', 'text-danger');
+                        
+                        feedbackToast.querySelector('#toastIcon').name = 'bug';
+                        toastbox('serverFeedback', 7000);
+                    } 
+                    finally {
+                        setTimeout(() => {
+                            cryptoSubmit.innerHTML = buttonState;
+                            cryptoSubmit.disabled = false;
+                        }, 6000)
+                    }
+
+
+                });
+            }
+
+            
+        });
+            
+
+        
+    </script>
+</body>
+</html>

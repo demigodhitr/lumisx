@@ -1,0 +1,165 @@
+{% load custom_filters %}
+{% load humanize %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>You Just Created a new account!</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #fafafa;
+            margin: 0;
+            padding: 0;
+        }
+
+        img {
+            margin: 0 auto;
+            display: block;
+        }
+
+        h1,
+        h3,
+        p,
+        strong,
+        span {
+            margin: 0;
+            padding: 0;
+        }
+
+        h1 {
+            margin-top: 20px;
+        }
+
+        p {
+            line-height: 1.5;
+            margin-bottom: 10px;
+        }
+
+        span.voucher {
+            box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.3);
+            color: #6f1cf5;
+            width: fit-content;
+            border: 2px solid rgb(227, 220, 253);
+            border-radius: 5px;
+            background-color: rgb(227, 220, 253);
+            font-weight: bolder;
+            padding: 3px;
+            margin: 10px 10px;
+        }
+
+        a.button {
+            font-weight: bolder;
+            text-decoration: none;
+            display: inline-block;
+            padding: 5px;
+            background-color: #6f1cf5;
+            color: #fff;
+            border-radius: 8px;
+        }
+
+        ol,
+        li {
+            margin: 0;
+            padding: 0;
+        }
+
+        ol {
+            margin-bottom: 20px;
+        }
+
+        p.terms {
+            line-height: 1.5;
+        }
+
+        p.feedback {
+            margin-top: 10px;
+        }
+
+        h3.contact {
+            margin-top: 20px;
+        }
+
+        p.footer {
+            font-style: italic;
+            text-align: center;
+            padding: 20px;
+            background-color: #042154;
+            color: #ffffff;
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+
+        img.footer-logo {
+            width: 100%;
+            height: auto;
+            margin-top: 20px;
+        }
+
+        p.copyright {
+            text-align: center;
+            margin-top: 10px;
+        }
+
+        img.header-image {
+            width: 100%;
+            height: auto;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #fff;
+            border-radius: 10px;
+            padding: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <div style="text-align: center;" class="container">
+        <div style="display: flex; align-items: center; justify-content: center;">
+            <img style="width: 100%;" src="https://i.ibb.co/VpSQgDpg/lumistake.png" alt="Logo">
+        </div>
+        <h1 style="color: #6f1cf5;">Hello, {{ user.firstname }}!</h1>
+        <p>You have just created a wallet account at Lumis X, Lumistakes mobile wallet and utility web app. Welcome aboard!</p>
+        <p>Your account will be credited with a welcome voucher of <span class="voucher">£10</span>! Please accept this token as a gesture of our commitment to delivering an exceptional experience. From managing day-to-day payments to tracking your investments, we've optimized our platform for seamless performance!</p>
+
+        <p>Access your digital wallet using the details below. <a class="button" href="https://lumisx.exchange/lumisx/" aria-label="Login to your account"> Open App </a></p>
+        <div style="text-align: left;">
+            <h5>Email: <strong>{{ user.email }}</strong> <em>(for login)</em></h5>
+            <h5>Username: <strong>{{ user.username }}</strong><em>(not for login)</em></h5>
+            <h5>Login Password: ****** <em>(redacted for security purpose)</em></h5>
+
+        </div>
+
+        <br>
+        <h3 style="color: #6f1cf5;">Based on survey results from our existing users, here are some steps you might consider next:</h3>
+        <br><br>
+        <ol>
+            <li><strong style="color: #6f1cf5;">Funding your Nexa account:</strong>
+                <p class="terms">Take the first step by depositing funds into your new Nexa wallet. Transactions to and from your Nexa account are processed with some of the lowest fees available among brokerage platforms.</p>
+            </li>
+            <li><strong style="color: #6f1cf5;">Start earning:</strong>
+                <p class="terms">Looking to earn on the go? At Nexa, your deposits don’t sit idle. Our global team of expert traders manage active investment sessions, bridging the gap between markets and the public. Choose a plan that suits your goals, invest for your preferred duration, and watch your earnings grow. Withdraw your profits at the end of the period to any crypto wallet you prefer! (Note: At least one transaction card must be activated to enable payouts.)</p>
+            </li>
+            <li><strong style="color: #6f1cf5;">Invite and earn:</strong>
+                <p class="feedback">Earn up to £100.50 for each referral! When you invite a new investor, a bonus token will be credited to your bonus account. Use these tokens to invest and grow your earnings just as you would with regular deposits.</p>
+            </li>
+        </ol>
+
+        <h6 style="opacity: 0.5;" class="contact">Want to reach out to us? Don’t hesitate! 
+            <a href="mailto:helpdesk247@lumisx.exchange?subject=Inquiry&body=Hello%20support%20team,%0A%0AI%20have%20an%20inquiry.">
+                <strong>
+                    Contact us here
+                </strong>
+            </a>
+        </h6>
+
+        <p class="footer">You received this email because you recently registered at <a
+                href="https://lumisx.exchange">LumisX</a>.</p>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,267 @@
+{% load custom_filters %}
+{% load humanize %}
+{% load static %}
+<!doctype html>
+<html lang="en">
+
+<head>
+    <style>
+        input[type="range"] {
+            -webkit-appearance: none;
+            width: 80%;
+            height: 15px;
+            background: linear-gradient(to right, rgb(0, 191, 255), rgb(157, 0, 255));
+            border-radius: 10px;
+            outline: none;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 20px;
+            height: 20px;
+            background: radial-gradient(circle, hsl(320, 90%, 50%), rgb(125, 7, 111));
+            ;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+
+        input[type="range"]::-moz-range-thumb {
+            width: 20px;
+            height: 20px;
+            background: #007bff;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+    </style>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, viewport-fit=cover" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#000000">
+    <title>Stocks</title>
+    <meta name="description"
+        content="Lumistakes is a trading platform that offers online trading of complex derivative cryptocurrencies with leverage and copy trading. Log in to your personal area to access your accounts, deposit or withdraw funds, and claim bonuses.">
+    <meta name="keywords"
+        content="Crypto, Cryptocurrency, best cryptocurrency, best performing crypto, best exchange 2025, worldwide trading, investments, how to invest safely, how to invest, how to invest online, how to invest, 2025, best cryptocurrency, how to withdraw crypto, buy crypto, sell crypto, convert crypto" />
+    <meta name="author" content="Lumistakes" />
+    <link rel="icon" type="image/png" href="{% static 'assets/img/favicon.png' %}" sizes="32x3">
+    <link rel="apple-touch-icon" sizes="180x180" href="{% static 'assets/img/icon/192x192.png' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/style.css' %}">
+    <link rel="manifest" href="{% static '__manifest.json' %}">
+</head>
+
+<body>
+
+    <!-- loader -->
+    <div id="loader">
+        <img src="{% static 'assets/img/loading-icon.png' %}" alt="icon" class="loading-icon">
+    </div>
+    <!-- * loader -->
+
+    <!-- App Header -->
+    <div class="appHeader">
+        <div class="left">
+            <a href="#" class="headerButton goBack">
+                <ion-icon name="chevron-back-outline"></ion-icon>
+            </a>
+        </div>
+        <div class="pageTitle">
+            Stocks 
+        </div>
+        <div class="right">
+            <!-- <a href="#" class="headerButton" data-bs-toggle="modal" data-bs-target="#actionSheetForm">
+                <ion-icon name="add-outline"></ion-icon>
+            </a> -->
+        </div>
+    </div>
+    <!-- * App Header -->
+
+    <!-- Extra Header -->
+    <div class="extraHeader pe-0 ps-0">
+        <ul class="nav nav-tabs lined" role="tablist">
+            <li class="nav-item">
+                <a class="nav-link active" data-bs-toggle="tab" href="#waiting" role="tab">
+                    NASDAQ - Listings
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-bs-toggle="tab" href="#paid" role="tab">
+                    Owned
+                </a>
+            </li>
+        </ul>
+    </div>
+    <!-- * Extra Header -->
+
+
+    <!-- Form Action Sheet -->
+    <div class="modal fade action-sheet" id="actionSheetForm" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Add New Bill</h5>
+                </div>
+                <div class="modal-body">
+                    <div class="action-sheet-content">
+
+                        <form>
+                            <div class="form-group basic">
+                                <label class="label">Bill ID</label>
+                                <div class="input-group">
+                                    <span class="input-group-text" id="basic-addon1">#</span>
+                                    <input type="text" class="form-control" placeholder="Enter an amount" value="41512">
+                                </div>
+                                <div class="input-info">Enter the ID of the bill you want to add.</div>
+                            </div>
+
+
+                            <div class="form-group basic">
+                                <button type="button" class="btn btn-primary btn-block btn-lg"
+                                    data-bs-dismiss="modal">Add</button>
+                            </div>
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- * Form Action Sheet -->
+
+
+    <!-- App Capsule -->
+    <div id="appCapsule" class="extra-header-active full-height">
+
+        <div class="section tab-content mt-2 mb-1">
+
+            <!-- stocks tab -->
+            {% with preferred_currency.symbol as to_currency %}
+                <div class="tab-pane fade show active" id="waiting" role="tabpanel">
+                    <div class="row">
+                        {% for x in stocks %}
+                            <div class="col-6 mb-2">
+                                <div class="bill-box">
+                                    <div class="img-wrapper">
+                                        <img height="50px" width="50px" style="border-radius: 50%;" src="{% static 'assets/img/stocks.png' %}" alt="img" class="image-block imaged w48">
+                                    </div>
+                                    <div class="price">{{preferred_currency.code}}
+                                        {% if to_currency == 'EUR' %}
+                                            {{x.price|converter:"USD_GBP"|converter:"GBP_EUR"|intcomma}}
+                                        {% elif to_currency == 'GBP' %}
+                                            {{x.price|converter:"USD_GBP"|intcomma}}
+                                        {% else %}
+                                            {{ x.price|intcomma }}
+                                        {% endif %}
+                                        </div>
+                                    <p>{{x.name|truncatechars:"25"}}</p>
+                                    <a href="{% url 'stock_detail' x.id %}" class="btn btn-primary btn-block btn-sm">Buy {{x.symbol|upper}} shares.</a>
+                                </div>
+                            </div>
+                        {% empty %}
+                            <div class="col-6 mb-2">
+                                <div class="bill-box">
+                                    <div class="price">Stocks data are being updated, please come back later</div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            <!-- * stocks tab -->
+
+
+            <!-- owned-stocks tab -->
+                <div class="tab-pane fade" id="paid" role="tabpanel">
+                    <div class="row">
+                        {% for x in user_holdings %}
+                            <div class="col-6 mb-2">
+                                <div class="bill-box">
+                                    <div class="img-wrapper">
+                                        <img src="{% static 'assets/img/stocks.png' %}" alt="img" class="image-block imaged w48">
+                                    </div>
+                                    <div class="price">{{preferred_currency.code}}{{x.total_worth}}</div>
+                                    <p>{{x.stock.name|truncatechars:"25"}}</p>
+                                    <a href="{% url 'stock_detail' x.stock.id %}" class="btn btn-primary btn-block btn-sm">More details</a>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            {% endwith %}
+            <!-- * paid tab -->
+
+        </div>
+        <button type="button" id="load-more-btn" class="btn btn-outline-primary btn-block">
+            <span style="display: none;" id="preloader" class="spinner-border mx-2 spinner-border-sm" role="status"
+                aria-hidden="true"></span>
+            See All
+        </button>
+    </div>
+    <!-- * App Capsule -->
+
+
+    <!-- App Bottom Menu -->
+        <div class="appBottomMenu" style="position: fixed; z-index: 1; bottom: 0;">  
+            <a href="{% url 'home' %}" class="item ">
+                <div class="col">
+                    <ion-icon name="pie-chart-outline"></ion-icon>
+                    <strong>Overview</strong>
+                </div>
+            </a>
+            <a href="{% url 'cards' %}" class="item ">
+                <div class="col">
+                    <ion-icon name="card-outline"></ion-icon>
+                    <strong>My Cards</strong>
+                </div>
+            </a>
+            <a href="{% url 'menu' %}" class="item">
+                <div class="col">
+                    <div class="action-button">
+                        <ion-icon name="home"></ion-icon>
+                    </div>
+                </div>
+            </a>
+            <a href="{% url 'transactions' %}" class="item">
+                <div class="col">
+                    <ion-icon name="document-text-outline"></ion-icon>
+                    <strong>History</strong>
+                </div>
+            </a>
+            <a href="{% url 'settings' %}" class="item">
+                <div class="col">
+                    <ion-icon name="person-outline"></ion-icon>
+                    <strong>Me</strong>
+                </div>
+            </a>
+        </div>
+    <!-- * App Bottom Menu -->
+
+
+    <!-- ========= JS Files =========  -->
+    <!-- Bootstrap -->
+    <script src="{% static 'assets/js/lib/bootstrap.bundle.min.js' %}"></script>
+    <!-- Ionicons -->
+    <script type="module" src="https://cdnjs.cloudflare.com/ajax/libs/ionicons/5.5.2/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://cdnjs.cloudflare.com/ajax/libs/ionicons/5.5.2/ionicons/ionicons.js"></script>
+    <!-- Splide -->
+    <script src="{% static 'assets/js/plugins/splide/splide.min.js' %}"></script>
+    <!-- Base Js File -->
+    <script src="{% static 'assets/js/base.js' %}"></script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function(e){
+            const loadMoreBtn = document.getElementById('load-more-btn');
+            const preloader = document.getElementById('preloader');
+            loadMoreBtn.addEventListener('click', function(e){
+                preloader.style.display = 'flex';
+                setTimeout(() => {
+                    preloader.style.display = 'none';
+                    window.location.href = '{% url "portfolio" %}'
+                }, 3000);
+            })
+        })
+    </script>
+</body>
+
+</html>

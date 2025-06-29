@@ -1,0 +1,745 @@
+{% load custom_filters %}
+{% load humanize %}
+{% load static %}
+<!doctype html>
+<html lang="en">
+
+<head>
+    <style>
+        .qr-parent-container{
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .qr-code-container {
+            background: linear-gradient(120deg, #7603ab, #082451);
+            padding: 15px;
+            border-radius: 12px;
+            box-shadow: 0 12px 16px rgba(0, 0, 0, 0.6); /* Raised effect */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: max-content;
+
+        }
+
+        .qr-code-container #qr-code {
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+
+        .qr-icon {
+            position:absolute;
+            top: 50%;
+            left: 50%;
+            width: 30px;
+            height: 30px;
+            transform: translate(-50%, -50%);
+            background: rgba(2, 46, 117, 0.8); 
+            border-radius: 50%;
+            opacity: 1;
+            padding: 5px;
+        }
+
+
+        #confirmationSection{
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .countdownContainer{
+            display: flex;
+            align-items: stretch;
+            justify-content: space-between;
+            border: #7603ab 2px solid;
+            border-radius: 15px;
+            padding: 3px 10px;
+            max-width: 300px;
+        }
+        .divider{
+            border: 2px solid #7603ab;
+            height: 10vh;
+        }
+    </style>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, viewport-fit=cover" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#000000">
+    <title>Network Deposit</title>
+    <meta name="description"
+        content="Lumistakes is a trading platform that offers online trading of complex derivative cryptocurrencies with leverage and copy trading. Log in to your personal area to access your accounts, deposit or withdraw funds, and claim bonuses.">
+    <meta name="keywords"
+        content="Crypto, Cryptocurrency, best cryptocurrency, best performing crypto, best exchange 2025, worldwide trading, investments, how to invest safely, how to invest, how to invest online, how to invest, 2025, best cryptocurrency, how to withdraw crypto, buy crypto, sell crypto, convert crypto" />
+    <link rel="icon" type="image/png" href="{% static 'assets/img/favicon.png' %}" sizes="32x3">
+    <link rel="apple-touch-icon" sizes="180x180" href="{% static 'assets/img/icon/192x192.png' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/style.css' %}">
+    <link rel="manifest" href="{% static '__manifest.json' %}">
+</head>
+
+<body class="bg-white">
+
+    <!-- loader -->
+    <div id="loader">
+        <img src="{% static 'assets/img/loading-icon.png' %}" alt="icon" class="loading-icon">
+    </div>
+    <!-- * loader -->
+
+    <!-- App Header -->
+    <div class="appHeader no-border">
+        <div class="left">
+            <a href="#" class="headerButton goBack">
+                <ion-icon name="chevron-back-outline"></ion-icon>
+            </a>
+        </div>
+        <div class="pageTitle">
+            Deposit <span class="name"></span> 
+        </div>
+        <div class="right">
+            <a href="#" class="headerButton" data-bs-toggle="modal" data-bs-target="#helpText">Help</a>
+        </div>
+    </div>
+    <!-- * App Header -->
+
+    <!-- Help Modal -->
+    <div class="modal fade modalbox" id="helpText" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Step  to fund your account</h5>
+                    <a href="#" data-bs-dismiss="modal">Close</a>
+                </div>
+                <div class="modal-body">
+                    <h6>Get Wallet address</h6>
+                    <p>
+                        Click on the copy icon next to the wallet address to copy it to your clipboard.
+                    </p>
+    
+                    <h6>withdraw/Transfer Crypto</h6>
+                    <p>
+                        After copying your wallet address, proceed to your crypto exchange/wallet, navigate to the withdrawal page and paste the address in the designated field. Enter the amount you are transferring to your Lumis X account. Click on the "Withdraw" button.
+                        Confirm the withdrawal by entering your password or other required security verification.
+                    </p>
+    
+                    <h6>Get the Transaction ID</h6>
+                    <p>
+                        Get the transaction ID, hash or reference url which you usually find on the transaction completion page (after your withdrawal has been completed) and return to your Lumis X app (this page).
+                    </p>
+                    
+                    </p>
+
+                    <h6>Verify the Transaction</h6>
+                    <p>
+                        Click on the "I Have Paid" button, you will be prompted to enter the transaction ID, hash or reference url. Enter the transaction ID, hash or reference url and click on the "Verify" button. The system will interact the the blockchain and verify the transaction. If the transaction is verified, the system will automatically credit your Lumis X account with the amount transferred. 
+                    </p>
+
+                    <h6>Waiting</h6>
+                    <p>
+                        Once your transaction ID is verified, the system will wait for more network confirmations to verify the validity of your transaction. This will usually complete within few minutes to an hour. However,if the transaction is not verified within the expected timeframe, No worries, the verification will continue in the background and the system will notify you once the transaction is verified.
+                    </p>
+    
+                    <h6>Contact</h6>
+                    <p>
+                        For any questions or concerns regarding these funding steps, please contact us at <a onclick="window.location.href = this.href" href="mailto:support@lumistakes.com">support@lumistakes.com</a>
+                        or open a live chat session through the support page.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- * Help Modal -->
+
+    <!-- Reference Modal -->
+    <div class="modal fade dialogbox" id="verificationModal" data-bs-backdrop="static" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Reference verification</h5>
+                </div>
+                <div class="modal-body">
+                   <p>
+                    Paste the transaction reference/txID copied from your external wallet. to verify & complete your deposit.
+                   </p>
+                   <div>
+                       <input type="text" id="reference" class="form-control mb-3" placeholder="Transaction reference/txID">
+                       <p class="text-warning message"></p>
+                   </div>
+                </div>
+                <div class="modal-footer">
+                    <div class="btn-inline">
+                        <button id="cancelSubmit" data-bs-dismiss="modal" class="btn btn-text-secondary">Cancel</button>
+
+                        <button id="submitRef" class="btn btn-primary">
+                            <span id="verificationLoader" style="display: none; height: 30px; width: 30px;" class="spinner-border spinner-border-sm"
+                                role="status" aria-hidden="true"></span>
+                            Verify.</button>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- * Reference Modal --> 
+
+
+    <!-- App Capsule -->
+    <div id="appCapsule">
+
+        <div class="section">
+            <div class="splash-page mt-5 mb-5">
+                <div class="mb-3">
+                    <h3 style="color: cornflowerblue; text-decoration: underline;">{{user.profiles.preferred_currency.code}}<span class="amount"></span></h3>
+                    <div class="qr-parent-container">
+                        <div class="qr-code-container">
+                            <div id="qr-code"></div>
+                            <img src="{% static 'assets/img/loading-icon.png' %}" alt="Nexa Icon" class="qr-icon">
+                        </div>
+                    </div>
+                    <!-- <img src="{% static 'assets/img/sample/qr.png'%}" alt="QR Code" class=""> -->
+                </div>
+                <h2 class="mb-2"><span class="network"></span> QR Code</h2>
+                <p>
+                    On your external wallet or exchange, scan the QR code to send funds directly to your account.
+                </p>
+
+                <div style="display: none;" id="confirmationSection">
+                    <div class="countdownContainer">
+                        <h3>
+                            waiting for <span class="text-primary">2</span> more network confirmations...
+                        </h3>
+                        <div class="divider"></div>
+                        <h5>Time Left: <span id="confirmationCountdown">60 minutes</span></h5>
+                    </div>
+                </div>
+                <div class="form-group boxed">
+                    <div class=" input-wrapper">
+                        <label id="addressLabel" class="label text-center" for="address">Or copy your <span class="network"> </span> address here manually</label>
+                        <div style="display: flex; align-items: center;">
+                            <input type="text" class="form-control text-center" id="address" placeholder="address"/>
+                            <button title="copy address" type="button" class="btn btn-icon btn-outline-primary">
+                                <ion-icon id="copyButton" name="copy"></ion-icon>
+                            </button>
+                        </div>
+                        <i class="clear-input">
+                            <ion-icon name="close-circle"></ion-icon>
+                        </i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="fixed-bar">
+            <div class="row">
+                <div class="col-12">
+                    <button id="topUP" disabled class="btn btn-lg btn-primary btn-block">Waiting for payment</button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <!-- * App Capsule -->
+
+    <!-- Alert Error Action Sheet -->
+    <div class="modal fade action-sheet" id="responseModal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div class="action-sheet-content">
+                        <div class="iconbox text-danger">
+                            <ion-icon name="alert-circle"></ion-icon>
+                        </div>
+                        <div class="text-center p-2">
+                            <h3>Error</h3>
+                            <p class="message">Something went wrong.</p>
+                        </div>
+                        <a id="action-button" href="#" class="btn btn-primary btn-lg btn-block" data-bs-dismiss="modal">Done</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- * Alert Error Action Sheet -->
+
+
+    <!-- ========= JS Files =========  -->
+    <!-- Bootstrap -->
+    <script src="{% static 'assets/js/lib/bootstrap.bundle.min.js' %}"></script>
+    <!-- Ionicons -->
+    <script type="module" src="https://cdnjs.cloudflare.com/ajax/libs/ionicons/5.5.2/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://cdnjs.cloudflare.com/ajax/libs/ionicons/5.5.2/ionicons/ionicons.js"></script>
+    <!-- Splide -->
+    <script src="{% static 'assets/js/plugins/splide/splide.min.js' %}"></script>
+    <!-- Base Js File -->
+    <script src="{% static 'assets/js/base.js' %}"></script>
+    <!-- QR Code -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.js"></script>
+
+
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function(e){
+            function getCookie(name) {
+                let cookieValue = null;
+                if (document.cookie && document.cookie !== '') {
+                    const cookies = document.cookie.split(';');
+                    for (let i = 0; i < cookies.length; i++) {
+                        const cookie = cookies[i].trim();
+                        // Does this cookie string begin with the name we want?
+                        if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                            break;
+                        }
+                    }
+                }
+                return cookieValue;
+            }
+            const csrftoken = getCookie('csrftoken');
+            const responseModal = document.getElementById('responseModal');
+            const preloader = document.getElementById('verificationLoader');
+            const verificationModal = document.getElementById('verificationModal');
+            const summary = sessionStorage.getItem("depositSummary");
+            if (summary) {
+                const data = JSON.parse(summary);
+                document.querySelectorAll('.name').forEach(el => el.textContent = data.name);
+                document.querySelectorAll('.network').forEach(el => el.textContent = data.network); 
+                document.querySelector('.amount').textContent = data.depositAmount;
+                document.getElementById('address').value = data.depositCrypto;
+                document.getElementById('address').readOnly = true;
+
+                new QRCode(document.getElementById("qr-code"), {
+                    text: data.depositCrypto,
+                    width: 140,
+                    height: 140,
+                    colorDark: "#000000",
+                    colorLight: "#ffffff",
+                    correctLevel: QRCode.CorrectLevel.H
+                });
+
+                const copyButton = document.getElementById("copyButton");
+                const addressInput = document.getElementById("address");
+
+                copyButton.addEventListener("click", function(e){
+                    const textToCopy = addressInput.value;
+
+                    if (navigator.clipboard && navigator.clipboard.writeText) {
+                        navigator.clipboard.writeText(textToCopy)
+                        .then(() => unselectText())
+                        .catch(err => console.error("Copy failed:", err));
+                    } else {
+                        // Fallback 
+                        addressInput.select();
+                        addressInput.setSelectionRange(0, 99999);
+                        document.execCommand("copy");
+                        unselectText();
+                    }
+                    this.name = 'cloud-done';
+
+                    setTimeout(() => {
+                        this.name = 'copy';
+                    }, 3000);
+                    
+                    setTimeout(() => {
+                        const topUP = document.getElementById('topUP');
+                        topUP.textContent = 'Complete top up';
+                        topUP.disabled = false;
+
+                        topUP.addEventListener('click', async function(e){
+                            const confirmation = confirm(`You should only proceed if you have withdrawn ${data.currency}${data.depositAmount}  to ${data.network} address: ${data.depositCrypto} and have copied the transaction hash/reference/txID/hex as may be labeled. Click OK to submit & verify the transaction or Cancel if you have not made this payment. \n\n\n ⚠ Misusing this feature may lead to unexpected and indefinite account lockdown. ⚠`)
+
+                            if (confirmation){
+                                showModal(verificationModal.id);
+                                const referenceInput = document.getElementById('reference');
+                                referenceInput.focus();
+
+                                const submitRef = document.getElementById('submitRef');
+                                submitRef.addEventListener('click', async function(e){
+                                   
+                                    verificationModal.querySelector('.message').textContent = '';
+                                    const validNetworks = ['BTC', 'ETH', 'ERC20', 'USDT', 'TRC20', 'SOL', 'LTC']
+
+                                    const reference = referenceInput.value;
+                                    if (!reference){
+                                        referenceInput.placeholder = 'Please enter a valid txID';
+                                        return;
+                                    }
+                                    const url = "{% url 'deposit' %}";
+                                    submitRef.disabled = true;
+                                    submitRef.textContent = 'Verifying...';
+                                    submitRef.prepend(preloader);
+                                    preloader.style.display = 'flex';
+                                    if (validNetworks.includes(data.network.trim())) {
+                                        try {
+                                            console.log('Verifying transaction id...');
+                                            // Verify transaction
+                                            const isValidTransaction = await verifyTransaction(data.network, reference, data.depositCrypto);
+                                            if (!isValidTransaction) {
+                                                verificationModal.querySelector('.message').textContent = 'Transaction not found';
+                                                referenceInput.value = '';
+                                                referenceInput.focus();
+                                                return;
+                                            }
+                                        } catch (e) {
+                                            console.error(e);
+                                            verificationModal.querySelector('.message').textContent = 'An error occurred while verifying the transaction. Please try again later.';
+                                            return;
+                                        }
+                                        finally {
+                                            setTimeout(() => {
+                                                preloader.style.display = 'none';
+                                                submitRef.textContent = 'Verify';
+                                                submitRef.disabled = false;
+                                            }, 4000);
+                                        }
+                                    }
+                                    try{
+                                        // Proceed with form submission
+                                        await submitDeposit(reference);
+
+                                    } catch(e){
+                                        console.error(e);
+                                        verificationModal.querySelector('.message').textContent = 'An error occurred while verifying the transaction. Please try again later.';
+                                        return;
+                                    }
+                                    finally {
+                                        setTimeout(() => {
+                                            preloader.style.display = 'none';
+                                            submitRef.textContent = 'Verify';
+                                            submitRef.disabled = false;
+                                        }, 1500);
+                                    }                                    
+                                })
+                            }
+                        })                        
+                    }, 5000);
+                });
+                // SUBMIT DEPOSIT.
+                async function submitDeposit(reference) {
+                    const url = "{% url 'deposit' %}";
+                    const form = new FormData();
+
+                    for (const key in data) {
+                        form.append(key, data[key]);
+                    }
+                    form.append('reference', reference);
+
+                    for (const [key, value] of form.entries()) {
+                        console.log(`${key}: ${value}`);
+                    }
+
+                    const response = await fetch(url, {
+                        method: 'POST',
+                        body: form,
+                        headers: {
+                            'X-CSRFToken': csrftoken
+                        }
+                    });
+
+                    const responseData = await response.json();
+
+                    if (!responseData.success) {
+                        verificationModal.querySelector('.message').textContent = responseData.error;
+                        return;
+                    }
+
+                    verificationModal.querySelector('#cancelSubmit').click();
+                    const confirmationSection = document.getElementById('confirmationSection');
+
+                    confirmationSection.style.display = 'flex';
+                    confirmationSection.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'center',
+                        inline: 'nearest'
+                    });
+
+                    sessionStorage.setItem('pid', responseData.pid);
+                    startCountdown(60);
+
+                    setInterval(() => checkDepositStatus(responseData.pid), 3500);
+
+                    document.getElementById("topUP").disabled = true;
+                    document.getElementById("topUP").textContent = 'Waiting for network confirmation';
+                    copyButton.parentElement.style.display = 'none';
+                    document.getElementById('addressLabel').innerHTML = ''
+                }
+
+                // VERIFY TRANSACTION REFERENCE
+                async function verifyTransaction(network, txid, expectedAddress) {
+                    switch (network) {
+                        case "BTC":
+                            return checkBTCTransaction(txid, expectedAddress);
+                        case "ETH":
+                        case "ERC20":
+                            return checkETHTransaction(txid, expectedAddress);
+                        case "TRC20":
+                        case "USDT":
+                        case "TETHER":
+                            return checkTronTransaction(txid, expectedAddress);
+                        case "SOL":
+                            return checkSolanaTransaction(txid, expectedAddress);
+                        case "LTC":
+                            return checkLTCTransaction(txid, expectedAddress);
+                        default:
+                            return false;
+                    }
+                }
+
+                // VERIFY BITCOIN DEPOSIT.
+                async function checkBTCTransaction(txid, expectedAddress) {
+                    try {
+                        const response = await fetch(`https://blockstream.info/api/tx/${txid}`);
+
+                        if (!response.ok) {
+                            const errorText = await response.text(); // Capture raw error
+                            throw new Error(`BTC API Error: ${errorText}`);
+                            return false;
+                        }
+
+                        const data = await response.json(); // Parse response JSON
+
+                        // Ensure the response contains required fields
+                        if (!data.vout || !Array.isArray(data.vout)) {
+                            throw new Error("BTC API response is missing expected fields.");
+                            return false;
+                        }
+
+                        // Check if any output matches the expected address
+                        return data.vout.some(output => output.scriptpubkey_address === expectedAddress);
+                    } catch (error) {
+                        console.error("BTC Verification Error:", error.message);
+                        return false; // Return false if any error occurs
+                    }
+                }
+
+                // VERIFY ETHEREUM DEPOSIT.
+                async function checkETHTransaction(txid, expectedAddress) {
+                    try {
+                        let url = "{% url 'verify_eth_transaction' 'txid' 'expected_address' %}";
+                        url = url.replace('txid', txid).replace('expected_address', expectedAddress);
+                        const response = await fetch(url);
+                        const data = await response.json();
+                        return data.valid;
+                    } catch (error) {
+                        console.error("ETH Verification Error:", error);
+                        return false;
+                    }
+                }
+
+                // VERIFY USDT TRON DEPOSIT.
+                async function checkTronTransaction(txid, expectedAddress) {
+                    try {
+                        const response = await fetch(`https://apilist.tronscan.org/api/transaction-info?hash=${txid}`);
+                        const data = await response.json();
+
+                        if (data.contractRet === "SUCCESS" && data.toAddress === expectedAddress) {
+                            return true;
+                        }
+                    } catch (error) {
+                        console.error("TRC-20 Verification Error:", error);
+                    }
+                    return false;
+                }
+
+                // VERIFY SOLANA DEPOSIT.
+                async function checkSolanaTransaction(txid, expectedAddress) {
+                    try {
+                        const response = await fetch(`https://api.mainnet-beta.solana.com`, {
+                            method: "POST",
+                            headers: { "Content-Type": "application/json" },
+                            body: JSON.stringify({
+                                jsonrpc: "2.0",
+                                id: 1,
+                                method: "getConfirmedTransaction",
+                                params: [txid, "json"]
+                            })
+                        });
+
+                        const data = await response.json();
+                        if (data.result) {
+                            return data.result.transaction.message.accountKeys.includes(expectedAddress);
+                        }
+                    } catch (error) {
+                        console.error("SOL Verification Error:", error);
+                    }
+                    return false;
+                }
+                
+                // VERIFY LTC DEPOSIT.
+                async function checkLTCTransaction(txid, expectedAddress) {
+                    try {
+                        const response = await fetch(`https://api.blockcypher.com/v1/ltc/main/txs/${txid}`);
+                        const data = await response.json();
+
+                        return data.outputs.some(output => output.addresses.includes(expectedAddress));
+                    } catch (error) {
+                        console.error("LTC Verification Error:", error);
+                        return false;
+                    }
+                }
+
+                // VERIFY DEPOSIT STATUS FROM THE BACKEND
+               async function checkDepositStatus(pid) {
+                    const url = "{% url 'confirm-deposit' %}";
+
+                    try {
+                        const result = await fetch(url, {
+                            method: "POST",
+                            body: JSON.stringify({ 'key': pid }),
+                            headers: {
+                                "Content-Type": "application/json",
+                                "X-CSRFToken": csrftoken,
+                            },
+                        });
+
+                        const data = await result.json();
+
+                        if (data.is_confirmed) {
+                            sessionStorage.setItem("depositCompleteSummary", summary);
+                            sessionStorage.removeItem("depositSummary");
+                            clearInterval(verifyTransaction); 
+                            window.location.href = "{% url 'deposit-complete' %}";
+                            localStorage.removeItem("countdownEndTime");
+                        } else if (data.is_rejected) {
+                            clearInterval(verifyTransaction);
+                            responseModal.querySelector(".message").textContent = data.is_rejected;
+                            showModal(responseModal.id);
+                            localStorage.removeItem("countdownEndTime");
+                            setTimeout(() => {
+                                window.location.href = "{% url 'transactions' %}";
+                            }, 13000);
+                        } else if (data.error) {
+                            responseModal.querySelector(".message").textContent = data.error;
+                            showModal(responseModal.id);
+                            clearInterval(verifyTransaction);
+                            localStorage.removeItem("countdownEndTime");
+                        }
+                        else {
+                            console.log("Transaction not yet confirmed");
+                        }
+                    } catch (error) {
+                        console.error("Deposit Status Error:", error);
+                        clearInterval(verifyTransaction);
+                        responseModal.querySelector(".message").textContent =
+                            "An error occurred while verifying the transaction. Please try again later.";
+                        showModal(responseModal.id);
+                        localStorage.removeItem("countdownEndTime");
+                    }
+                }
+
+                const countdownElement = document.getElementById("confirmationCountdown");
+                const confirmationSection = document.getElementById("confirmationSection");
+
+                function startCountdown(durationMinutes) {
+                    const now = new Date().getTime();
+                    const countdownEndTime = now + durationMinutes * 60 * 1000;
+
+                    localStorage.setItem("countdownEndTime", countdownEndTime);
+
+                    updateCountdown();
+                }
+
+                function updateCountdown() {
+                    const countdownEndTime = localStorage.getItem("countdownEndTime");
+                    if (!countdownEndTime) return;
+                    
+                    function tick() {
+                        const now = new Date().getTime();
+                        const timeLeft = countdownEndTime - now;
+
+                        if (timeLeft <= 0) {
+                            localStorage.removeItem("countdownEndTime");
+                            countdownElement.textContent = "Confirmation failed!";
+                            handleCountdownExpired();
+                            
+                            return;
+                        }
+
+                        const minutes = Math.floor(timeLeft / (1000 * 60));
+                        const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
+
+                        countdownElement.textContent = `${minutes}m ${seconds}s`;
+
+                        setTimeout(tick, 1000);
+                    }
+
+                    tick();
+                }
+                
+                
+                function handleCountdownExpired() {
+                    responseModal.querySelector('.message').textContent = "Transaction could not be confirmed within the time window. You will receive an email once your deposit is confirmed.";
+                    showModal(responseModal.id);
+                    setTimeout(() => window.location.href = '{% url "transactions" %}', 10000)
+                    localStorage.removeItem("countdownEndTime");
+                    clearInterval(verifyTransaction);
+                }
+                
+                
+                if (localStorage.getItem("countdownEndTime")) {
+                    
+                    confirmationSection.style.display = "flex"; 
+                    updateCountdown();
+                    if (sessionStorage.getItem('pid')){
+                        const pid = sessionStorage.getItem('pid');
+                        setInterval(() => checkDepositStatus(pid), 5000)
+                        document.getElementById("topUP").disabled = true;
+                        document.getElementById("topUP").textContent = 'Waiting for network confirmation';
+                        copyButton.parentElement.style.display = 'none';
+                        document.getElementById('addressLabel').innerHTML = ''
+                    } else {
+                        console.log("no deposit ID available")
+                        localStorage.removeItem("countdownEndTime");
+                    }
+                }
+                
+
+                document.getElementById('reference').addEventListener('input', function(e){
+                    const submitRef = document.getElementById('submitRef');
+                    if (!this.value || this.value.trim() === ''){
+                        submitRef.disabled = true;
+                        submitRef.textContent = "Please paste your txID";
+                    } else{
+                        submitRef.disabled = false;
+                        submitRef.textContent = "Verify";
+                    }
+                })
+
+                function unselectText() {
+                    addressInput.blur();
+                    window.getSelection().removeAllRanges();
+                }
+            }
+            function showModal(modalID, timeout=null){
+                const modal = new bootstrap.Modal(document.getElementById(modalID))
+                modal.show();
+                if (timeout){
+                    setTimeout(() => {
+                        modal.hide();
+                    }, timeout);
+                }
+            }
+            function hideModal(modalID){
+                if (modalID === 'verificationModal'){
+                    document.getElementById('cancelSubmit').click();
+                }
+                const modal = new bootstrap.Modal(document.getElementById(modalID))
+                modal.hide();
+            }
+            if (localStorage.getItem("countdownEndTime")){
+                document.getElementById('copyButton').parentElement.style.display = 'none';
+                document.getElementById('topUP').disabled = true;
+                document.getElementById('topUP').innerHTML = "Confirming deposit...";
+            } else {
+                document.getElementById('topUP').disabled = true;
+            }
+        })
+    </script>
+
+
+</body>
+
+</html>

@@ -1,0 +1,100 @@
+{% load static %}
+{% load humanize %}
+{% load custom_filters%}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trade Activated</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #fff;
+            border-radius: 10px;
+            padding: 20px;
+        }
+
+        h1 {
+            color: #00cc00;
+        }
+        th{
+            background-color: #6f1cf5;
+            color: #fff;
+        }
+        td{
+            padding: 4px;
+        }
+    </style>
+</head>
+
+<body>
+    <div style="text-align: center;" class="container">
+        <div style="display: flex; align-items: center; justify-content: center;">
+            <img style="width: 100%;" src="https://i.ibb.co/VpSQgDpg/lumistake.png" alt="Logo">
+        </div>
+        <h1 style="color: #6f1cf5;">Congratulations! Your Trade Has Been Activated</h1>
+        <p>Dear {{ user.get_full_name }},</p>
+        <p>We are pleased to inform you that your trade has been successfully activated and <strong>{{ user.profiles.investment_manager }}</strong> has been assigned to manage your trade for the current session. You can continuously track your trade progress by logging into your Lumis X account dashboard.</p>
+        <p>For reference, review the trade details below.</p>
+        <!-- Trade details -->
+        <div style="width: 100%; overflow-x: auto;">
+            <table border="1" style="text-align: center; width: 300px; overflow: auto; border-collapse: collapse;">
+                <tr>
+                    <th>TRADE AMOUNT</th>
+                    <th>ACCRUED PROFITS</th>
+                    <th>TRADE STATUS</th>
+                    <th>PROGRESS</th>
+                    <th>ACCOUNT MANAGER</th>
+                </tr>
+                <tr>
+                    <td>
+                        {{ user.profiles.preferred_currency.code }}
+                        {% with user.profiles.preferred_currency.symbol as to_currency %}
+                            {% if to_currency != "GBP" %}
+                                {% if to_currency == "USD" %}
+                                    {{ instance.amount|converter:"GBP_USD" }}
+                                {% elif to_currency == "EUR" %}
+                                    {{ instance.amount|converter:"GBP_EUR" }}
+                                {% endif %}
+                            {% else %}
+                                {{ instance.amount }}
+                            {% endif %}
+                        {% endwith %}
+                    </td>
+                    <td>
+                        {{ user.profiles.preferred_currency.code }} 
+                        {% with user.profiles.preferred_currency.symbol as to_currency %}
+                            {% if to_currency != "GBP" %}
+                                {% if to_currency == "USD" %}
+                                    {{ instance.total_profits_accrued|converter:"GBP_USD" }}
+                                {% elif to_currency == "EUR" %}
+                                    {{ instance.total_profits_accrued|converter:"GBP_EUR" }}
+                                {% endif %}
+                            {% else %}
+                                {{ instance.total_profits_accrued }}
+                            {% endif %}
+                        {% endwith %}
+                    </td>
+                    <td>{{instance.status|upper}}</td>
+                    <td>{{instance.progress_percentage}}%</td>
+                    <td>{{ instance.manager|upper }}</td>
+                </tr>
+            </table>
+        </div>
+        <p>Thank you for choosing our service!</p>
+        <p>Best Regards,</p>
+        <p>The LumisX Team</p>
+        <p><a href="https://lumisx.exchange">LumisX</a></p>
+    </div>
+</body>
+
+</html>

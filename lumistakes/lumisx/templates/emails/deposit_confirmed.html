@@ -1,0 +1,151 @@
+{% load custom_filters %}
+{% load humanize %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Confirmed</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f8f7f4;
+            color: #333;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            background: linear-gradient(90deg, #5b798e, #8b9aab);
+            padding: 20px;
+            text-align: center;
+            color: #fff;
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 24px;
+        }
+
+        .confirmation {
+            background-color: #fff;
+            padding: 20px;
+            text-align: center;
+            margin: 20px 0;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .confirmation h2 {
+            margin: 0;
+            font-size: 32px;
+            color: #00cc00;
+        }
+        th{
+            background-color: #6f1cf5;
+            color: #fff;
+        }
+        .confirmation img {
+            display: block;
+            margin: 0 auto 20px auto;
+            width: 50px;
+            height: 50px;
+        }
+
+        .content {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .content p {
+            font-size: 14px;
+            color: #666;
+        }
+
+        .content ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .content ul li {
+            margin: 10px 0;
+        }
+
+        .content ul li strong {
+            color: #333;
+        }
+
+        .content h5 {
+            margin-top: 20px;
+            font-size: 16px;
+            color: #333;
+        }
+    </style>
+</head>
+
+<body>
+    <div style="text-align: center;" class="container">
+        <div class="header">
+            <h1 style="color: #6f1cf5;">Deposit Confirmed</h1>
+            <img style="width: 100%;" src="https://i.ibb.co/VpSQgDpg/lumistake.png" alt="Logo">
+        </div>
+        <div class="content">
+            <p>Dear {{ user.get_full_name }},</p>
+            <p>We are pleased to inform you that your recent deposit has been confirmed and your deposit wallet has been credited.</p>
+            <p>For reference, please review the deposit details below:</p>
+            <div style="width: 100%; overflow-x: auto;">
+                <table border="1" style="width: 300px; overflow: auto; border-collapse: collapse;">
+                    <tr>
+                        <th>DEPOSIT AMOUNT</th>
+                        <th>DEPOSIT NETWORK</th>
+                        <th>DEPOSIT STATUS</th>
+                        <th>DEPOSIT ID</th>
+                        <th>DEPOSIT DATE</th>
+                    </tr>
+                    <tr>
+                        <td>
+                            {{ user.profiles.preferred_currency.code }}
+                            {% with user.profiles.preferred_currency.symbol as to_currency %}
+                                {% if to_currency != "GBP" %}
+                                    {% if to_currency == "USD" %}
+                                        {{ instance.amount|converter:"GBP_USD"|intcomma }}
+                                    {% elif to_currency == "EUR" %}
+                                        {{ instance.amount|converter:"GBP_EUR"|intcomma }}
+                                    {% endif %}
+                                {% else %}
+                                    {{ instance.amount|intcomma }}
+                                {% endif %}
+                            {% endwith %}
+                        </td>
+
+                        <td>{{ instance.network }}</td>
+                        <td>{{ instance.status }}</td>
+                        <td>{{ instance.deposit_id }}</td>
+                        <td>{{ instance.created_at }}</td>
+                    </tr>
+                </table>
+            </div>
+            <div style="text-align: right;">
+                <h5 style="color: #6f1cf5;"><strong>embedded network message:</strong></h5>
+                <p style="color: #6f1cf5;"><em>{{ instance.status_message }}</em></p>
+            </div>
+
+            <p>Thank you for choosing Lumistakes!</p>
+            <p>Best regards,</p>
+            <p>The Lumistakes Team,</p>
+            <p><a href="https://lumisx.exchange">lumisx.exchange</a></p>
+        </div>
+    </div>
+</body>
+
+</html>

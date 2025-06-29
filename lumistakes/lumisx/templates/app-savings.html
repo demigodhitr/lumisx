@@ -1,0 +1,461 @@
+{% load humanize %}
+{% load static %}
+{% load custom_filters %}
+<!doctype html>
+<html lang="en">
+
+<head>
+    <style>
+        input[type="range"] {
+            -webkit-appearance: none;
+            width: 80%;
+            height: 15px;
+            background: linear-gradient(to right, rgb(0, 191, 255), rgb(157, 0, 255));
+            border-radius: 10px;
+            outline: none;
+        }
+    
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 20px;
+            height: 20px;
+            background: radial-gradient(circle, hsl(320, 90%, 50%), rgb(125, 7, 111));
+            ;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+    
+        input[type="range"]::-moz-range-thumb {
+            width: 20px;
+            height: 20px;
+            background: #007bff;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+    </style>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, viewport-fit=cover" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#000000">
+    <title>My Investments</title>
+    <meta name="description"
+        content="Lumistakes is a trading platform that offers online trading of complex derivative cryptocurrencies with leverage and copy trading. Log in to your personal area to access your accounts, deposit or withdraw funds, and claim bonuses.">
+    <meta name="keywords"
+        content="Crypto, Cryptocurrency, best cryptocurrency, best performing crypto, best exchange 2025, worldwide trading, investments, how to invest safely, how to invest, how to invest online, how to invest, 2025, best cryptocurrency, how to withdraw crypto, buy crypto, sell crypto, convert crypto" />
+    <link rel="icon" type="image/png" href="{% static 'assets/img/favicon.png' %}" sizes="32x3">
+    <link rel="apple-touch-icon" sizes="180x180" href="{% static 'assets/img/icon/192x192.png' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/style.css' %}">
+    <link rel="manifest" href="{% static '__manifest.json' %}">
+</head>
+
+<body>
+
+    <!-- loader -->
+    <div id="loader">
+        <img src="{% static 'assets/img/loading-icon.png' %}" alt="icon" class="loading-icon">
+    </div>
+    <!-- * loader -->
+
+    <!-- App Header -->
+    <div class="appHeader">
+        <div class="left">
+            <a href="#" class="headerButton goBack">
+                <ion-icon name="chevron-back-outline"></ion-icon>
+            </a>
+        </div>
+        <div class="pageTitle">
+            My Investments
+        </div>
+        <div class="right">
+            <a href="#" class="headerButton" data-bs-toggle="modal" data-bs-target="#exchangeActionSheet">
+                <ion-icon name="add-outline"></ion-icon>
+            </a>
+        </div>
+    
+       
+    </div>
+    <!-- * App Header -->
+
+    <!-- Investment Action Sheet -->
+    <div style="overflow: auto; height: 400px !important;" class="modal fade modalbox" id="exchangeActionSheet"
+        tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Invest</h5>
+                    <a href="#" data-bs-dismiss="modal">Close</a>
+                </div>
+                <div class="modal-body">
+                    <p>Stay handsfree on the go while earning effortlessly. We have carefully build a solid team of traders
+                        who willingly take it upon themselves to abstract all the complexities involved with trading and
+                        broaden the market reach to the general public. Now, you can simply Invest, sitback and watch your
+                        portfolio grow while our in-house traders take care of your trade behind the scene.</p>
+                    <div class="action-sheet-content">
+    
+                        <form id="investmentForm" method="post">
+                            <div class="row">
+                                <div class="col-6">
+                                    <div class="form-group basic">
+                                        <div class="input-wrapper">
+                                            <label class="label" for="currency2">Investment Plan</label>
+                                            <select data-name="Investment Plan" name="plan"
+                                                class="form-control custom-select" id="currency2">
+                                                {% for plan in investment_plans %}
+                                                <option data-title="{{plan.title}}" value="{{ plan.id }}">{{ plan.title}} 
+                                                   {{preferred_currency.code}}{{plan.localised_min|intcomma}} - {{preferred_currency.code}}{{plan.localised_max|intcomma}}
+                                                </option>
+                                                {% empty %}
+                                                <option disabled value="">loading...</option>
+                                                {% endfor %}
+    
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="form-group basic">
+                                        <div class="input-wrapper">
+                                            <label class="label" for="debitAccount">Debit wallet</label>
+                                            <select data-name="Debit Account" name="debitAccount"
+                                                class="form-control custom-select" id="debitAccount">
+                                                <option value="profit">Profits Wallet</option>
+                                                <option value="deposit">Deposit Wallet</option>
+                                                <option value="bonus">Bonuses</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+    
+                            <div class="form-group basic">
+                                <label class="label">Enter Amount</label>
+                                <div class="input-group mb-2">
+                                    <span class="input-group-text" id="basic-addon2">{{preferred_currency.code}}</span>
+                                    <input data-name="Investment Amount" name="investmentAmount" type="number"
+                                        class="form-control" placeholder="Enter an amount">
+                                </div>
+                            </div>
+    
+                            <div class="form-group basic">
+                                <label class="label">Set Investment duration</label>
+                                <div style="display: flex; align-items: center; justify-content: space-between;"
+                                    class="input-group mb-2">
+                                    <input data-name="Investment Duration" name="investmentDuration" id="investmentDuration"
+                                        type="range" value="5" min="5" step="5" max="365" class="">
+                                    <span class="input-group-text" id="rangeValue">5 days</span>
+                                </div>
+                            </div>
+    
+                            <div class="form-group basic">
+                                <div class="input-wrapper">
+                                    <label class="label" for="manager">Contract Manager</label>
+                                    <select data-name="Manager" name="manager" class="form-control custom-select"
+                                        id="manager">
+                                        {% for x in managers %}
+                                        <option value="{{ x.pk }}">{{ x.name }}</option>
+                                        {% empty %}
+                                        <option disabled value="">loading...</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group basic">
+                                <button type="submit" class="btn btn-primary btn-block btn-lg">
+                                    <span id="requestLoader" style="display: none; height: 30px; width: 30px;" class="spinner-border spinner-border-sm"
+                                        role="status" aria-hidden="true"></span>
+                                    
+                                    Submit Contract for Review</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- * Investment Action Sheet -->
+
+    <!-- App Capsule -->
+    <div id="appCapsule">
+
+        <!-- Investment Goals -->
+        <div class="section my-4">
+            <div class="section-heading">
+                <h2 class="title">My Investment stakes</h2>
+            </div>
+            <div class="goals">
+                {% for x in investments %}
+                    <!-- item -->
+                    <a class="my-4" href="{% url 'transaction-details' 'Investment' x.id %}">
+                        <div class="item">
+                            <div class="in">
+                                <div>
+                                    <h4>{{ x.plan }}</h4>
+                                    <p
+                                        class="{% if x.status|in_list:'Completed,Confirmed,Approved,Paid' %} text-success{% elif x.status|in_list:'Processing,In progress,In Progress,Under review,Active' %} text-warning {% elif x.status|in_list:'Failed,Rejected' %} text-danger {% endif %}">
+                                        {{ x.status}}
+                                    </p>
+                                    <p class="btn-text-secondary">{{ x.days_remaining }} days remaining</p>
+                                </div>
+                                <div class="text-danger price"> - {{preferred_currency.code }}
+                                    {% with user.profiles.preferred_currency.symbol as to_currency %}
+                                    {% if to_currency == 'USD' %}
+                                    {{ x.amount|converter:"GBP_USD"|intcomma }}
+                                    {% elif to_currency == 'EUR' %}
+                                    {{ x.amount|converter:"GBP_EUR"|intcomma }}
+                                    {% else %}
+                                    {{ x.amount|intcomma }}
+                                    {% endif %}
+                                    {% endwith %}
+                                </div>
+                            </div>
+                            <div class="progress">
+                                <div class="progress-bar" role="progressbar" style="width: {{ x.progress_percentage }}%"
+                                    aria-valuenow="{{ x.progress_percentage }}" aria-valuemin="0" aria-valuemax="100">
+                                    {{ x.progress_percentage }}%
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                    <hr>
+                    <!-- * item -->
+                {% empty %}
+                <div class="item">
+                    <div class="in">
+                        <div>
+                            <h4>No investments found</h4>
+                            <p>You don't have any investments.</p>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        <!-- * Investment Goals -->
+
+    </div>
+    <!-- * App Capsule -->
+
+
+    <!-- App Bottom Menu -->
+        <div class="appBottomMenu" style="position: fixed; z-index: 1; bottom: 0;">  
+            <a href="{% url 'home' %}" class="item ">
+                <div class="col">
+                    <ion-icon name="pie-chart-outline"></ion-icon>
+                    <strong>Overview</strong>
+                </div>
+            </a>
+            <a href="{% url 'cards' %}" class="item ">
+                <div class="col">
+                    <ion-icon name="card-outline"></ion-icon>
+                    <strong>My Cards</strong>
+                </div>
+            </a>
+            <a href="{% url 'menu' %}" class="item">
+                <div class="col">
+                    <div class="action-button">
+                        <ion-icon name="home"></ion-icon>
+                    </div>
+                </div>
+            </a>
+            <a href="{% url 'transactions' %}" class="item">
+                <div class="col">
+                    <ion-icon name="document-text-outline"></ion-icon>
+                    <strong>History</strong>
+                </div>
+            </a>
+            <a href="{% url 'settings' %}" class="item">
+                <div class="col">
+                    <ion-icon name="person-outline"></ion-icon>
+                    <strong>Me</strong>
+                </div>
+            </a>
+        </div>
+    <!-- * App Bottom Menu -->
+
+
+    <!-- ========= JS Files =========  -->
+    <!-- Bootstrap -->
+    <script src="{% static 'assets/js/lib/bootstrap.bundle.min.js' %}"></script>
+    <!-- Ionicons -->
+    <script type="module" src="https://cdnjs.cloudflare.com/ajax/libs/ionicons/5.5.2/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://cdnjs.cloudflare.com/ajax/libs/ionicons/5.5.2/ionicons/ionicons.js"></script>
+    <!-- Splide -->
+    <script src="{% static 'assets/js/plugins/splide/splide.min.js' %}"></script>
+    <!-- Base Js File -->
+    <script src="{% static 'assets/js/base.js' %}"></script>
+    <script>
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    // Does this cookie string begin with the name we want?
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+        const csrftoken = getCookie('csrftoken');
+        const investmentForm = document.getElementById('investmentForm');
+        const investmentLoader = document.getElementById('requestLoader');
+        investmentForm.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const errors = this.querySelectorAll('small');
+            if(errors.length > 0){ 
+                errors.forEach(error => error.remove());
+            }
+            const button = this.querySelector('button[type="submit"]');
+            const formElements = this.elements;
+            for (let i = 0; i < formElements.length; i++) {
+                const element = formElements[i];
+                if (element.type !== 'submit' && element.value === ''){
+                    const text = `${element.dataset.name.toLowerCase()} is missing...`;
+                    const small = document.createElement('small');
+                    small.style.color = 'red';
+                    small.textContent = text;
+                    element.parentElement.appendChild(small);
+                    element.addEventListener('input', function(e) {
+                        this.parentElement.querySelector('small').remove();
+                    }, {'once': true});
+                    element.scrollIntoView({
+                        behavior:'smooth',
+                        block:'center',
+                        inline:'nearest'
+                    });
+                    return false;
+                }
+            }
+            button.innerHTML = ''
+            button.appendChild(investmentLoader);
+            button.disabled = true;
+            investmentLoader.style.display = 'flex';
+
+            const amount = formElements['investmentAmount'].value;
+            const account = formElements['debitAccount'].value;
+
+            const url = '{% url "checkbalance" %}'
+            try{
+                const balance = await fetch(url, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': csrftoken
+                    },
+                    body: JSON.stringify({ 'amount': amount, 'account': account })
+                });
+                const balanceResult = await balance.json();
+                if (!balanceResult.is_enough || !balanceResult.success) {
+                    const msg = balanceResult.error || 'Failed to verify balance...';
+                    const small = document.createElement('small');
+                    small.style.color ='red';
+                    small.textContent = msg;
+                    formElements['investmentAmount'].parentElement.appendChild(small);
+                    formElements['investmentAmount'].addEventListener('input', function(e) {
+                        this.parentElement.querySelector('small').remove();
+                    }, {'once': true});
+                    formElements['investmentAmount'].scrollIntoView({
+                        behavior:'smooth',
+                        block:'center',
+                        inline:'nearest'
+                    });
+                    return false;
+                }
+                const plan = formElements['plan'].value;
+                const checkplan = await fetch("{% url 'checkplan' %}", {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': csrftoken
+                    },
+                    body: JSON.stringify({ 'plan': plan, 'amount':amount })
+                })
+                const planResult = await checkplan.json();
+                if (!planResult.success) {
+                    const msg = planResult.error || 'Failed to validate plan...';
+                    const small = document.createElement('small');
+                    small.style.color ='red';
+                    small.textContent = msg;
+                    formElements['investmentAmount'].parentElement.appendChild(small);
+                    formElements['investmentAmount'].addEventListener('input', function(e) {
+                        this.parentElement.querySelector('small').remove();
+                    }, {'once': true});
+                    formElements['investmentAmount'].scrollIntoView({
+                        behavior:'smooth',
+                        block:'center',
+                        inline:'nearest'
+                    });
+                    return false;
+                }
+                const formData = new FormData(this);
+                const selectedPlan = formElements['plan'].options[formElements['plan'].selectedIndex];
+                formData.append('title', selectedPlan.dataset.title);
+                const formDataObj = {}
+                for (let [key, value] of formData.entries()){
+                    formDataObj[key] = value;
+                }
+                console.log(formDataObj);
+                sessionStorage.setItem('investmentSummary', JSON.stringify(formDataObj));
+                setTimeout(() => {
+                    investmentForm.reset();
+                    window.location.href = '{% url "investment-verification" %}';
+                }, 1500)
+            }catch(e){
+                responseModal.querySelector('.message').innerHTML = 'An error occurred while processing your transaction';
+                console.log(e);
+                showModal(responseModal.id);
+            } finally {
+                setTimeout(() => {
+                    button.textContent = 'Submit Contract';
+                    button.disabled = false;
+                    investmentLoader.style.display = 'none';
+                }, 800)
+            }
+
+
+        });
+
+        document.getElementById('investmentDuration').addEventListener('input', function () {
+            const duration = parseInt(this.value);
+            const rangeValue = document.getElementById('rangeValue');
+
+            if (isNaN(duration) || duration <= 0) {
+                rangeValue.innerHTML = "Invalid duration";
+                return;
+            }
+
+            const years = Math.floor(duration / 365);
+            const remainingDaysAfterYears = duration % 365;
+            const months = Math.floor(remainingDaysAfterYears / 30);
+            const days = remainingDaysAfterYears % 30;
+
+            let formattedDuration = "";
+
+            if (years > 0) {
+                formattedDuration += years + (years === 1 ? " year" : " years");
+            }
+
+            if (months > 0) {
+                if (formattedDuration) formattedDuration += " & ";
+                formattedDuration += months + (months === 1 ? " month" : " months");
+            }
+
+            if (days > 0) {
+                if (formattedDuration) formattedDuration += " & ";
+                formattedDuration += days + (days === 1 ? " day" : " days");
+            }
+
+            rangeValue.innerHTML = formattedDuration || "0 days";
+        });
+
+    </script>
+
+</body>
+
+</html>

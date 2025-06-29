@@ -1,0 +1,841 @@
+{% load humanize %}
+{% load static %}
+{% load custom_filters %}
+<!doctype html>
+<html lang="en">
+
+<head>
+    <style>
+        input[type="range"] {
+            -webkit-appearance: none;
+            width: 80%;
+            height: 15px;
+            background: linear-gradient(to right, rgb(0, 191, 255), rgb(157, 0, 255));
+            border-radius: 10px;
+            outline: none;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 20px;
+            height: 20px;
+            background: radial-gradient(circle, hsl(320, 90%, 50%), rgb(125, 7, 111));;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+
+        input[type="range"]::-moz-range-thumb {
+            width: 20px;
+            height: 20px;
+            background: #007bff;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+    </style>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, viewport-fit=cover" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#000000">
+    <title>Transaction details</title>
+    <meta name="description"
+        content="Lumistakes is a trading platform that offers online trading of complex derivative cryptocurrencies with leverage and copy trading. Log in to your personal area to access your accounts, deposit or withdraw funds, and claim bonuses.">
+    <meta name="keywords"
+        content="Crypto, Cryptocurrency, best cryptocurrency, best performing crypto, best exchange 2025, worldwide trading, investments, how to invest safely, how to invest, how to invest online, how to invest, 2025, best cryptocurrency, how to withdraw crypto, buy crypto, sell crypto, convert crypto" />
+    <link rel="icon" type="image/png" href="{% static 'assets/img/favicon.png' %}" sizes="32x3">
+    <link rel="apple-touch-icon" sizes="180x180" href="{% static 'assets/img/icon/192x192.png' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/style.css' %}">
+    <link rel="manifest" href="{% static '__manifest.json' %}">
+</head>
+
+<body>
+
+    <!-- loader -->
+    <div id="loader">
+        <img src="{% static 'assets/img/loading-icon.png' %}" alt="icon" class="loading-icon">
+    </div>
+    <!-- * loader -->
+
+    <!-- App Header -->
+    <div class="appHeader">
+        <div class="left">
+            <a href="#" class="headerButton goBack">
+                <ion-icon name="chevron-back-outline"></ion-icon>
+            </a>
+        </div>
+        <div class="pageTitle">
+            Transaction Detail
+        </div>
+    </div>
+    <!-- * App Header -->
+
+    <!-- Dialog Basic -->
+    <div class="modal fade dialogbox" id="DialogBasic" data-bs-backdrop="static" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Delete</h5>
+                </div>
+                <div class="modal-body">
+                    Are you sure?
+                </div>
+                <div class="modal-footer">
+                    <div class="btn-inline">
+                        <a href="#" class="btn btn-text-secondary" data-bs-dismiss="modal">CANCEL</a>
+                        <a href="#" class="btn btn-text-primary" data-bs-dismiss="modal">DELETE</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- * Dialog Basic -->
+
+
+        <!-- Upgrade Action Sheet -->
+        <div style="overflow: auto; height: 400px !important;" class="modal fade modalbox" id="upgradeModal" tabindex="-1" role="dialog">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Upgrade</h5>
+                        <a href="#" data-bs-dismiss="modal">Close</a>
+                    </div>
+                    <div class="modal-body">
+                        <p>Not meeting your target ROI? Upgrade to a higher plan to increase your lotsize!</p>
+                        <div class="action-sheet-content">
+    
+                            <form id="upgradeForm" method="post">
+                                <div class="row">
+                                    <div class="col-6">
+                                        <div class="form-group basic">
+                                            <div class="input-wrapper">
+                                                <label class="label" for="currency2">New Investment Plan</label>
+                                                <select data-name="Investment Plan" name="plan" class="form-control custom-select" id="currency2">
+                                                    {% for plan in upgrade_plans %}
+                                                        <option data-title="{{plan.title}}" value="{{ plan.id }}">{{ plan.title}} (min: {{preferred_currency.code}}{{plan.converted_min|intcomma}} - max: {{preferred_currency.code}}{{plan.converted_max|intcomma}})</option>
+                                                    {% empty %}
+                                                        <option disabled value="">loading...</option>
+                                                    {% endfor %}
+                                                    
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="form-group basic">
+                                            <div class="input-wrapper">
+                                                <label class="label" for="debitAccount">Debit wallet</label>
+                                                <select data-name="Debit Account" name="debit-account" class="form-control custom-select" id="debitAccount">
+                                                    <option value="deposit">Deposit Wallet</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+    
+                                <div class="form-group basic">
+                                    <label class="label">Enter Amount</label>
+                                    <div class="input-group mb-2">
+                                        <span class="input-group-text" id="basic-addon2">{{preferred_currency.code}}</span>
+                                        <input data-name="Upgrade amount" name="upgrade-amount" type="number" class="form-control" placeholder="Enter an amount">
+                                    </div>
+                                </div>
+    
+                                <div class="form-group basic">
+                                    <label class="label">Set new duration</label>
+                                    <div style="display: flex; align-items: center; justify-content: space-between;" class="input-group mb-2">
+                                        <input data-name="Investment Duration" name="upgrade-duration" id="investmentDuration" type="range" value="5" min="5" step="5" max="365" class="">
+                                        <span class="input-group-text" id="rangeValue">5 days</span>
+                                    </div>
+                                </div>
+                                <div class="form-group basic">
+                                    <button type="submit" class="btn btn-primary btn-block btn-lg"
+                                        >Submit request</button>
+                                </div>
+                            </form>
+                            <input id="dismiss" type="hidden" data-bs-dismiss="modal">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- * Upgrade Action Sheet -->
+
+        <!-- toast danger -->
+        <div id="feedbackError" class="toast-box toast-top bg-danger">
+            <div class="in">
+                <ion-icon id="toastIcon" style="font-size: 30px !important;" name="bug" class="text-dark"></ion-icon>
+                
+                <div class="message">
+                    Danger Color
+                </div>
+            </div>
+            <button type="button" class="btn btn-sm btn-text-light close-button">OK</button>
+        </div>
+        <!-- * toast danger -->
+        
+        <!-- toast success -->
+        <div id="feedbackSuccess" class="toast-box toast-top bg-success">
+            <div class="in">
+                <ion-icon id="toastIcon" style="font-size: 30px !important;" name="checkmark-circle-outline" class="text-dark"></ion-icon>
+                <div class="message">
+                    Success Color
+                </div>
+            </div>
+            <button type="button" class="btn btn-sm btn-text-light close-button">OK</button>
+        </div>
+        <!-- * toast success -->
+
+        <span id="upgradeLoader" style="display: none; height: 30px; width: 30px;" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+
+    <!-- App Capsule -->
+    <div id="appCapsule" class="full-height">
+        <div class="section mt-2 mb-2">
+                <div class="listed-detail mt-3">
+                    <div class="icon-wrapper">
+                            <div class="iconbox bg-{% if transaction.status|in_list:'Completed,Confirmed,Approved,Paid' %}success{% elif transaction.status|in_list:'Processing,In progress,In Progress,Under review,Under Review' %}warning {% elif transaction.status|in_list:'Failed,Rejected' %}danger {% else %}primary{% endif %}">
+
+                            <ion-icon name="{% if activity_type == 'Investment' %}swap-vertical{% elif activity_type == 'Crypto' %}swap-horizontal{% else %}arrow-{% if activity_type|in_list:'Withdrawal,CardRequest,InternalTransfer' %}up{% elif activity_type|in_list:'Deposit,Earnings,Activity,Stock' %}down{% else %} back{% endif %}-outline{% endif %}"></ion-icon>
+                            </div>
+                    </div>
+                        <h3 class="text-center mt-2">{{transaction.status}}</h3>
+                </div>
+            <ul style="border-radius: 8px;" class="listview flush transparent simple-listview no-space px-4 mt-3">
+                {% if activity_type == 'Withdrawal' %}
+                    <li>
+                        <strong>Network</strong>
+                        <span>{{transaction.network}}</span>
+                    </li>
+                    <li>
+                        <strong>Address</strong>
+                        <span>{{transaction.address}}</span>
+                    </li>
+                    <li>
+                        <strong>Amount </strong>
+                        {% with user.profiles.preferred_currency.symbol as to_currency %}
+                            {% if to_currency == 'USD' %}
+                                <h3 class="m-0">
+                                    {{ user.profiles.preferred_currency.code }}{{ transaction.amount|converter:"GBP_USD"}}
+                                </h3>
+                            {% elif to_currency == 'EUR' %}
+                                <h3 class="m-0">
+                                    {{ user.profiles.preferred_currency.code }}{{ transaction.amount|converter:"GBP_EUR"}}
+                                </h3>
+                            {% else %}
+                            <h3 class="m-0">{{ user.profiles.preferred_currency.code }}{{ transaction.amount|intcomma }}</h3>
+                            {% endif %}
+                        {% endwith %}
+                    </li>
+                    <li>
+                        <strong>Debit Account</strong>
+                        <span>{{ transaction.debit_account }}</span>
+                    </li>
+                    <li>
+                        <strong>Status</strong>
+                        <span class="{% if transaction.status|in_list:'Completed,Confirmed,Approved,Paid' %} text-success{% elif transaction.status|in_list:'Processing,In progress,In Progress,Under review' %} text-warning {% elif transaction.status|in_list:'Failed,Rejected' %} text-danger {% endif %}">{{ transaction.status }}</span>
+
+                    </li>
+                    <li>
+                        <strong>Transaction reference</strong>
+                        <span>{{ transaction.request_id }}</span>
+                    </li>
+                    <li>
+                        <strong>Date</strong>
+                        <span>{{transaction.created_at|date:"d M, Y. H:i:s"}}</span>
+                    </li>
+                {% elif activity_type == 'Deposit' %} 
+                    <li>
+                        <strong>Network</strong>
+                        <span>{{transaction.network}}</span>
+                    </li>
+                    <li>
+                        <strong>Amount</strong>
+                        {% with user.profiles.preferred_currency.symbol as to_currency %}
+                            {% if to_currency == 'USD' %}
+                                <h3 class="m-0">
+                                    {{ user.profiles.preferred_currency.code }}{{ transaction.amount|converter:"GBP_USD"}}
+                                </h3>
+                            {% elif to_currency == 'EUR' %}
+                                <h3 class="m-0">
+                                    {{ user.profiles.preferred_currency.code }}{{ transaction.amount|converter:"GBP_EUR"}}
+                                </h3>
+                            {% else %}
+                            <h3 class="m-0">{{ user.profiles.preferred_currency.code }}{{ transaction.amount|intcomma }}</h3>
+                            {% endif %}
+                        {% endwith %}
+                    </li>
+                    <li>
+                        <strong>Status</strong>
+                        <span class="{% if transaction.status|in_list:'Completed,Confirmed,Approved,Paid' %} text-success{% elif transaction.status|in_list:'Processing,In progress,In Progress,Under review' %} text-warning {% elif transaction.status|in_list:'Failed,Rejected' %} text-danger {% endif %}">{{ transaction.status }}</span>
+                    </li>
+                    <li>
+                        <strong>Transaction reference</strong>
+                        <span>{{ transaction.deposit_id }}</span>
+                    </li>
+                    <li>
+                        <strong>Date</strong>
+                        <span>{{transaction.created_at|date:"d M, Y. H:i:s"}}</span>
+                    </li>
+                {% elif activity_type == 'Investment' %}
+                    <li>
+                        <strong>Invested Capital</strong>
+                        {% with user.profiles.preferred_currency.symbol as to_currency %}
+                            {% if to_currency == 'USD' %}
+                                <h3 class="m-0">
+                                    {{ user.profiles.preferred_currency.code }}{{ transaction.amount|converter:"GBP_USD"|intcomma}}
+                                </h3>
+                            {% elif to_currency == 'EUR' %}
+                                <h3 class="m-0">
+                                    {{ user.profiles.preferred_currency.code }}{{ transaction.amount|converter:"GBP_EUR"|intcomma}}
+                                </h3>
+                            {% else %}
+                            <h3 class="m-0">{{ user.profiles.preferred_currency.code }}{{ transaction.amount|intcomma }}</h3>
+                            {% endif %}
+                        {% endwith %}
+                    </li>
+                    <li>
+                        <strong>Accrued profits</strong>
+                        {% with preferred_currency.symbol as to_currency %}
+                            {% if to_currency == 'USD' %}
+                                <h3 class="m-0">
+                                    {{preferred_currency.code}}{{ transaction.total_profits_accrued|converter:"GBP_USD"|intcomma}}
+                                </h3>
+                            {% elif to_currency == 'EUR' %}
+                                <h3 class="m-0">
+                                    {{preferred_currency.code}}{{ transaction.total_profits_accrued|converter:"GBP_EUR"|intcomma}}
+                                </h3>
+                            {% else %}
+                                <h3 class="m-0">{{preferred_currency.code}}{{ transaction.total_profits_accrued|intcomma }}</h3>
+                            {% endif %}
+                        {% endwith %}
+                    </li>
+                    <li>
+                        <strong>Plan</strong>
+                        <span>{{ transaction.plan }}</span>
+                    </li>
+                    <li>
+                        <strong>Duration</strong>
+                        <span>{{ transaction.duration }} days</span>
+                    </li>
+                    <li>
+                        <Strong>Days remaining</Strong>
+                        <span>{{ transaction.days_remaining }} days</span>
+                    </li>
+                    <li>
+                        <div style="width: 100%;" class="progress">
+                            <div 
+                            class="progress-bar" 
+                            role="progressbar" 
+                            style="width: {{transaction.progress_percentage}}%"
+                            aria-valuenow="{{ transaction.progress_percentage }}" 
+                            aria-valuemin="0" 
+                            aria-valuemax="100">
+                                {{ transaction.progress_percentage }}%</div>
+                        </div>
+                    </li>
+                    <li>
+                        <strong>Trade Manager</strong>
+                        <h3 class="m-0">{{transaction.manager}}</h3>
+                    </li>
+                    <li>
+                        <strong>Current Status</strong>
+                        <span
+                            class="{% if transaction.status|in_list:'Completed,Confirmed,Approved,Paid' %} text-success{% elif transaction.status|in_list:'Processing,In progress,In Progress,Under review,Active' %} text-warning {% elif transaction.status|in_list:'Failed,Rejected' %} text-danger {% endif %}">
+                            {{transaction.status }}
+                        </span>
+                    </li>
+                    <li>
+                        <strong>Date submitted</strong>
+                        <span>{{transaction.date|date:"d M, Y. H:i:s"}}</span>
+                    </li>
+                    <li>
+                        <strong>Last updated</strong>
+                        <span>{{ transaction.last_updated|date:"d M, Y. \\a\\t \\e\\x\\a\\c\\t\\l\\y H:i:s"}}</span>
+                    </li>
+                    
+                    <!-- widget begins here -->
+                        <div style="height:62px; background-color: #FFFFFF; overflow:hidden; box-sizing: border-box; border: 1px solid #56667F; border-radius: 4px; text-align: right; line-height:14px; block-size:62px; font-size: 12px; font-feature-settings: normal; text-size-adjust: 100%; box-shadow: inset 0 -20px 0 0 #56667F;padding:1px;padding: 0px; margin: 0px; width: 100%;">
+                            <div style="height:40px; padding:0px; margin:0px; width: 100%;">
+                                <iframe src="https://widget.coinlib.io/widget?type=horizontal_v2&theme=dark&pref_coin_id=1505&invert_hover=" width="100%" height="36px" scrolling="auto" marginwidth="0" marginheight="0" frameborder="0" border="0" style="border:0;margin:0;padding:0;">
+
+                                </iframe>
+                            </div>
+                        </div>
+                        {% if transaction.status == 'Active' %}
+
+                        <div style="display: flex; justify-content: space-evenly; align-items: center; margin: 10px 5px;">
+                            <!-- <button disabled class="btn btn-outline-secondary" type="button">Downgrade  Plan</button> -->
+                            <button data-bs-toggle="modal" data-bs-target="#upgradeModal" class="btn btn-outline-primary" type="button">Upgrade Plan</button>
+                        </div>
+                        
+                        <div class="my-4">
+                            <!-- TradingView Widget BEGIN -->
+                                <div class="tradingview-widget-container" style="height:100%;width:100%">
+                                <div class="tradingview-widget-container__widget" style="height:calc(100% - 32px);width:100%"></div>
+                                <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js" async>
+                                {
+                                "height": "400",
+                                "autosize": true,
+                                "symbol": "BINANCE:BTCUSDT",
+                                "interval": "1",
+                                "timezone": "Etc/UTC",
+                                "theme": "dark",
+                                "style": "1",
+                                "locale": "en",
+                                "allow_symbol_change": true,
+                                "save_image": false,
+                                "watchlist": [
+                                    "BINANCE:ETHUSDT",
+                                    "BINANCE:BTCUSD"
+                                ],
+                                "hotlist": true,
+                                "support_host": "https://nexauniversal.com"
+                                }
+                                </script>
+                                </div>
+                            <!-- TradingView Widget END -->
+                        </div>
+
+                        <div class="alert alert-primary">This investment is currently included in a block and is being traded by {{transaction.manager}}.</div>
+
+                        <script>
+                            function getCookie(name) {
+                                let cookieValue = null;
+                                if (document.cookie && document.cookie !== '') {
+                                    const cookies = document.cookie.split(';');
+                                    for (let i = 0; i < cookies.length; i++) {
+                                        const cookie = cookies[i].trim();
+                                        // Does this cookie string begin with the name we want?
+                                        if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                                            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                                            break;
+                                        }
+                                    }
+                                }
+                                return cookieValue;
+                            }
+                            const csrftoken = getCookie('csrftoken');
+                            const upgradeForm = document.getElementById("upgradeForm");
+                            const upgradeButton = upgradeForm.querySelector("button[type='submit']");
+                            const initialState = upgradeButton.innerHTML;
+                            const errorToast = document.getElementById("feedbackError");
+                            const successToast = document.getElementById("feedbackSuccess");
+                            const upgradeLoader = document.getElementById("upgradeLoader");
+                            const dismiss = document.getElementById("dismiss");
+
+                            upgradeForm.addEventListener("submit", async function upgradePlan(e) {
+                                e.preventDefault();
+                                const err = upgradeForm.querySelectorAll('small')
+                                if (err){
+                                    err.forEach(e => {
+                                        e.remove();
+                                    })
+                                }
+
+                                const elements = upgradeForm.elements;
+                                for (let i = 0; i < elements.length; i++) {
+                                    const element = elements[i];
+                                    if (element.type !== "submit" && element.value === "") {
+                                        upgradeButton.disabled = true;
+                                        const s = document.createElement('small');
+                                        s.textContent = element.dataset.name.charAt(0).toUpperCase() + element.dataset.name.slice(1) + ' is required';
+                                        s.style.color = 'red';
+                                        element.parentElement.appendChild(s);
+                                        element.addEventListener('input', () => {
+                                            if (element.value !== "" || !isNaN || parseFloat(element.value) <= parseFloat('0')){
+                                                upgradeButton.disabled = false;
+                                                s.remove();
+                                            }
+                                        }, { once: true })
+                                        return;
+                                    } 
+                                }
+
+                                const amount = elements['upgrade-amount'].value;
+                                const account = elements['debit-account'].value;
+                                const investment = "{{ transaction.id }}"
+
+                                upgradeButton.textContent = 'Upgrading...';
+                                upgradeButton.disabled = true;
+                                upgradeButton.prepend(upgradeLoader);
+                                upgradeLoader.style.display = 'flex';
+
+                                const url = '{% url "checkbalance" %}';
+                                try{
+                                    const balance = await fetch(url, {
+                                        method: 'POST',
+                                        headers: {
+                                            'Content-Type': 'application/json',
+                                            'X-CSRFToken': csrftoken
+                                        },
+                                        body: JSON.stringify({ 'amount': amount, 'account': account })
+                                    });
+                                    const balanceResult = await balance.json();
+                                    if (!balanceResult.is_enough || !balanceResult.success) {
+                                        const msg = balanceResult.error || 'Failed to verify balance...';
+                                        const small = document.createElement('small');
+                                        small.style.color ='red';
+                                        small.textContent = msg;
+                                        elements['upgrade-amount'].parentElement.appendChild(small);
+                                        elements['upgrade-amount'].addEventListener('input', function(e) {
+                                            this.parentElement.querySelector('small').remove();
+                                        }, {'once': true});
+                                        elements['upgrade-amount'].scrollIntoView({
+                                            behavior:'smooth',
+                                            block:'center',
+                                            inline:'nearest'
+                                        });
+                                        return false;
+                                    }
+                                    const plan = elements['plan'].value;
+                                    
+                                    const formData = new FormData(this);
+                                    const selectedPlan = elements['plan'].options[elements['plan'].selectedIndex];
+                                    formData.append('investment-id', investment);
+                                    formData.append('title', selectedPlan.dataset.title);
+
+                                    const upgradePath = "{% url 'upgrade' %}";
+
+                                    const upgrade = await fetch(upgradePath, {
+                                        method: 'POST',
+                                        body: formData,
+                                        headers: {
+                                            'X-CSRFToken': csrftoken
+                                        }
+                                    })
+
+                                    const result = await upgrade.json();
+                                    dismiss.click();
+                                    if (!result.success){
+                                        errorToast.querySelector('.message').innerHTML = result.error || 'Failed to upgrade plan...';
+                                        toastbox(errorToast.id, 10000);
+                                        return false;
+                                    }
+                                    successToast.querySelector('.message').innerHTML = result.success;
+                                    toastbox(successToast.id, 7000);
+                                    setTimeout(() => {
+                                        window.location.reload();
+                                    }, 7000);
+ 
+                                }catch(e){
+                                    errorToast.querySelector('.message').innerHTML = 'An error occurred while processing your transaction';
+                                    console.log(e);
+                                    toastbox(errorToast.id, 5000);
+                                } finally {
+                                    setTimeout(() => {
+                                        upgradeButton.innerHTML = initialState;
+                                        upgradeButton.disabled = false;
+                                        upgradeLoader.style.display = 'none';                                        
+                                    }, 800)
+                                }
+                            });
+
+                            document.getElementById('investmentDuration').addEventListener('input', function () {
+                            const duration = parseInt(this.value);
+                            const rangeValue = document.getElementById('rangeValue');
+
+                            if (isNaN(duration) || duration <= 0) {
+                                rangeValue.innerHTML = "Invalid duration";
+                                return;
+                            }
+
+                            const years = Math.floor(duration / 365);
+                            const remainingDaysAfterYears = duration % 365;
+                            const months = Math.floor(remainingDaysAfterYears / 30);
+                            const days = remainingDaysAfterYears % 30;
+
+                            let formattedDuration = "";
+
+                            if (years > 0) {
+                                formattedDuration += years + (years === 1 ? " year" : " years");
+                            }
+
+                            if (months > 0) {
+                                if (formattedDuration) formattedDuration += " & ";
+                                formattedDuration += months + (months === 1 ? " month" : " months");
+                            }
+
+                            if (days > 0) {
+                                if (formattedDuration) formattedDuration += " & ";
+                                formattedDuration += days + (days === 1 ? " day" : " days");
+                            }
+
+                            rangeValue.innerHTML = formattedDuration || "0 days";
+                        });
+
+                        </script>
+                        {% endif %}
+
+                    <!-- widget ends here -->
+
+
+                {% elif activity_type == 'CardRequest' %}
+                    <li>
+                        <strong>Name on card:</strong>
+                        <span>{{ transaction.name_on_card }}</span>
+                    </li>
+                    <li>
+                        <strong>Amount</strong>
+                        {% with user.profiles.preferred_currency.symbol as to_currency %}
+                            {% if to_currency == 'USD' %}
+                                <h3 class="m-0">
+                                    {{ user.profiles.preferred_currency.code }}{{ transaction.amount|converter:"GBP_USD"}}
+                                </h3>
+                            {% elif to_currency == 'EUR' %}
+                                <h3 class="m-0">
+                                    {{ user.profiles.preferred_currency.code }}{{ transaction.amount|converter:"GBP_EUR"}}
+                                </h3>
+                            {% else %}
+                            <h3 class="m-0">{{ user.profiles.preferred_currency.code }}{{ transaction.amount|intcomma }}</h3>
+                            {% endif %}
+                        {% endwith %}
+                    </li>
+                    <li>
+                        <strong>Status</strong>
+                        <span class="{% if transaction.status|in_list:'Completed,Confirmed,Approved,Paid' %} text-success{% elif transaction.status|in_list:'Processing,In progress,In Progress,Under review' %} text-warning {% elif transaction.status|in_list:'Failed,Rejected' %} text-danger {% else %} text-primary {% endif %}">{{ transaction.status }}</span>
+                    </li>
+                    <li>
+                        <strong>Date requested</strong>
+                        <span>{{transaction.date|date:"d M, Y. H:i:s"}}</span>
+                    </li>
+                {% elif activity_type == 'Earnings' %}
+                    <li>
+                        <strong>Earnings</strong>
+                        <span>{{ transaction.investment.plan.title }}-{{ transaction.investment.duration }} days</span>
+                    </li>
+                    <li>
+                        <strong>Amount</strong>
+                        {% with user.profiles.preferred_currency.symbol as to_currency %}
+                            {% if to_currency == 'USD' %}
+                                <h3 class="m-0">
+                                    {{ user.profiles.preferred_currency.code }}{{ transaction.amount|converter:"GBP_USD"}}
+                                </h3>
+                            {% elif to_currency == 'EUR' %}
+                                <h3 class="m-0">
+                                    {{ user.profiles.preferred_currency.code }}{{ transaction.amount|converter:"GBP_EUR"}}
+                                </h3>
+                            {% else %}
+                            <h3 class="m-0">{{ user.profiles.preferred_currency.code }}{{ transaction.amount|intcomma }}</h3>
+                            {% endif %}
+                        {% endwith %}
+                    </li>
+                    <li>
+                        <strong>Updated</strong>
+                        <span>{{ transaction.timestamp|date:"d M, Y. H:i:s" }}</span>
+                    </li>
+                {% elif activity_type == 'Loss' %}
+                    <li>
+                        <strong>Loss</strong>
+                        <span>{{ transaction.investment.plan.title }}-{{ transaction.investment.duration }} days</span>
+                    </li>
+                    <li>
+                        <strong>Amount</strong>
+                        {% with user.profiles.preferred_currency.symbol as to_currency %}
+                        {% if to_currency == 'USD' %}
+                        <h3 class="m-0">
+                            {{ user.profiles.preferred_currency.code }}{{ transaction.amount|converter:"GBP_USD"}}
+                        </h3>
+                        {% elif to_currency == 'EUR' %}
+                        <h3 class="m-0">
+                            {{ user.profiles.preferred_currency.code }}{{ transaction.amount|converter:"GBP_EUR"}}
+                        </h3>
+                        {% else %}
+                        <h3 class="m-0">{{ user.profiles.preferred_currency.code }}{{ transaction.amount|intcomma }}</h3>
+                        {% endif %}
+                        {% endwith %}
+                    </li>
+                    <li>
+                        <strong>Updated</strong>
+                        <span>{{ transaction.timestamp|date:"d M, Y. H:i:s" }}</span>
+                    </li>
+                {% elif activity_type == 'Activity' %}
+                    <li>
+                        <strong>Activity </strong>
+                        <span>{{ transaction.activity }}</span>
+                    </li>
+                    <li>
+                        <strong>Amount </strong>
+                        {% with user.profiles.preferred_currency.symbol as to_currency %}
+                            {% if to_currency == 'USD' %}
+                                <h3 class="m-0">
+                                    {{ user.profiles.preferred_currency.code }}{{ transaction.amount|converter:"GBP_USD"|intcomma}}
+                                </h3>
+                            {% elif to_currency == 'EUR' %}
+                                <h3 class="m-0">
+                                    {{ user.profiles.preferred_currency.code }}{{ transaction.amount|converter:"GBP_EUR"|intcomma}}
+                                </h3>
+                            {% else %}
+                            <h3 class="m-0">{{ user.profiles.preferred_currency.code }}{{ transaction.amount|intcomma }}</h3>
+                            {% endif %}
+                        {% endwith %}
+                    </li>
+                    <li>
+                        <strong style="margin-right: 10px;">Description: </strong>
+                        <span>{{ transaction.activity_description }}</span>
+                    </li>
+                    <li>
+                        <strong>Timestamp</strong>
+                        <span>{{ transaction.date|date:"d M, Y. H:i:s"}}</span>
+                    </li>
+                {% elif activity_type == 'InternalTransfer' %}
+                    <li>
+                        {% if transaction.sender == user %}
+                            <strong>To</strong>
+                            <span>{{ transaction.recipient.get_full_name|upper }}</span>
+                        {% else %}
+                            <strong>From</strong>
+                            <span>{{ transaction.sender.get_full_name|upper }}</span>
+                        {% endif %}
+                    </li>
+                    <li>
+                        <strong>Amount</strong>
+                        {% with user.profiles.preferred_currency.symbol as to_currency %}
+                            {% if to_currency == 'USD' %}
+                                <h3 class="m-0">
+                                    {{ user.profiles.preferred_currency.code }}{{ transaction.amount|converter:"GBP_USD"|intcomma}}
+                                </h3>
+                            {% elif to_currency == 'EUR' %}
+                                <h3 class="m-0">
+                                    {{ user.profiles.preferred_currency.code }}{{ transaction.amount|converter:"GBP_EUR"|intcomma}}
+                                </h3>
+                            {% else %}
+                            <h3 class="m-0">{{ user.profiles.preferred_currency.code }}{{ transaction.amount|intcomma }}</h3>
+                            {% endif %}
+                        {% endwith %}
+                    </li>
+                    <li>
+                        <strong>Status</strong>
+                        <span
+                            class="{% if transaction.status|in_list:'Completed,Confirmed,Approved,Paid,Successful,successful' %} text-success{% elif transaction.status|in_list:'Processing,In progress,In Progress,Under review' %} text-warning {% elif transaction.status|in_list:'Failed,Rejected' %} text-danger {% else %} text-primary {% endif %}">{{transaction.status }}</span>
+
+                    </li>
+                    <li>
+                        <strong>Date</strong>
+                        <span>{{ transaction.timestamp|date:"d M, Y. H:i:s" }}</span>
+                    </li>
+                    <li>
+                        <strong style="margin-right: 10px;">Comment</strong>
+                        <span>{% if transaction.sender == user %}{{ transaction.sender_comment }}{% else %} {{transaction.recipient_comment}}{% endif %}</span>
+                    </li>
+                {% elif activity_type == 'Stock' %}
+                    <li>
+                        <strong>Stock/commodity</strong>
+                        <span>{{ transaction.stock.symbol }}</span>
+                    </li>
+                    <li>
+                        <strong>Quantity</strong>
+                        <span class="quantity">{{ transaction.quantity }} unit(s)</span>
+                    </li>
+                    <li>
+                        <strong>Total cost</strong>
+                        <span class="current-value">{{user.profiles.preferred_currency.code}} 
+                            {% with user.profiles.preferred_currency.symbol as to_currency %}
+                                {% if to_currency == 'USD' %}
+                                    {{ transaction.amount|converter:"GBP_USD"|intcomma}}
+                                {% elif to_currency == 'EUR' %}
+                                    {{ transaction.amount|converter:"GBP_EUR"|intcomma}}
+                                {% else %}
+                                    {{ transaction.amount|intcomma }}
+                                {% endif %}
+                            {% endwith %}
+                    </li>
+                    <li>
+                        <strong>Transaction Type</strong>
+                        <span class="account">{{ transaction.transaction_type }}</span>
+                    </li>
+                    <li>
+                        <strong>Description</strong>
+                        <span class="text-primary">{{ transaction.description }}</span>
+                    </li>
+                    <li>
+                        <strong>TimeStamp</strong>
+                        <span >{{ transaction.date|date:"d M Y, H:i:s" }}</span>
+                    </li>
+                {% elif activity_type == 'Crypto' %}
+                    <li>
+                        <strong>Exchange Type </strong>
+                        <span>{{transaction.transaction_type }}</span>
+                    </li>
+                    <li>
+                        <strong>Amount </strong>
+                            <span>
+                                {% if transaction.transaction_type == 'FIAT TO CRYPTO' %}{{user.profiles.preferred_currency.code}}{{transaction.amount|floatformat:2}}{% else %}{{transaction.amount|floatformat:8}} {{transaction.crypto}}{% endif %}
+                            </span>
+                    </li>
+                    <li>
+                        <strong>Target Currency </strong>
+                        {% if transaction.transaction_type == 'FIAT TO CRYPTO' %}
+                            <span>{{transaction.crypto}}</span>
+                        {% else %}
+                            <small style="text-align: right; width: 220px">your preferred currency at the time of conversion</small>
+                        {% endif %}
+                    </li>
+                    <li style="display: flex; justify-content: space-between;">
+                        <strong>Description</strong>
+                        <small style="text-align: right; width: 220px">{{ transaction.description }}</small>
+                    </li>
+                    <li>
+                        <strong>Timestamp</strong>
+                        <span>{{ transaction.date_created|date:"d M Y, H:i:s"}}</span>
+                    </li>
+                {% endif %}
+            </ul>
+        </div>
+
+    </div>
+    <!-- * App Capsule -->
+
+
+    <!-- App Bottom Menu -->
+        <div class="appBottomMenu" style="position: fixed; z-index: 1; bottom: 0;">  
+            <a href="{% url 'home' %}" class="item ">
+                <div class="col">
+                    <ion-icon name="pie-chart-outline"></ion-icon>
+                    <strong>Overview</strong>
+                </div>
+            </a>
+            <a href="{% url 'cards' %}" class="item ">
+                <div class="col">
+                    <ion-icon name="card-outline"></ion-icon>
+                    <strong>My Cards</strong>
+                </div>
+            </a>
+            <a href="{% url 'menu' %}" class="item">
+                <div class="col">
+                    <div class="action-button">
+                        <ion-icon name="home"></ion-icon>
+                    </div>
+                </div>
+            </a>
+            <a href="{% url 'transactions' %}" class="item">
+                <div class="col">
+                    <ion-icon name="document-text-outline"></ion-icon>
+                    <strong>History</strong>
+                </div>
+            </a>
+            <a href="{% url 'settings' %}" class="item">
+                <div class="col">
+                    <ion-icon name="person-outline"></ion-icon>
+                    <strong>Me</strong>
+                </div>
+            </a>
+        </div>
+    <!-- * App Bottom Menu -->
+
+
+
+    <!-- ========= JS Files =========  -->
+    <!-- Bootstrap -->
+    <script src="{% static 'assets/js/lib/bootstrap.bundle.min.js' %}"></script>
+    <!-- Ionicons -->
+    <script type="module" src="https://cdnjs.cloudflare.com/ajax/libs/ionicons/5.5.2/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://cdnjs.cloudflare.com/ajax/libs/ionicons/5.5.2/ionicons/ionicons.js"></script>
+    <!-- Splide -->
+    <script src="{% static 'assets/js/plugins/splide/splide.min.js' %}"></script>
+    <!-- Base Js File -->
+    <script src="{% static 'assets/js/base.js' %}"></script>
+
+</body>
+
+</html>

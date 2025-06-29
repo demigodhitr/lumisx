@@ -1,0 +1,1095 @@
+{% load humanize %}
+{% load static %}
+{% load custom_filters %}
+<!doctype html>
+<html lang="en">
+
+<head>
+    <style>
+        input[type="range"] {
+            -webkit-appearance: none;
+            width: 80%;
+            height: 15px;
+            background: linear-gradient(to right, rgb(0, 191, 255), rgb(157, 0, 255));
+            border-radius: 10px;
+            outline: none;
+        }
+    
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 20px;
+            height: 20px;
+            background: radial-gradient(circle, hsl(320, 90%, 50%), rgb(125, 7, 111));
+            ;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+    
+        input[type="range"]::-moz-range-thumb {
+            width: 20px;
+            height: 20px;
+            background: #007bff;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+        .error {
+            color: red;
+            font-weight: bold;
+            font-style: italic;
+        }
+        .success {
+            color: green;
+            font-weight: bold;
+            font-style: italic;
+        }
+        .warning {
+            color: orange;
+            font-weight: bold;
+            font-style: italic;
+        }
+    </style>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, viewport-fit=cover" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#000000">
+    <title>{{ x.symbol }}</title>
+    <meta name="description"
+        content="Lumistakes is a trading platform that offers online trading of complex derivative cryptocurrencies with leverage and copy trading. Log in to your personal area to access your accounts, deposit or withdraw funds, and claim bonuses.">
+    <meta name="keywords"
+        content="Crypto, Cryptocurrency, best cryptocurrency, best performing crypto, best exchange 2025, worldwide trading, investments, how to invest safely, how to invest, how to invest online, how to invest, 2025, best cryptocurrency, how to withdraw crypto, buy crypto, sell crypto, convert crypto" />
+    <meta name="author" content="Lumistakes Team" />
+    <link rel="icon" type="image/png" href="{% static 'assets/img/favicon.png' %}" sizes="32x3">
+    <link rel="apple-touch-icon" sizes="180x180" href="{% static 'assets/img/icon/192x192.png' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/style.css' %}">
+    <link rel="manifest" href="{% static '__manifest.json' %}">
+</head>
+
+<body>
+
+    <!-- loader -->
+    <div id="loader">
+        <img src="{% static 'assets/img/loading-icon.png' %}" alt="icon" class="loading-icon">
+    </div>
+    <!-- * loader -->
+
+    <!-- App Header -->
+    <div class="appHeader bg-{% if x.change_percent|startswith:'-' %}danger{% else %}success{% endif %} text-light">
+        <div class="left">
+            <a href="#" class="headerButton goBack">
+                <ion-icon name="chevron-back-outline"></ion-icon>
+            </a>
+        </div>
+        <div class="pageTitle">
+            {{x.symbol}}
+        </div>
+        <!-- <div class="right">
+            <a href="{% url 'notifications' %}" class="headerButton" data-bs-toggle="modal"
+                data-bs-target="#actionSheetShare">
+                <ion-icon name="share-social-outline"></ion-icon>
+            </a>
+        </div> -->
+    </div>
+    <!-- * App Header -->
+
+
+    <!-- Share Action Sheet -->
+    <div class="modal fade action-sheet inset" id="actionSheetShare" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Share with</h5>
+                </div>
+                <div class="modal-body">
+                    <ul class="action-button-list">
+                        <li>
+                            <a href="#" class="btn btn-list" data-bs-dismiss="modal">
+                                <span>
+                                    <ion-icon name="logo-facebook"></ion-icon>
+                                    Facebook
+                                </span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="btn btn-list" data-bs-dismiss="modal">
+                                <span>
+                                    <ion-icon name="logo-twitter"></ion-icon>
+                                    Twitter
+                                </span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="btn btn-list" data-bs-dismiss="modal">
+                                <span>
+                                    <ion-icon name="logo-instagram"></ion-icon>
+                                    Instagram
+                                </span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="btn btn-list" data-bs-dismiss="modal">
+                                <span>
+                                    <ion-icon name="logo-linkedin"></ion-icon>
+                                    Linkedin
+                                </span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- * Share Action Sheet -->
+
+    <!-- App Capsule -->
+    <div id="appCapsule">
+
+
+        <!-- Coin Status -->
+        <div style="max-height: 400px; padding: 10px;" class="section full gradientSection">
+            <div class="in coin-head">
+                {% with user.profiles.preferred_currency.symbol as to_currency %}
+                <h1 class="total"> 
+                    {{user.profiles.preferred_currency.code}}
+
+                        {{ x.price|intcomma}}
+                    </h1>
+                    <h4 class="caption">
+                        <span class="iconbox text-{% if x.change_percent|startswith:'-' %}danger{% else %}success{% endif %}">
+                            <ion-icon name="caret-{% if x.change_percent|startswith:'-' %}down{% else %}up{% endif %}"></ion-icon>
+                        </span>
+                            {{x.change|intcomma}} <strong>({{x.change_percent}}%)</strong>
+                        
+                    </h4>
+
+                    <h4 class="caption">
+                        Balance: 
+                        <strong class="caption">
+                            {{user.profiles.preferred_currency.code}}
+                            
+                            {{stock_bal|intcomma}}
+                        </strong>
+                    </h4>
+
+                {% endwith %}
+            </div>
+
+            <!-- Buttons -->
+            <div class="section">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col">
+                                <a data-bs-toggle="modal" data-bs-target="#buyActionSheet" href="#" class="btn btn-block btn-lg btn-success">BUY</a>
+                            </div>
+                            <div class="col">
+                                {% if stock_bal <= 0 %}
+                                    <button  style="opacity: 0.5;" disabled data-bs-toggle="modal" class="btn btn-block btn-lg btn-danger">SELL</button>
+                                {% else %}
+                                    <a data-bs-toggle="modal" data-bs-target="#sellActionSheet" class="btn btn-block btn-lg btn-danger">SELL</a>
+                                {% endif %}
+
+                            </div>
+                        </div>
+                    </div>
+            
+                </div>
+            </div>
+            <!-- Buttons -->
+        </div>
+        <!-- * Coin Status -->
+        
+        
+
+        <!-- Stats -->
+         {% with user.profiles.preferred_currency.symbol as to_currency %}
+            <div class="section mt-2 mb-4">
+                <div class="card">
+                    <ul class="listview no-line transparent flush simple-listview">
+                        <li>
+                            <div class="text-muted">Company Name</div>
+                            <strong class="">{{x.name}}</strong>
+                        </li>
+                        <li>
+                            <div class="text-muted">Change</div>
+                            <strong class="text-{% if x.change_percent|startswith:'-' %}danger{% else %}success{% endif %}">{% if x.change_percent|startswith:'-' %}{% else %}+{% endif %}{{x.change_percent}}%</strong>
+                        </li>
+                        <li>
+                            <div class="text-muted">High Price</div>
+                            <strong>
+                                {{user.profiles.preferred_currency.code}}
+                                {% if to_currency == "EUR" %}
+                                    {{x.high|converter:"USD_GBP"|converter:"GBP_EUR"|intcomma}}
+                                {% elif to_currency == "GBP" %}
+                                    {{x.high|converter:"USD_GBP"|intcomma}}
+                                {% else %}
+                                    {{x.high|intcomma}}
+                                {% endif %}
+                            </strong>
+                        </li>
+                        <li>
+                            <div class="text-muted">Low Price</div>
+                            <strong>
+                                {{user.profiles.preferred_currency.code}}
+                                {% if to_currency == "EUR" %}
+                                    {{x.low|converter:"USD_GBP"|converter:"GBP_EUR"|intcomma}}
+                                {% elif to_currency == "GBP" %}
+                                    {{x.low|converter:"USD_GBP"|intcomma}}
+                                {% else %}
+                                    {{x.low|intcomma}}
+                                {% endif %}
+                            </strong>
+                        </li>
+                        <li>
+                            <div class="text-muted">24h Change</div>
+                            <strong>{{x.change}}</strong>
+                        </li>
+                        <li>
+                            <div class="text-muted">Market Cap/supply</div>
+                            <strong>
+                                {{user.profiles.preferred_currency.code}}
+                                {% if not x.market_cap or x.market_cap == "None" %}
+                                N/A
+                                {% else %}
+                                    {% if to_currency == "EUR" %}
+                                    {{x.market_cap|converter:"USD_GBP"|converter:"GBP_EUR"|intcomma}}
+                                    {% elif to_currency == "GBP" %}
+                                    {{x.market_cap|converter:"USD_GBP"|intcomma}}
+                                    {% else %}
+                                    {{x.market_cap|intcomma}}
+                                    {% endif %}
+                                {% endif %}
+                            </strong>
+                        </li>
+                    </ul>
+                </div>
+                <!-- <div class="card mt-2">
+                    <div class="card-body">
+                        <div class="row mb-05 fontsize-sub">
+                            <div class="col text-success"><strong>72% Buy</strong></div>
+                            <div class="col text-secondary text-end"><strong>26% Sell</strong></div>
+                        </div>
+                        <div class="progress">
+                            <div class="progress-bar bg-success" role="progressbar" style="width: 72%" aria-valuenow="72"
+                                aria-valuemin="0" aria-valuemax="100"></div>
+                            <div class="progress-bar bg-secondary" role="progressbar" style="width: 28%" aria-valuenow="28"
+                                aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+                    </div>
+                </div> -->
+            </div>
+        {% endwith %}
+        <!-- Stats -->
+         <!-- TradingView Widget BEGIN -->
+        <div class="tradingview-widget-container">
+        <div class="tradingview-widget-container__widget"></div>
+        <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-hotlists.js" async>
+            {
+            "colorTheme": "dark",
+            "dateRange": "12M",
+            "exchange": "US",
+            "showChart": true,
+            "locale": "en",
+            "width": "100%",
+            "height": "550",
+            "largeChartUrl": "",
+            "isTransparent": false,
+            "showSymbolLogo": true,
+            "showFloatingTooltip": true,
+            "plotLineColorGrowing": "rgba(41, 98, 255, 1)",
+            "plotLineColorFalling": "rgba(41, 98, 255, 1)",
+            "gridLineColor": "rgba(42, 46, 57, 0)",
+            "scaleFontColor": "rgba(219, 219, 219, 1)",
+            "belowLineFillColorGrowing": "rgba(41, 98, 255, 0.12)",
+            "belowLineFillColorFalling": "rgba(41, 98, 255, 0.12)",
+            "belowLineFillColorGrowingBottom": "rgba(41, 98, 255, 0)",
+            "belowLineFillColorFallingBottom": "rgba(41, 98, 255, 0)",
+            "symbolActiveColor": "rgba(255, 0, 255, 0.12)"
+            }
+        </script>
+        </div>
+        <!-- TradingView Widget END -->
+
+        <!-- Stocks -->
+        <div class="section mt-4">
+            <div class="section-heading">
+                <h2 class="title">My Stocks</h2>
+                <!-- <a href="#" class="link">View All</a> -->
+            </div>
+            <div class="card">
+                <ul class="listview flush transparent no-line image-listview detailed-list mt-1 mb-1">
+                    <!-- item -->
+                     {% for x in user_stocks %}
+                        <li>
+                            <a href="{% url 'stock_detail' x.stock.id %}" class="item">
+                                <div class="icon-box bg-success">
+                                    <ion-icon name="cash"></ion-icon>
+                                </div>
+                                <div class="in">
+                                    <div>
+                                        <strong>{{ x.stock.symbol|upper}}</strong>
+                                        <div class="text-small text-secondary">
+                                            {{x.date_added|date:"d M Y, H:i:s"}}
+                                        </div>
+                                    </div>
+                                    <div class="text-end">
+                                        <strong>
+                                            {{x.quantity|intcomma}}
+                                        </strong>
+                                        <div class="text-small">
+                                            {{user.profiles.preferred_currency.code}}
+                                            
+                                            {{x.total_worth|intcomma}}
+                                        </div>
+                                    </div>
+                                </div>
+                            </a>
+                        </li>
+                    {% empty %}
+                        <li>
+                            <a href="#" class="item">
+                                <div class="icon-box bg-danger">
+                                    <ion-icon name="arrow-down-outline"></ion-icon>
+                                </div>
+                                <div class="in">
+                                    <div>
+                                        <strong>No holdings</strong>
+                                        <div class="text-small text-secondary">You currently do not own any shares in any stock/commodity</div>
+                                    </div>
+                                    <div class="text-end">
+                                        <strong>{{user.profiles.preferred_currency.code}}00.00</strong>
+                                        <div class="text-small">
+                                            --:--
+                                        </div>
+                                    </div>
+                                </div>
+                            </a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+        <!-- Stocks -->
+        <div style="height: 350px; overflow: auto;">
+            <!-- Finlogix Widget BEGIN-->
+            <div class="finlogix-container"></div>
+            <script type="text/javascript" src="https://widget.finlogix.com/Widget.js" ></script>
+            <script type="text/javascript">
+                Widget.init({
+                    type: "SymbolChartList",
+                    language: "en",
+                    showBrand: true,
+                    isShowTradeButton: true,
+                    isShowBeneathLink: true,
+                    isShowDataFromACYInfo: true,
+                    symbolIDs: [
+                        5,
+                        19,
+                        44,
+                        70,
+                        52,
+                        10007,
+                        10014
+                    ],
+                    isAdaptive: true,
+                    withBorderBox: true
+                });
+            </script>
+            <!-- Finlogix Widget END-->
+        </div>
+
+        <!-- History -->
+        <div class="section my-4">
+            <div class="section-heading">
+                <h2 class="title">Stock related activities</h2>
+
+            </div>
+            <div class="card">
+                <ul style="overflow: auto; max-height: 400px;" class="listview flush transparent no-line image-listview detailed-list mt-1 mb-1">
+                    <!-- item -->
+                    {% for x in stock_transactions|slice:"10" %}
+                        <li>
+                            <a href="{% url 'transaction-details' 'Stock' x.id  %}" class="item">
+                                <div class="icon-box bg-{% if x.transaction_type == 'BUY' %}danger{% else %}success{% endif %}">
+                                    <ion-icon name="arrow-{% if x.transaction_type == 'BUY' %}up{% else %}down{% endif%}-outline"></ion-icon>
+                                </div>
+                                <div class="in">
+                                    <div>
+                                        <strong>{{x.transaction_type}}</strong>
+                                        <div class="text-small text-secondary">{{x.description}}</div>
+                                    </div>
+                                    <div class="text-end">
+                                        <strong>{{preferred_currency.code}}
+                                            {% with preferred_currency.symbol as to_currency %}
+                                                {% if to_currency == "EUR" %}
+                                                    {{x.amount|converter:"GBP_EUR"|intcomma}}
+                                                {% elif to_currency == "USD" %}
+                                                    {{x.amount|converter:"GBP_USD"|intcomma}}
+                                                {% else %}
+                                                    {{x.amount|intcomma}}
+                                                {% endif %}
+                                            {% endwith %}
+
+                                        </strong>
+                                        <div class="text-small">
+                                            {{x.date|date:"d M Y, H:i:s"}}
+                                        </div>
+                                    </div>
+                                </div>
+                            </a>
+                        </li>
+                    {% empty %}
+                        <li>
+                            <a href="#" class="item">
+                                <div class="icon-box bg-warning">
+                                    <ion-icon name="alert"></ion-icon>
+                                </div>
+                                <div class="in">
+                                    <div>
+                                        <strong>No activitiy</strong>
+                                        <div class="text-small text-secondary">You have not  bought or sold any stocks</div>
+                                    </div>
+                                    <div class="text-end">
+                                        <strong>{{preferred_currency.code}}0.00</strong>
+                                        <div class="text-small">
+                                            --:--
+                                        </div>
+                                    </div>
+                                </div>
+                            </a>
+                        </li>
+                    {% endfor %}
+                    <!-- * item -->
+
+                </ul>
+            </div>
+        </div>
+        <!-- History -->
+
+        <!-- app footer -->
+        <div class="appFooter">
+            <div class="footer-title">
+                Copyright © Lumis X  <div id="year"></div>. All Rights Reserved.
+                <script>
+                    const year = new Date().getFullYear();
+                    document.getElementById('year').innerHTML = year;
+                </script>
+            </div>
+            Lumis X offers online trading of complex derivative products with leverage and copy trading.
+        </div>
+        <!-- * app footer -->
+
+        <!-- Buy Action Sheet -->
+        <div class="modal fade action-sheet" id="buyActionSheet" tabindex="-1" role="dialog">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Buy {{x.name|truncatechars:"10"}} shares</h5>
+                    </div>
+                    <div class="modal-body">
+                        <div class="action-sheet-content">
+        
+                            <form id="buyStocksForm" method="post">
+                                <div class="form-group basic">
+                                    <div class="input-wrapper">
+                                        <label class="label" for="debitAccount">Debit Wallet</label>
+                                        <select data-name="Debit Wallet" name="debit_wallet" class="form-control custom-select" id="debitAccount">
+                                            <option value="profits">Profits ({{user.profiles.preferred_currency.code}}{{balance.profits|intcomma}})</option>
+                                            <option value="deposits">Deposits ({{user.profiles.preferred_currency.code}}{{balance.deposits|intcomma}})</option>
+                                        </select>
+                                    </div>
+                                    <div class="input-info">Select the wallet to debit for this purchase</div>
+                                </div>
+        
+                                <div class="form-group basic">
+                                    <label class="label">Enter Quantity</label>
+                                    <div class="input-group">
+                                        <input name="stock_quantity" data-name="Stock Quantity" id="quantity" type="text" class="form-control" placeholder="Enter quantity" >
+                                    </div>
+                                    <div class="input-info">Enter the quantity you want to buy</div>
+                                    <div id="costContainer" style="display: none;" class="input-info">{{preferred_currency.code}} <span id="cost"></span> ({{preferred_currency.symbol}})</div>
+                                </div>
+
+                                <div class="form-group basic">
+                                    <label class="label">Lock period</label>
+                                    <div style="display: flex; align-items: center; justify-content: space-between;" class="input-group ">
+                                        <input data-name="Lock Period" name="lock_period" id="lockPeriod" type="range" value="5"
+                                            min="30" step="30" max="1080" class="">
+                                        <span class="input-group-text" id="rangeValue">1 Month</span>
+                                    </div>
+                                    <div class="input-info">Specify the minimum period this stock must be held before it can be sold(in months)</div>
+                                </div>
+
+                                <div class="form-group basic">
+                                    <button type="submit" class="btn btn-primary btn-block btn-lg">Buy {{x.symbol}}</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- * Buy Action Sheet -->
+    
+        <!-- Sell Action Sheet -->
+        <div class="modal fade action-sheet" id="sellActionSheet" tabindex="-1" role="dialog">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Sell {{x.name|truncatechars:"10"}}</h5>
+                    </div>
+                    <div class="modal-body">
+                        <div class="action-sheet-content">
+        
+                            <form id="sellStocksForm" method="post">
+                                <div class="form-group basic">
+                                    <label class="label">Enter Quantity</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text" id="basic-addon1"></span>
+                                        <input data-name="Quantity" name="quantity" id="sellQuantity" type="text" class="form-control" placeholder="Enter quantity to sell">
+                                    </div>
+                                    <div class="cost-container" style="display: none;" class="input-info">
+                                        {{preferred_currency.code}} <span class="cost"></span> {{preferred_currency.symbol}}
+                                    </div>
+                                </div>
+                                <div class="form-group basic">
+                                    <button type="submit" class="btn btn-primary btn-block btn-lg"><span class="button-text">Sell {{x.symbol}}</span></button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- * Sell Action Sheet -->
+    </div>
+    <!-- * App Capsule -->
+
+    <!-- App Bottom Menu -->
+        <div class="appBottomMenu" style="position: fixed; z-index: 1; bottom: 0;">  
+            <a href="{% url 'home' %}" class="item ">
+                <div class="col">
+                    <ion-icon name="pie-chart-outline"></ion-icon>
+                    <strong>Overview</strong>
+                </div>
+            </a>
+            <a href="{% url 'cards' %}" class="item ">
+                <div class="col">
+                    <ion-icon name="card-outline"></ion-icon>
+                    <strong>My Cards</strong>
+                </div>
+            </a>
+            <a href="{% url 'menu' %}" class="item">
+                <div class="col">
+                    <div class="action-button">
+                        <ion-icon name="home"></ion-icon>
+                    </div>
+                </div>
+            </a>
+            <a href="{% url 'transactions' %}" class="item">
+                <div class="col">
+                    <ion-icon name="document-text-outline"></ion-icon>
+                    <strong>History</strong>
+                </div>
+            </a>
+            <a href="{% url 'settings' %}" class="item">
+                <div class="col">
+                    <ion-icon name="person-outline"></ion-icon>
+                    <strong>Me</strong>
+                </div>
+            </a>
+        </div>
+    <!-- * App Bottom Menu -->
+
+    <span style="display: none;" id="preloader" class="spinner-border mx-2 spinner-border-sm" role="status"
+        aria-hidden="true"></span>
+
+
+
+    <!-- ========= JS Files =========  -->
+    <!-- Bootstrap -->
+    <script src="{% static 'assets/js/lib/bootstrap.bundle.min.js' %}"></script>
+    <!-- Ionicons -->
+    <script type="module" src="https://cdnjs.cloudflare.com/ajax/libs/ionicons/5.5.2/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://cdnjs.cloudflare.com/ajax/libs/ionicons/5.5.2/ionicons/ionicons.js"></script>
+    <!-- Splide -->
+    <script src="{% static 'assets/js/plugins/splide/splide.min.js' %}"></script>
+    <!-- Base Js File -->
+    <script src="{% static 'assets/js/base.js' %}"></script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function(e){
+            function getCookie(name) {
+                let cookieValue = null;
+                if (document.cookie && document.cookie !== '') {
+                    const cookies = document.cookie.split(';');
+                    for (let i = 0; i < cookies.length; i++) {
+                        const cookie = cookies[i].trim();
+                        // Does this cookie string begin with the name we want?
+                        if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                            break;
+                        }
+                    }
+                }
+                return cookieValue;
+            }
+            const csrftoken = getCookie('csrftoken');
+            const goldList = [
+                "AAAU", "GOLD", "GLD", "IAU", "SGOL", "PHYS", "GOAU", "NEM", "AEM", "AUY",
+                "FNV", "RGLD", "GDX", "GDXJ", "OR", "EGO", "KGC", "BTG", "HL", "AU",
+                "SBGL", "DRD", "HMY", "CMCL", "NG", "SA", "MUX", "LODE", "GORO", "TGB",
+                "IAG", "AGI", "SSRM", "WPM", "SAND", "MMX", "USAU", "AUCOY", "OCANF",
+                "CALVF", "CGOOF", "GLDLF", "FILO", "TORXF", "XRA", "VGZ", "NAK", "LGDTF",
+                "SBB.TO", "GS"
+            ];
+            const buyStocksForm = document.getElementById('buyStocksForm');
+            const preloader = document.getElementById('preloader');
+
+            buyStocksForm.addEventListener('submit', async function(e){
+                e.preventDefault();
+                const sm = this.querySelectorAll('small');
+                if (sm) {
+                    sm.forEach(s => s.remove());
+                }
+                const button = this.querySelector('button[type="submit"]');
+                const formElements = this.elements;
+                for (let x = 0; x < formElements.length; x++) {
+                    const element = formElements[x];
+                    if (element.type !== "submit" && (!element.value || element.value.trim() === '')) {
+                        let sm = document.createElement('small');
+                        sm.classList.add('error');
+                        sm.innerHTML = `${element.dataset.name} is required`;
+                        element.parentElement.appendChild(sm);
+                        element.addEventListener('input', () => sm.remove(), {"once":true});
+                        return;
+                    }
+                }
+                if (parseInt(formElements['quantity'].value) <= 0) {
+                    let sm = document.createElement('small');
+                    sm.classList.add('error');
+                    sm.innerHTML = `Invalid quantity`;
+                    formElements['quantity'].parentElement.appendChild(sm);
+                    formElements['quantity'].addEventListener('input', () => sm.remove(), {"once":true});
+                    return;
+                }
+
+                const expectedQuantity = parseFloat(sessionStorage.getItem('requiredQuantity'));
+                const quantity = parseFloat(formElements['quantity'].value);
+                const stockSymbol = "{{x.symbol}}";
+                if (expectedQuantity && quantity < expectedQuantity && goldList.includes(stockSymbol)) {
+                    let sm = document.createElement('small');
+                    sm.classList.add('error');
+                    sm.innerHTML = `Minimum quantity: ${expectedQuantity} units.`;
+                    formElements['quantity'].parentElement.appendChild(sm);
+                    formElements['quantity'].addEventListener('input', () => sm.remove(), {"once":true});
+                    return;
+                }
+
+                const debitAccount = formElements['debit_wallet'];
+                const totalCost = parseFloat(sessionStorage.getItem('totalCost'));
+                let userBalance;
+
+                if (debitAccount.value === 'profits'){
+                    userBalance = parseFloat("{{balance.profits}}")
+                } else {
+                    userBalance = parseFloat("{{balance.deposits}}")
+                }
+
+
+                if (userBalance && userBalance < totalCost){
+                    let sm = document.createElement('small');
+                    sm.classList.add('error');
+                    sm.innerHTML = `Insufficient funds in your ${debitAccount.value} wallet.`;
+                    debitAccount.parentElement.appendChild(sm);
+                    debitAccount.addEventListener('change', () => sm.remove(), {"once":true});
+                    return;
+                } else if (!userBalance || userBalance === undefined) {
+                    let sm = document.createElement('small');
+                    sm.classList.add('warning');
+                    sm.innerHTML = `Unable to retrieve ${debitAccount.value} balance`;
+                    debitAccount.parentElement.appendChild(sm);
+                    debitAccount.addEventListener('change', () => sm.remove(), {"once":true});
+                    return;
+                }
+                
+                const formData = new FormData(this);
+                formData.append('stock_id', "{{x.pk}}");
+                formData.append('stock_symbol', "{{x.symbol}}");
+                formData.append('total_cost', totalCost);
+
+                const form_obj = {};
+
+
+                for (let [key, value] of formData.entries()){
+                    form_obj[key] = value;
+                }
+
+                sessionStorage.setItem('stockPurchase', JSON.stringify(form_obj));
+                console.log(form_obj);
+
+                const buttonText = button.textContent;
+
+                button.disabled = true;
+                button.innerHTML = "";
+                button.appendChild(preloader)
+                preloader.style.display = "flex";
+                window.location.href = "{% url 'confirm-stock-purchase' %}";
+            });
+
+
+            const sellStocksForm = document.getElementById('sellStocksForm');
+            sellStocksForm.addEventListener('submit', async function(e){
+                e.preventDefault();
+                const sm = this.querySelectorAll('small');
+                if (sm) {
+                    sm.forEach(s => s.remove());
+                }
+                const button = this.querySelector('button[type="submit"]');
+                const buttonText = button.querySelector('.button-text');
+                const formElements = this.elements;
+                for (let x = 0; x < formElements.length; x++) {
+                    const element = formElements[x];
+                    if (element.type !== "submit" && (!element.value || element.value.trim() === '')) {
+                        let sm = document.createElement('small');
+                        sm.classList.add('error');
+                        sm.innerHTML = `${element.dataset.name} is required`;
+                        element.parentElement.appendChild(sm);
+                        element.addEventListener('input', () => sm.remove(), {"once":true});
+                        return;
+                    }
+                }
+
+                const minQuantity = parseFloat('1');
+                const quantity = parseFloat(formElements['quantity'].value);
+                const availableQuantity = parseFloat("{{quantity}}");
+                if (quantity < minQuantity){
+                    let sm = document.createElement('small');
+                    sm.classList.add('error');
+                    sm.innerHTML = `Minimum quantity: ${minQuantity}`;
+                    formElements['quantity'].parentElement.appendChild(sm);
+                    formElements['quantity'].addEventListener('input', () => sm.remove(), {"once":true});
+                    return;
+
+                } else if (quantity > availableQuantity){
+                    let sm = document.createElement('small');
+                    sm.classList.add('error');
+                    sm.innerHTML = `Insufficient stock quantity`;
+                    formElements['quantity'].parentElement.appendChild(sm);
+                    formElements['quantity'].addEventListener('input', () => sm.remove(), {"once":true});
+                    return;
+
+                }
+                buttonText.textContent = 'Searching for trade partner...';
+                button.disabled = true;
+                button.prepend(preloader);
+                preloader.style.display = "flex";
+
+                const formData = new FormData(this);
+                const selling_price = sessionStorage.getItem('selling_price');
+                if (!selling_price) return;
+                formData.append('stock_id', "{{x.pk}}");
+                formData.append('stock_symbol', "{{x.symbol}}");
+                formData.append('selling_price', selling_price);
+                const form_obj = {};
+                for (let [key, value] of formData.entries()){
+                    form_obj[key] = value;
+                }
+                sessionStorage.setItem('stockSale', JSON.stringify(form_obj));
+                console.log(form_obj);
+                setTimeout(() => buttonText.textContent = 'Creating order...', 6000);
+                setTimeout(() => {
+                    this.reset();
+                    window.location.href = "{% url 'confirm-sell-stock' %}";
+                }, 13000);
+
+            });
+
+
+
+
+            document.getElementById('sellQuantity').addEventListener('input', function(e){
+                this.value = this.value.replace(/[^0-9.]/g, '');
+                if ((this.value.match(/\./g) || []).length > 1) {
+                    this.value = this.value.slice(0, -1);
+                }
+                const quantity = parseFloat(this.value);
+                const costElement = sellStocksForm.querySelector('.cost');
+                const costContainer = sellStocksForm.querySelector('.cost-container');
+                const to_currency = "{{ user.profiles.preferred_currency.symbol }}";
+    
+                const stockPrice = parseFloat("{{x.price}}");
+                const stockSymbol = "{{ x.symbol }}".trim().toUpperCase();
+                const availableQuantity = parseFloat("{{quantity}}");
+    
+                if (!quantity) {
+                    costElement.innerHTML = "";
+                    costContainer.style.display = "none";
+                    return;
+                };
+    
+                if (isNaN(quantity) || quantity <= parseFloat(0)) {
+                    costElement.innerHTML = "Invalid quantity";
+                    costContainer.style.display = "block";
+                    return;
+                }
+
+                if (quantity > availableQuantity) {
+                    costElement.innerHTML = `Available quantity: ${availableQuantity} units.`;
+                    costContainer.style.display = "block";
+                    return;
+                }
+                const totalCost = quantity * stockPrice;
+                costElement.innerHTML = `Total cost: ${totalCost.toFixed(2)}`;
+                costContainer.style.display = "block";
+                sessionStorage.setItem('selling_price', totalCost.toFixed(2));
+
+            });
+
+            document.getElementById('lockPeriod').addEventListener('input', function (e) {
+                const duration = parseInt(this.value);
+                const rangeValue = document.getElementById('rangeValue');
+
+                if (isNaN(duration) || duration <= 0) {
+                    rangeValue.innerHTML = "Invalid duration";
+                    return;
+                }
+
+                const years = Math.floor(duration / 360);
+                const remainingDaysAfterYears = duration % 360;
+                const months = Math.floor(remainingDaysAfterYears / 30);
+                const days = remainingDaysAfterYears % 30;
+
+                let formattedDuration = "";
+
+                if (years > 0) {
+                    formattedDuration += years + (years === 1 ? " year" : " years");
+                }
+
+                if (months > 0) {
+                    if (formattedDuration) formattedDuration += " & ";
+                    formattedDuration += months + (months === 1 ? " month" : " months");
+                }
+
+                if (days > 0) {
+                    if (formattedDuration) formattedDuration += " & ";
+                    formattedDuration += days + (days === 1 ? " day" : " days");
+                }
+
+                rangeValue.innerHTML = formattedDuration || "0 days";
+            });
+
+
+            document.getElementById("quantity").addEventListener('input', async function(e){
+                this.value = this.value.replace(/[^0-9.]/g, '');
+                if ((this.value.match(/\./g) || []).length > 1) {
+                    this.value = this.value.slice(0, -1);
+                }
+
+                const quantity = parseFloat(this.value);
+                const cost = document.getElementById('cost');
+                const costContainer = document.getElementById('costContainer');
+                const to_currency = "{{ preferred_currency.symbol }}";
+                const code = "{{ preferred_currency.code }}";
+
+                const price = parseFloat("{{x.price}}");
+
+                const stockSymbol = "{{ x.symbol }}".trim().toUpperCase(); 
+                const minPurchase = parseFloat("{{min_gold_purchase}}"); 
+                if (!quantity) {
+                    cost.innerHTML = "";
+                    costContainer.style.display = "none";
+                    return;
+                };
+
+                if (isNaN(quantity) || quantity <= parseFloat(0)) {
+                    cost.innerHTML = "Invalid quantity";
+                    costContainer.style.display = "block";
+                    return;
+                }
+                let total;
+                try{
+                    const response = await fetch("{% url 'calculate_total' %}", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                            "X-CSRFToken": csrftoken
+                        },
+                        body: JSON.stringify({
+                            quantity: quantity,
+                            stock_id: "{{ x.id }}"
+                        })
+                    });
+                    const data = await response.json();
+                    if (!data.success){
+                        cost.innerHTML = data.error || "An error occurred while calculating the total cost.";
+                        costContainer.style.display = "block";
+                        return;
+                    }
+                    total = parseFloat(data.total_cost);
+                }catch(e){
+                    console.error("Error:", e);
+                    cost.innerHTML = "An error occurred while calculating the total cost.";
+                    costContainer.style.display = "block";
+                    return;
+                }
+                if (isNaN(total)) {
+                    cost.innerHTML = "Invalid operation";
+                    costContainer.style.display = "block";
+                    return;
+                }
+
+                
+                const requiredQuantity = Math.ceil(minPurchase / price);
+                if (goldList.includes(stockSymbol) && total < minPurchase) {
+                    sessionStorage.setItem('requiredQuantity', requiredQuantity);
+                    cost.innerHTML = `Minimum purchase for this stock is ${code}${minPurchase}, You need at least ${requiredQuantity} units.`;
+                    costContainer.style.display = "block";
+                    return;
+                }
+
+                sessionStorage.setItem('requiredQuantity', requiredQuantity);
+                sessionStorage.setItem('totalCost', total.toFixed(2));
+                cost.innerHTML = `${total.toFixed(2)}`;
+                costContainer.style.display = "block";
+            })
+            
+
+            function showModal(modalID, timeout=null){
+                var modal = new bootstrap.Modal(document.getElementById(modalID), {
+                    keyboard: true
+                });
+                modal.show();
+                if(timeout){
+                    setTimeout(function(){
+                        modal.hide();
+                    }, timeout);
+                }
+            }
+
+            
+        })
+    </script>
+
+    <!-- <script>
+
+        var chartExample1 = {
+            series: [{
+                data: [512, 405, 666, 1090, 1309, 1400, 1500, 700, 1600, 1400, 1600, 2000, 1100, 501, 3000, 1000, 2000]
+            }],
+            chart: {
+                type: 'area',
+                width: '100%',
+                height: 140,
+                sparkline: {
+                    enabled: true
+                }
+            },
+            stroke: {
+                width: 2,
+            },
+            colors: ['#1DCC70'],
+            tooltip: {
+                enabled: false
+            }
+        };
+
+        var chartExample2 = {
+            series: [{
+                data: [512, 405, 666, 1090, 1309, 1400, 1500, 700, 1700, 1600, 1400, 1600]
+            }],
+            chart: {
+                type: 'area',
+                width: '100%',
+                height: 140,
+                sparkline: {
+                    enabled: true
+                }
+            },
+            stroke: {
+                width: 2,
+            },
+            colors: ['#1DCC70'],
+            tooltip: {
+                enabled: false
+            }
+        };
+
+        var chartExample3 = {
+            series: [{
+                data: [512, 405, 666, 1090, 1309, 1400, 1500, 700, 405, 666, 1090, 1309, 1400, 1500]
+            }],
+            chart: {
+                type: 'area',
+                width: '100%',
+                height: 140,
+                sparkline: {
+                    enabled: true
+                }
+            },
+            stroke: {
+                width: 2,
+            },
+            colors: ['#1DCC70'],
+            tooltip: {
+                enabled: false
+            }
+        };
+
+        var chartExample4 = {
+            series: [{
+                data: [512, 405, 666, 1090, 1309, 1400, 1500, 700, 1000, 2000, 512, 405, 666, 1090, 1309, 1400, 1500]
+            }],
+            chart: {
+                type: 'area',
+                width: '100%',
+                height: 140,
+                sparkline: {
+                    enabled: true
+                }
+            },
+            stroke: {
+                width: 2,
+            },
+            colors: ['#1DCC70'],
+            tooltip: {
+                enabled: false
+            }
+        };
+
+        var chartExample5 = {
+            series: [{
+                data: [512, 405, 666, 1090, 1309, 1400, 1309, 1400, 1500]
+            }],
+            chart: {
+                type: 'area',
+                width: '100%',
+                height: 140,
+                sparkline: {
+                    enabled: true
+                }
+            },
+            stroke: {
+                width: 2,
+            },
+            colors: ['#1DCC70'],
+            tooltip: {
+                enabled: false
+            }
+        };
+
+        document.addEventListener('DOMContentLoaded', function () {
+            document.querySelectorAll('.chart-example-1').forEach(chart => new ApexCharts(chart, chartExample1).render());
+            document.querySelectorAll('.chart-example-2').forEach(chart => new ApexCharts(chart, chartExample2).render());
+            document.querySelectorAll('.chart-example-3').forEach(chart => new ApexCharts(chart, chartExample3).render());
+            document.querySelectorAll('.chart-example-4').forEach(chart => new ApexCharts(chart, chartExample4).render());
+            document.querySelectorAll('.chart-example-5').forEach(chart => new ApexCharts(chart, chartExample5).render());
+        })
+
+    </script> -->
+
+</body>
+
+</html>

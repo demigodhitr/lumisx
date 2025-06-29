@@ -1,0 +1,174 @@
+{% load humanize %}
+{% load static %}
+{% load custom_filters %}
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, viewport-fit=cover" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#000000">
+    <title>Transactions</title>
+    <meta name="description"
+        content="Lumistakes is a trading platform that offers online trading of complex derivative cryptocurrencies with leverage and copy trading. Log in to your personal area to access your accounts, deposit or withdraw funds, and claim bonuses.">
+    <meta name="keywords"
+        content="Crypto, Cryptocurrency, best cryptocurrency, best performing crypto, best exchange 2025, worldwide trading, investments, how to invest safely, how to invest, how to invest online, how to invest, 2025, best cryptocurrency, how to withdraw crypto, buy crypto, sell crypto, convert crypto" />
+    <meta name="author" content="Lumistakes Team" />
+    <link rel="icon" type="image/png" href="{% static 'assets/img/favicon.png' %}" sizes="32x3">
+    <link rel="apple-touch-icon" sizes="180x180" href="{% static 'assets/img/icon/192x192.png' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/style.css' %}">
+    <link rel="manifest" href="{% static '__manifest.json' %}">
+</head>
+
+<body>
+
+    <!-- loader -->
+    <div id="loader">
+        <img src="{% static 'assets/img/loading-icon.png' %}" alt="icon" class="loading-icon">
+    </div>
+    <!-- * loader -->
+
+    <!-- App Header -->
+    <div class="appHeader">
+        <div class="left">
+            <a href="#" class="headerButton goBack">
+                <ion-icon name="chevron-back-outline"></ion-icon>
+            </a>
+        </div>
+        <div class="pageTitle">
+            Transactions
+        </div>
+        <div class="right">
+            <a href="{% url 'notifications' %}" class="headerButton">
+                <ion-icon class="icon" name="notifications-outline"></ion-icon>
+                <span class="badge badge-danger">{{ count }}</span>
+            </a>
+        </div>
+    </div>
+    <!-- * App Header -->
+
+
+    <!-- App Capsule -->
+    <div id="appCapsule">
+
+        <!-- Transactions -->
+        <div class="section mt-2">
+            <div class="section-title">All Transactions</div>
+            <div class="transactions">
+                {% for x in transactions%}
+                <!-- item -->
+                <a href="{% url 'transaction-details' x.activity_type x.id %}" class="item">
+                    <div class="detail">
+                        <img src="{% static 'assets/img/sample/brand/1.jpg' %}" alt="img" class="image-block imaged w48">
+                        <div>
+                            <strong>{% if x.activity_type == 'Activity' %} {{ x.activity }}
+                                {% elif x.activity_type == 'Stock' %}{% if x.transaction_type == "BUY" %}Bought{% else %}Sold{% endif %}
+                                {{ x.stock.symbol }} {% else %} {{ x.activity_type }} {% endif %}
+                            </strong>
+                            <p
+                                class="{% if x.status|in_list:'Completed,Confirmed,Approved,Paid' %} text-success{% elif x.status|in_list:'Processing,In progress,In Progress,Under review,Active' %} text-warning {% elif x.status|in_list:'Failed,Rejected' %} text-danger {% endif %}">
+                                {{ x.status }}
+                            </p>
+                        </div>
+                    </div>
+                    <div class="right">
+                        <div
+                            class="price {% if x.activity_type|in_list:'Deposit,Earnings' %} text-success {% elif x.activity_type == 'Stock' %} {% if x.transaction_type == 'BUY' %} text-danger {% else %} text-success {% endif %} {% else %} text-danger {% endif %}">
+                            {% with user.profiles.preferred_currency.symbol as to_currency %}
+                            {% if x.activity_type|in_list:'Deposit,Earnings' %}
+                            + {% elif x.activity_type == 'Stock' %}
+                            {% if x.transaction_type == "BUY" %} - {% else %} + {% endif %}
+                            {% else %}
+                            - {% endif %}
+                            {{ user.profiles.preferred_currency.code }}
+                            {% if to_currency == 'USD' %}
+                            {{ x.amount|converter:"GBP_USD"|intcomma }}
+                            {% elif to_currency == 'EUR' %}
+                            {{ x.amount|converter:"GBP_EUR"|intcomma }}
+                            {% else %}
+                            {{ x.amount }}
+                            {% endif %}
+                            {% endwith %}
+                            <p class="text-end">{{x.activity_date|time_since}}</p>
+                        </div>
+                    </div>
+                </a>
+                <!-- * item -->
+                {% empty %}
+                <!-- item -->
+                <a href="javascript:void(0)" class="item">
+                    <div class="detail">
+                        <img src="{% static 'assets/img/sample/brand/1.jpg' %}" alt="img" class="image-block imaged w48">
+                        <div>
+                            <strong>No Transactions</strong>
+                            <p>You have not made any transaction yet...</p>
+                        </div>
+                    </div>
+                    <div class="right">
+                        <div class="price text-danger"> - {{user.profiles.preferred_currency.code}} 0.00</div>
+                    </div>
+                </a>
+                <!-- * item -->
+                {% endfor %}
+            </div>
+        </div>
+        <!-- * Transactions -->
+
+
+    </div>
+    <!-- * App Capsule -->
+
+
+    <!-- App Bottom Menu -->
+        <div class="appBottomMenu" style="position: fixed; z-index: 1; bottom: 0;">  
+            <a href="{% url 'home' %}" class="item ">
+                <div class="col">
+                    <ion-icon name="pie-chart-outline"></ion-icon>
+                    <strong>Overview</strong>
+                </div>
+            </a>
+            <a href="{% url 'cards' %}" class="item ">
+                <div class="col">
+                    <ion-icon name="card-outline"></ion-icon>
+                    <strong>My Cards</strong>
+                </div>
+            </a>
+            <a href="{% url 'menu' %}" class="item">
+                <div class="col">
+                    <ion-icon name="home-outline"></ion-icon>
+                </div>
+            </a>
+            <a href="{% url 'transactions' %}" class="item">
+                <div class="col">
+                    <div class="action-button">
+                        <ion-icon name="document-text"></ion-icon>
+                    </div>
+                </div>
+            </a>
+            <a href="{% url 'settings' %}" class="item">
+                <div class="col">
+                    <ion-icon name="person-outline"></ion-icon>
+                    <strong>Me</strong>
+                </div>
+            </a>
+        </div>
+    <!-- * App Bottom Menu -->
+
+    <!-- ========= JS Files =========  -->
+    <!-- Bootstrap -->
+    <script src="{% static 'assets/js/lib/bootstrap.bundle.min.js' %}"></script>
+    <!-- Ionicons -->
+    <script type="module" src="https://cdnjs.cloudflare.com/ajax/libs/ionicons/5.5.2/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://cdnjs.cloudflare.com/ajax/libs/ionicons/5.5.2/ionicons/ionicons.js"></script>
+    <!-- Splide -->
+    <script src="{% static 'assets/js/plugins/splide/splide.min.js' %}"></script>
+    <!-- Base Js File -->
+    <script src="{% static 'assets/js/base.js' %}"></script>
+
+
+</body>
+
+</html>

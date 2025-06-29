@@ -1,0 +1,97 @@
+{% load custom_filters %}
+{% load humanize %}
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>We’re Back – And We Have Big News!</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 20px auto;
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .header {
+            text-align: center;
+            padding: 20px 0;
+        }
+
+        .header img {
+            max-width: 100%;
+        }
+
+        .content {
+            color: #333;
+            line-height: 1.6;
+            font-size: 16px;
+            padding: 20px;
+        }
+
+        .content h4 {
+            color: #6f1cf5;
+            text-align: center;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 14px;
+            color: #777;
+        }
+
+        .highlight {
+            color: #e67e22;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <img style="width: 100%;" src="https://i.ibb.co/VpSQgDpg/lumistake.png" alt="Logo">
+            <p style="color: #b1b1b1;">One new message</p>
+        </div>
+        
+        <!-- Email Content -->
+        <div class="content">
+            <h4>Dear {{user.get_full_name}},</h4>
+
+            <p>You have a new message from: <i><u>system</u></i></p>
+
+            <p>Here’s what’s new:</p>
+            <ul>
+                <li style="color: #6f1cf5;">🔔 <strong>{{instance.title}}:</strong><br> {{instance.message}}.</li>
+                
+            </ul>
+
+            <p> If you have any questions, feel free to reach out.</p>
+
+            <p>Thank you for being part of this journey! 🚀</p>
+
+            <p>Best Regards,</p>
+            <p><strong>The Lumistakes Team</strong></p>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            <p>Need help? Contact us at <a href="mailto:helpdesk247@lumisx.exchange">Our Support Mail</a></p>
+            <p>&copy; 2025 LumisX. All Rights Reserved.</p>
+        </div>
+    </div>
+</body>
+</html>

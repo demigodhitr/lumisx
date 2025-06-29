@@ -1,0 +1,106 @@
+{% load humanize %}
+{% load static %}
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, viewport-fit=cover" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#000000">
+    <title>Confirm passowrd reset</title>
+    <meta name="description"
+        content="Octa offers online trading of complex derivative products with leverage and copy trading. Log in to your personal area to access your accounts, deposit or withdraw funds, and claim bonuses.">
+    <meta name="keywords"
+        content="Octa offers online trading of complex derivative products with leverage and copy trading. Log in to your personal area to access your accounts, deposit or withdraw funds, and claim bonuses." />
+    <link rel="icon" type="image/png" href="{% static 'assets/img/favicon.png' %}" sizes="32x3">
+    <link rel="apple-touch-icon" sizes="180x180" href="{% static 'assets/img/icon/192x192.png' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/style.css' %}">
+    <link rel="manifest" href="{% static '__manifest.json' %}">
+</head>
+
+<body>
+
+    <!-- loader -->
+    <div id="loader">
+        <img src="{% static 'assets/img/loading-icon.png' %}" alt="icon" class="loading-icon">
+    </div>
+    <!-- * loader -->
+
+    <!-- App Header -->
+    <div class="appHeader no-border transparent position-absolute">
+        <div class="left">
+            <a href="#" class="headerButton goBack">
+                <ion-icon name="chevron-back-outline"></ion-icon>
+            </a>
+        </div>
+        <div class="pageTitle"></div>
+        <div class="right">
+        </div>
+    </div>
+    <!-- * App Header -->
+
+    <!-- App Capsule -->
+    <div id="appCapsule">
+
+        <div class="section mt-2 text-center">
+            <h1>Awesome</h1>
+            <h4>now create a new secure password</h4>
+        </div>
+        <div class="section mb-5 p-2">
+            <form method="post">
+                <div class="card">
+                    <div class="card-body pb-1">
+                        <div class="form-group basic">
+                            {% csrf_token %}
+                            {{ form.non_field_errors }}
+                            <div class="input-wrapper">
+                                {{ form.new_password1.errors }}
+                                <label class="label" for="newpassword1">New password</label>
+                                <input name="new_password1" type="password" class="form-control" id="newpassword1" placeholder="New password">
+                                <i class="clear-input">
+                                    <ion-icon name="close-circle"></ion-icon>
+                                </i>
+                            </div>
+                            
+                            <div class="input-wrapper">
+                                {{ form.new_password2.errors }}
+                                <label class="label" for="newpassword2">New password again</label>
+                                <input name="new_password2" type="password" class="form-control" id="newpassword2" placeholder="Confirm password">
+                                <i class="clear-input">
+                                    <ion-icon name="close-circle"></ion-icon>
+                                </i>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-button-group transparent">
+                    <button type="submit" class="btn btn-primary btn-block btn-lg">Reset Password</button>
+                </div>
+
+            </form>
+        </div>
+
+    </div>
+    <!-- * App Capsule -->
+
+
+    <!-- ========= JS Files =========  -->
+    <!-- Bootstrap -->
+    <script src="{% static 'assets/js/lib/bootstrap.bundle.min.js' %}"></script>
+    <!-- Ionicons -->
+    <script type="module" src="https://cdnjs.cloudflare.com/ajax/libs/ionicons/5.5.2/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://cdnjs.cloudflare.com/ajax/libs/ionicons/5.5.2/ionicons/ionicons.js"></script>
+    <!-- Splide -->
+    <script src="{% static 'assets/js/plugins/splide/splide.min.js' %}"></script>
+    <!-- Base Js File -->
+    <script src="{% static 'assets/js/base.js' %}"></script>
+
+
+</body>
+
+</html>

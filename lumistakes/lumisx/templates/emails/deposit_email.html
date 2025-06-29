@@ -1,0 +1,71 @@
+{% load custom_filters %}
+{% load humanize %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Deposit Confirmation</title>
+    <style>
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #fff;
+            border-radius: 10px;
+            padding: 20px;
+        }
+        th{
+            background-color: #6f1cf5;
+            color: #fff;
+        }
+    </style>
+</head>
+
+<body style="font-family: Arial, sans-serif; background-color: #fafafa;">
+    <div style="text-align: center;" class="container">
+        <img style="width: 100%;" src="https://i.ibb.co/VpSQgDpg/lumistake.png" alt="Logo">
+        <h1 style="color: #6f1cf5;">Deposit processing</h1>
+        <h4>Hello {{ user.get_full_name }},</h4>
+        <p>Your top up is currently being confirmed. kindly wait for follow-up updates on the status of your deposit.</p>
+        <p>For reference, see embedded deposit informations. </p>
+        <div style="width: 100%; overflow-x: auto;">
+            <table border="1" style="width: 300px; overflow: auto; border-collapse: collapse;">
+                <tr>
+                    <th>DEPOSIT AMOUNT</th>
+                    <th>DEPOSIT NETWORK</th>
+                    <th>DEPOSIT STATUS</th>
+                    <th>DEPOSIT ID</th>
+                    <th>DEPOSIT DATE</th>
+                </tr>
+                <tr>
+                    <td>
+                        {{ user.profiles.preferred_currency.code }}
+                        {% with user.profiles.preferred_currency.symbol as to_currency %}
+                            {% if to_currency != "GBP" %}
+                                {% if to_currency == "USD" %}
+                                    {{ instance.amount|converter:"GBP_USD"|intcomma }}
+                                {% elif to_currency == "EUR" %}
+                                    {{ instance.amount|converter:"GBP_EUR"|intcomma }}
+                                {% endif %}
+                            {% else %}
+                                {{ instance.amount|intcomma }}
+                            {% endif %}
+                        {% endwith %}
+                    </td>
+
+                    <td>{{ instance.network }}</td>
+                    <td>{{ instance.status }}</td>
+                    <td>{{ instance.deposit_id }}</td>
+                    <td>{{ instance.created_at }}</td>
+                </tr>
+            </table>
+        </div>
+        <p>To check the status of your Deposit, please log into your account >> navigate to the Transaction History section .</p>
+        <p>Thank you for choosing Lumistakes.</p>
+        <p>For inquiries, questions or complaints <a href="mailto:helpdesk247@lumisx.exchange?subject=Inquiry&body=Hello%20support%20team,%0A%0AI%20have%20an%20inquiry.">Contact support.</a></p>
+        <p style="text-align: center;">
+        <em>Copyright ©Lumistakes. All rights reserved.</em>
+        </p>
+    </div>
+</body>
+</html>

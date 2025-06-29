@@ -1,0 +1,931 @@
+{% load humanize %}
+{% load static %}
+{% load custom_filters %}
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, viewport-fit=cover" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#000000">
+    <title>My Cards</title>
+    <meta name="description"
+        content="Lumistakes is a trading platform that offers online trading of complex derivative cryptocurrencies with leverage and copy trading. Log in to your personal area to access your accounts, deposit or withdraw funds, and claim bonuses.">
+    <meta name="keywords"
+        content="Crypto, Cryptocurrency, best cryptocurrency, best performing crypto, best exchange 2025, worldwide trading, investments, how to invest safely, how to invest, how to invest online, how to invest, 2025, best cryptocurrency, how to withdraw crypto, buy crypto, sell crypto, convert crypto" />
+    <link rel="icon" type="image/png" href="{% static 'assets/img/favicon.png' %}" sizes="32x3">
+    <link rel="apple-touch-icon" sizes="180x180" href="{% static 'assets/img/icon/192x192.png' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/style.css' %}">
+    <link rel="manifest" href="{% static '__manifest.json' %}">
+</head>
+
+    <!-- loader -->
+    <div id="loader">
+        <img src="{% static 'assets/img/loading-icon.png' %}" alt="icon" class="loading-icon">
+    </div>
+    <!-- * loader -->
+
+    <!-- App Header -->
+    <div class="appHeader">
+        <div class="left">
+            <a href="#" class="headerButton goBack">
+                <ion-icon name="chevron-back-outline"></ion-icon>
+            </a>
+        </div>
+        <div class="text-center pageTitle">
+            My Cards
+            <p style="font-size: 8px; letter-spacing: 3px;">Create/Manage virtual cards</p>
+        </div>
+        <div class="right">
+            <a href="#" class="headerButton" data-bs-toggle="modal" data-bs-target="#addCardActionSheet">
+                <ion-icon name="add-outline"></ion-icon>
+            </a>
+        </div>
+    </div>
+    <!-- * App Header -->
+
+
+    <!-- Add Card Action Sheet -->
+    <div class="modal fade action-sheet" id="addCardActionSheet" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Create A New Virtual Card</h5>
+                </div>
+                <div class="modal-body">
+                    <div class="action-sheet-content">
+                        <form id="requestCardForm">
+                            <div class="form-group basic">
+                                <div class="input-wrapper">
+                                    <label class="label" for="cardName">Card Holder's Name</label>
+                                    <input data-name="Card Holder's Full Name" name="card-holder" type="text" id="cardName" class="form-control"
+                                        placeholder="Enter Card Holder's Full Name">
+                                </div>
+                            </div>
+
+                            <div class="form-group basic">
+                                <div class="input-wrapper">
+                                    <label class="label" for="cardAmount">Funding Amount</label>
+                                    <input data-name="Funding Amount" name="funding-amount" type="text" id="cardAmount" class="form-control" placeholder="Enter initial funding amount. min: 1,000.00">
+                                </div>
+                            </div>
+
+                            <div style="display: flex; align-items: center;" class="text-start">
+                                <ion-icon class="text-warning" name="alert-circle">
+                                </ion-icon>
+                                <small style="font-size: 10px;" class="text-warning"> Card creation fee : </small>
+                                <span style="font-size: 12px;" class="text-warning"> {{user.profiles.preferred_currency.code}} 
+                                {% if user.profiles.preferred_currency.symbol == 'USD' %}
+                                    {{user.accesssettings.crypto_card_price|converter:"GBP_USD"|intcomma}}
+                                {% elif user.profiles.preferred_currency.symbol == 'EUR' %}
+                                    {{user.accesssettings.crypto_card_price|converter:"GBP_EUR"|intcomma}}
+                                {% else %}
+                                    {{user.accesssettings.crypto_card_price|intcomma}}
+                                {% endif %}</span>
+                            </div>
+                            <div id="totalCostContainer" style="display: none; align-items: center;" class="text-start">
+                                <ion-icon class="text-warning" name="alert-circle">
+                                </ion-icon>
+                                <small style="font-size: 10px;" class="text-warning">Total:</small>
+                                <span id="totalCost" style="font-size: 12px;" class="text-warning"></span>
+                            </div>
+
+
+                            <div class="form-group basic mt-2">
+                                <button id="cardRequestButton" type="submit" class="btn btn-primary btn-block btn-lg">
+                                    <span id="requestLoader" style="display: none; height: 30px; width: 30px;" class="spinner-border spinner-border-sm"
+                                        role="status" aria-hidden="true"></span>
+                                    Create</button>
+                                    <button data-bs-dismiss="modal" hidden id="closeButton"></button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- * Add Card Action Sheet -->
+
+    <!-- Fund Card Action Sheet -->
+    <div class="modal fade action-sheet" id="fundCardActionSheet" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Fund Your Virtual Card</h5>
+                </div>
+                <div class="modal-body">
+                    <div class="action-sheet-content">
+                        <form id="fundCardForm">
+                            <button style="display: none; opacity: 0;" data-bs-dismiss="modal" class="dismiss" type="button"></button>
+
+                            <div class="form-group basic">
+                                <div class="input-wrapper">
+                                    <label class="label" for="fundingAmount">Amount</label>
+                                    <input data-name="Funding Amount" name="funding-amount" type="text" id="fundingAmount" class="form-control"
+                                        placeholder="Enter funding amount">
+                                </div>
+                            </div>
+                            <div class="form-group basic">
+                                <div class="input-wrapper">
+                                    <label class="label" for="debitAccount">Debit Account</label>
+                                    <select data-name="Debit Account" name="debit-account" class="form-control custom-select" id="debitAccount">
+                                        <option value="profit">Profits Wallet</option>
+                                        <option value="deposit">Deposit Wallet</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group basic mt-2">
+                                <button id="fundingBtn" type="submit" class="btn btn-primary btn-block btn-lg">
+                                    <span id="fundingLoader" style="display: none; height: 30px; width: 30px;" class="spinner-border spinner-border-sm"
+                                        role="status" aria-hidden="true"></span>
+                                    Fund Card
+                                </button>
+                                <button data-bs-dismiss="modal" hidden id="closeButton"></button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- * Fund Card Action Sheet -->
+
+    <!-- Defund Card Action Sheet -->
+    <div class="modal fade action-sheet" id="defundCardActionSheet" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Defund Your Virtual Card</h5>
+                </div>
+                <div class="modal-body">
+                    <div class="action-sheet-content">
+                        <form id="defundCardForm">
+                            <button style="display: none; opacity: 0;" data-bs-dismiss="modal" class="dismiss" type="button"></button>
+
+                            <div class="form-group basic">
+                                <div class="input-wrapper">
+                                    <label class="label" for="defundingAmount">Amount</label>
+                                    <input data-name="Funding Amount" name="defunding-amount" type="text" id="defundingAmount" class="form-control"
+                                        placeholder="Enter amount to defund">
+                                </div>
+                            </div>
+                            <div class="form-group basic">
+                                <div class="input-wrapper">
+                                    <label class="label" for="creditAccount">Credit Account</label>
+                                    <select data-name="Debit Account" name="credit-account" class="form-control custom-select" id="creditAccount">
+                                        <option value="profit">Profits Wallet</option>
+                                        <option value="deposit">Deposit Wallet</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group basic mt-2">
+                                <button id="defundingBtn" type="submit" class="btn btn-primary btn-block btn-lg">
+                                    <span id="defundingLoader" style="display: none; height: 30px; width: 30px;" class="spinner-border spinner-border-sm"
+                                        role="status" aria-hidden="true"></span>
+                                    Defund Card
+                                </button>
+                                <button data-bs-dismiss="modal" hidden id="closeButton"></button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- * Defund Card Action Sheet -->
+
+    <!-- App Capsule -->
+    <div id="appCapsule">
+
+        <div class="section mt-2">
+
+            <!-- card block -->
+             {% for x in cards %}
+                <div class="card-block mb-2">
+                <div class="card-main">
+                    <div class="card-button dropdown">
+                        <button type="button" class="btn btn-link btn-icon" data-bs-toggle="dropdown">
+                            <ion-icon name="ellipsis-horizontal"></ion-icon>
+                        </button>
+                        <div class="dropdown-menu dropdown-menu-end">
+                            {% if x.can_fund %}
+                                <a onclick="triggerModal('fundCardActionSheet', '{{x.pk}}')" id="fundCard" data-key="{{x.pk}}" class="dropdown-item" href="#">
+                                    <ion-icon name="arrow-down-circle"></ion-icon>Fund
+                                </a>
+                            {% endif %}
+                            {% if x.can_defund %}
+                                <a onclick="triggerModal('defundCardActionSheet', '{{x.pk}}')" id="defundCard" data-key="{{x.pk}}" class="dropdown-item" href="#">
+                                    <ion-icon name="arrow-up-circle"></ion-icon>Defund
+                                </a>
+                            {% endif %}
+                            <a class="dropdown-item" href="#">
+                                <div id="cardStatus" style="display: flex; align-items: center;" class="form-check cardStatus form-switch">
+                                    <span class="card-status">{{x.card_status}}</span>
+                                    {% if x.card_status == "Activated" %}
+                                    <input checked data-key="{{x.pk}}"  class="togglerInput form-check-input" type="checkbox" >
+                                    <label class="form-check-label label" for="togglerInput">   </label>
+                                    {% else %}
+                                    <input data-key="{{x.pk}}" class="togglerInput form-check-input" type="checkbox">
+                                    <label class="form-check-label label" for="togglerInput">   </label>
+                                    {% endif %}
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="balance">
+                        <span class="label">BALANCE</span>
+                        <h1 class="title">{{user.profiles.preferred_currency.code}}
+                            {{x.converted_balance}}
+                        </h1>
+                    </div>
+                    <div class="in">
+                        <div class="card-number">
+                            <span class="label">Card Number</span>
+                            {{x.card_number|space}}
+                        </div>
+                        <div class="bottom">
+                            <div class="card-expiry">
+                                <span class="label">Expiry</span>
+                                {{x.expiry_date|date:"m / Y"}}
+                            </div>
+                            <div class="card-ccv">
+                                <span class="label">CCV</span>
+                                {{x.cvv}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                </div>
+            {% empty %}
+                <div class="card-block mb-2">
+                    <div class="card-main">
+                        <div class="card-button dropdown">
+                            <button type="button" class="btn btn-link btn-icon" data-bs-toggle="dropdown">
+                                <ion-icon name="ellipsis-horizontal"></ion-icon>
+                            </button>
+                            <div class="dropdown-menu dropdown-menu-end">
+                                <a data-key="{{x.pk}}" class="dropdown-item" href="#">
+                                    <ion-icon name="arrow-down-circle"></ion-icon>Fund
+                                </a>
+                                <a data-key="{{x.pk}}" class="dropdown-item" href="#">
+                                    <ion-icon name="arrow-up-circle"></ion-icon>Defund
+                                </a>
+                                <a data-key="{{x.pk}}" class="dropdown-item" href="#">
+                                    <div style="display: flex; align-items: center;" class="form-check form-switch">
+                                        Activate/Deactivate
+                                        <input class="form-check-input" type="checkbox" id="cardStatus">
+                                        <label class="form-check-label" for="cardStatus"></label>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="balance">
+                            <span class="label">BALANCE</span>
+                            <h1 class="title">
+                                {{user.profiles.preferred_currency.code}}
+                                0.00
+                            </h1>
+                        </div>
+                        <div class="in">
+                            <div class="card-number">
+                                <span class="label">Card Number</span>
+                                1234 5678 91011 1213
+                                <div class="bottom">
+                                    <div class="card-expiry">
+                                        <span class="label">Expiry</span>
+                                        01/27
+                                    </div>
+                                    <div class="card-ccv">
+                                        <span class="label">CCV</span>
+                                        Unactivated
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <p class="text-center">To request a new card, click on the + icon at the top right of this screen</p>
+                </div>
+
+            <!-- * card block -->
+             {% endfor %}
+
+        </div>
+
+
+    </div>
+    <!-- * App Capsule -->
+
+    <!-- success dialog -->
+    <div class="modal fade dialogbox" id="successModal" data-bs-backdrop="static" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-icon text-success">
+                    <ion-icon name="checkmark-circle"></ion-icon>
+                </div>
+                <div class="modal-header">
+                    <h5 class="modal-title">Success</h5>
+                </div>
+                <div class="modal-body message">
+                    Your payment has been sent.
+                </div>
+                <div class="modal-footer">
+                    <div class="btn-inline">
+                        <a href="#" class="btn" data-bs-dismiss="modal">CLOSE</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- * success dialog -->
+
+    <!-- error dialog -->
+     <div class="modal fade dialogbox" id="errorModal" data-bs-backdrop="static" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-icon text-danger">
+                    <ion-icon name="close-circle"></ion-icon>
+                </div>
+                <div class="modal-header">
+                    <h5 class="modal-title">Error</h5>
+                </div>
+                <div class="modal-body message">
+                    An error occurred. Please try again later.
+                </div>
+                <div class="modal-footer">
+                    <div class="btn-inline">
+                        <a href="#" class="btn" data-bs-dismiss="modal">CLOSE</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- * error dialog -->
+
+    <!-- toast danger -->
+    <div id="feedbackError" class="toast-box toast-top bg-danger">
+        <div class="in">
+            <div class="message">
+                Danger Color
+            </div>
+        </div>
+        <button type="button" class="btn btn-sm btn-text-light close-button">OK</button>
+    </div>
+    <!-- * toast danger -->
+
+    <!-- toast success -->
+    <div id="feedbackSuccess" class="toast-box toast-top bg-success">
+        <div class="in">
+            <div class="message">
+                Success Color
+            </div>
+        </div>
+        <button type="button" class="btn btn-sm btn-text-light close-button">OK</button>
+    </div>
+    <!-- * toast success -->
+
+    <!-- Authorizaion Action Sheet -->
+    <div style="text-align: center;" class="modal fade" id="authorizationModal" tabindex="-1" role="dialog"
+        aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div style="text-align: center !important;" class="modal-header">
+                    <h5 class="modal-title" id="modalTitle">Authorize Request</h5>
+                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div style="text-align: center;" class="modal-body">
+                    <p class="message"></p>
+                </div>
+                <div style="display: none;" class="pin-section">
+                    <label class="label" for="pin">Card PIN</label>
+                    <div class="form-group basic">
+                        <input name="pin" type="password" class="form-control verification-input" id="PIN" placeholder="••••" maxlength="4">
+                    </div>
+                </div>
+                <div style="display: flex; justify-content: space-around " class="modal-footer">
+                    <button id="reject" type="button" class="close btn btn-secondary"
+                        data-bs-dismiss="modal">CANCEL</button>
+                    <button id="resolve" type="button" class="btn btn-primary">SEND</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- App Bottom Menu -->
+        <div class="appBottomMenu" style="position: fixed; z-index: 1; bottom: 0;">  
+            <a href="{% url 'home' %}" class="item ">
+                <div class="col">
+                    <ion-icon name="pie-chart-outline"></ion-icon>
+                    <strong>Overview</strong>
+                </div>
+            </a>
+            <a href="{% url 'cards' %}" class="item">
+                <div class="col">
+                    <div class="action-button">
+                        <ion-icon name="card"></ion-icon>
+                    </div>
+                </div>
+            </a>
+            <a href="{% url 'menu' %}" class="item">
+                <div class="col">
+                        <ion-icon name="home-outline"></ion-icon>
+                </div>
+            </a>
+            <a href="{% url 'transactions' %}" class="item">
+                <div class="col">
+                    <ion-icon name="document-text-outline"></ion-icon>
+                    <strong>History</strong>
+                </div>
+            </a>
+            <a href="{% url 'settings' %}" class="item">
+                <div class="col">
+                    <ion-icon name="person-outline"></ion-icon>
+                    <strong>Me</strong>
+                </div>
+            </a>
+        </div>
+    <!-- * App Bottom Menu -->
+
+
+    <!-- ========= JS Files =========  -->
+    <!-- Bootstrap -->
+    <script src="{% static 'assets/js/lib/bootstrap.bundle.min.js' %}"></script>
+    <!-- Ionicons -->
+    <script type="module" src="https://cdnjs.cloudflare.com/ajax/libs/ionicons/5.5.2/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://cdnjs.cloudflare.com/ajax/libs/ionicons/5.5.2/ionicons/ionicons.js"></script>
+    <!-- Splide -->
+    <script src="{% static 'assets/js/plugins/splide/splide.min.js' %}"></script>
+    <!-- Base Js File -->
+    <script src="{% static 'assets/js/base.js' %}"></script>
+    <script>
+
+    function triggerModal(modalId, key){
+        if (!key){
+            key = document.getElementById(modalId).getAttribute('data-key');
+        }
+        if(!key){
+            console.error('No key provided for the modal');
+            return;
+        }
+        const modalElement = document.getElementById(modalId);
+        sessionStorage.setItem('cardId', key);
+        console.log(sessionStorage.getItem('cardId'));
+        const modal = new bootstrap.Modal(modalElement);
+        modal.show();
+    }
+
+        document.addEventListener("DOMContentLoaded", function(e){
+            function getCookie(name) {
+                let cookieValue = null;
+                if (document.cookie && document.cookie !== '') {
+                    const cookies = document.cookie.split(';');
+                    for (let i = 0; i < cookies.length; i++) {
+                        const cookie = cookies[i].trim();
+                        // Does this cookie string begin with the name we want?
+                        if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                            break;
+                        }
+                    }
+                }
+                return cookieValue;
+            }
+            const csrftoken = getCookie('csrftoken');
+
+
+            const form = document.getElementById("requestCardForm");
+            const successDialog = document.getElementById("successModal");
+            const errorDialog = document.getElementById("errorModal");
+
+            const successToast = document.getElementById("feedbackSuccess");
+            const errorToast = document.getElementById("feedbackError");
+
+            form.addEventListener("submit", async function(e){
+                e.preventDefault();
+                this.querySelectorAll('small').forEach(small => small.remove());
+                const button = this.querySelector('button[type="submit"]');
+                const preloader = document.getElementById('requestLoader');
+
+                const formElements = this.elements;
+
+                for (let i = 0; i < formElements.length; i++) {
+                    const element = formElements[i];
+                    if (element.type !== 'submit' && element.value.trim() === ''){
+                        const small = document.createElement('small');
+                        small.style.color ='red';
+                        small.textContent = `You have not entered the ${element.dataset.name}`;
+                        element.parentElement.appendChild(small);
+                        element.addEventListener('input', function(e) {
+                            this.parentElement.querySelector('small').remove();
+                        }, {'once': true});
+                        return false;
+                    }
+                }
+                const totalCost = sessionStorage.getItem('totalCost') ||  null;
+                if (!totalCost)return;
+                const balance = parseFloat("{{balance.deposits}}");
+                if (totalCost > balance){
+                    const element = form.elements['funding-amount'];
+                    const small = document.createElement('small');
+                    small.style.color = 'red';
+                    small.textContent = `Insufficient funds`;
+                    element.parentElement.appendChild(small);
+                    element.addEventListener('input', function(e) {
+                        this.parentElement.querySelector('small').remove();
+                    }, {'once': true});
+                    return;
+                }
+                try{
+                   document.getElementById("closeButton").click();
+                   const msg = "You will be charged from your deposit balance directly for this request. you cannot change the debit account. Your card request may still undergo manual review for compliance. Click PROCEED to continue with your request or CANCEL to go back."
+                    const authorization = await authorizeRequest(msg);
+
+                    loader.style.display = 'flex';
+
+                    const url = "{% url 'getcard' %}"
+                    const formData = new FormData(this);
+
+                    const request = await fetch(url, {
+                        method: 'POST',
+                        body: formData,
+                        headers: {
+                            'X-CSRFToken': csrftoken,
+                        }
+                    });
+                    const response = await  request.json();
+                    if(response.success){
+                        successDialog.querySelector('.message').textContent = response.success;
+                        showModal(successDialog.id, 15000)
+
+                    } else {
+                        errorDialog.querySelector('.message').textContent = response.error;
+                        showModal(errorDialog.id, 20000)
+                    }
+                    
+                }catch(e){
+                    errorToast.querySelector('.message').textContent = "An error occurred while processing your request. Please try again later.";
+                    toastbox(errorToast.id, 10000)
+                } finally {
+                    setTimeout(()=>{
+                        loader.style.display = "none";
+                        button.disabled = false;
+                        form.reset();
+                    })
+                }
+            });
+
+            function showModal(modalID, timeout=null) {
+                const modal = new bootstrap.Modal(document.getElementById(modalID));
+                modal.show();
+                if (timeout){
+                    setTimeout(() => {
+                        modal.hide();
+                    }, timeout);
+                }
+            }
+
+            document.getElementById("cardAmount").addEventListener("input", (e) => {
+                const creationFee = parseFloat("{{creation_fee}}");
+                const min_funding = parseFloat("{{min_funding}}");
+                const totalCostContainer = document.getElementById("totalCostContainer");
+                const totalCostElement = document.getElementById("totalCost");
+                const currencyCode = "{{user.profiles.preferred_currency.code}}";
+                const availableBalance = parseFloat('{{balance.deposits}}')
+                let value = e.target.value;
+                let isValid = true;
+                
+
+
+                if (!value){
+                    totalCostElement.innerHTML = "";
+                    totalCostContainer.style.display = "none";
+                    isValid = false;
+                    return;
+                }
+
+                // Remove non-numeric characters except for a single period (.)
+                value = value.replace(/[^0-9.]/g, '');
+
+                // Ensure only one decimal point is allowed
+                const parts = value.split('.');
+                if (parts.length > 2) {
+                    value = parts[0] + '.' + parts.slice(1).join('');
+                }
+
+                // Prevent multiple leading zeroes (except for decimals like "0.5")
+                if (value.startsWith("00")) {
+                    value = value.slice(1);
+                } else if (value.startsWith("0") && value.length > 1 && value[1] !== ".") {
+                    value = value.slice(1);
+                }
+
+                // Ensure a leading zero for decimal inputs like ".5"
+                if (value.startsWith(".")) {
+                    value = "0" + value;
+                }
+
+                // Update input field with sanitized value
+                e.target.value = value;
+                const fundingAmount = parseFloat(value);
+                const totalCost = parseFloat(fundingAmount + creationFee);
+
+                if (parseFloat(fundingAmount) < min_funding) {
+                    totalCostElement.innerHTML = `Less than minimum: ${currencyCode}${min_funding}`;
+                    totalCostContainer.style.display = 'flex';
+                    isValid = false;
+                } 
+
+                if (totalCost > availableBalance){
+                    totalCostElement.innerHTML = `Insufficient funds: ${currencyCode}${availableBalance}. Total Cost: ${totalCost.toFixed(2)}`;
+                    totalCostContainer.style.display = 'flex';
+                    isValid = false;
+                
+                } else {
+                    isValid = true;
+                }
+                if (!isValid){
+                    document.getElementById("cardRequestButton").disabled = true;
+                    return;
+                } 
+                else {
+                    document.getElementById("cardRequestButton").disabled = false;
+                }
+
+                
+                totalCostElement.innerHTML = `${currencyCode}${totalCost.toFixed(2)}`;
+                totalCostContainer.style.display = 'flex';
+                sessionStorage.setItem('totalCost', totalCost)
+            });
+
+            function authorizeRequest(msg, type=null) {
+                return new Promise((resolve, reject) => {
+                    const modalElement = document.getElementById('authorizationModal');
+                    modalElement.querySelector('.message').textContent = msg;
+                    const modal = new bootstrap.Modal(modalElement);
+                    if (type !== null){
+                        const pinSection = modalElement.querySelector('.pin-section');
+                        pinSection.style.display = 'block';
+                    }
+                    modal.show();
+                    const resolveButton = modalElement.querySelector('#resolve');
+                    const closeButton = modalElement.querySelectorAll('.close');
+                    closeButton.forEach(close => close.addEventListener('click', () => {
+                        reject('Authorization Canceled')
+                    }))
+                    resolveButton.addEventListener('click', function (e) {
+                        e.preventDefault(); 
+                        if (type !== null) {
+                            const pinInput = modalElement.querySelector("#PIN");
+                            if (!pinInput.value || pinInput.value.length < 4) {
+                                const existingColor = pinInput.style.borderColor;
+                                pinInput.style.borderColor = 'red';
+                                pinInput.value = '';
+                                pinInput.addEventListener('input', () => {
+                                    if (pinInput.value.length === 4) {
+                                        pinInput.style.borderColor = existingColor;
+                                    }
+                                }, { 'once': true });
+                                return;
+                            }
+                            const pin = pinInput.value;
+                            const url = '{% url "authorize" %}';
+                            fetch(url, {
+                                method: 'POST',
+                                body: JSON.stringify({ 'pin': pin, 'toggle':type === 'cardStatus' }),
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                    'X-CSRFToken': csrftoken
+                                }
+                            })
+                                .then(response => response.json())
+                                .then(data => {
+                                    if (data.success) {
+                                        modal.hide();
+                                        resolve(data.success);
+
+                                    } else {
+                                        pinInput.value = '';
+                                        errorToast.querySelector('.message').innerHTML = data.error;
+                                        toastbox(errorToast.id, 10000);
+                                        modal.hide();
+                                        reject(data.error);
+                                        return;
+                                    }
+                                })
+                                .catch((e) => {
+                                    console.error(`An error occurred while processing request: ${e.toString()}`);
+                                    modal.hide();
+                                    reject('An error occurred...');
+                                })
+                                .finally(() => {
+                                    pinInput.value = '';
+                                });
+                        } else {
+                            modal.hide();
+                            resolve('Authorization Granted');
+                        }
+                    });
+                });
+            }
+            
+            document.querySelectorAll(".cardStatus").forEach(card => {
+                card.addEventListener("click", async function (e){
+                    e.preventDefault();
+                    try {
+                        const toggler = this.querySelector(".togglerInput");
+                        const cardStatus = toggler.checked ? "Blocked" : "Activated";
+                        const msg = "Please enter your current preferred card PIN";
+                        const authorization = await authorizeRequest(msg, 'cardStatus');
+                        if (authorization){
+                            const url = "{% url 'togglecard' %}";
+                            const toggle = await fetch(url, {
+                                method: 'POST',
+                                body: JSON.stringify({ 'status': cardStatus, 'id': toggler.dataset.key }),
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                    'X-CSRFToken': csrftoken
+                                }
+                            });
+                            const result = await toggle.json();
+                            if (result.success) {
+                                toggler.checked = !toggler.checked;
+                                successToast.querySelector('.message').innerHTML = result.success;
+                                document.querySelector(".card-status").innerHTML = cardStatus;
+                                toastbox(successToast.id, 10000);
+                            }
+                            else {
+                                errorToast.querySelector('.message').textContent = result.error;
+                                toastbox(errorToast.id, 10000)
+                                return;
+                                
+                            }
+    
+                            
+                        }
+                    } catch (e) {
+                        console.log(`An error occurred, details: ${e}`);
+                        errorToast.querySelector('.message').innerHTML = e;
+                        toastbox(errorToast.id, 10000)
+                    }
+                });
+            });
+           
+            const fundCardForm = document.getElementById("fundCardForm");
+            fundCardForm.addEventListener("submit", async function (e){
+                e.preventDefault();
+
+                const accountInput = this.elements['debit-account'];
+                const amountInput = this.elements['funding-amount'];
+                if (accountInput.value === ''){
+                    errorToast.querySelector('.message').innerHTML = "Please select a debit account";
+                    toastbox(errorToast.id, 5000);
+                    return false;
+                }
+                if (amountInput.value === '' || isNaN(amountInput.value)){
+                    errorToast.querySelector('.message').innerHTML = "Please enter the amount you want to fund";
+                    toastbox(errorToast.id, 5000);
+                    return false;
+                }
+                if (parseFloat(amountInput.value) < 100){
+                    errorToast.querySelector('.message').innerHTML = "Enter figures from 100+";
+                    toastbox(errorToast.id, 5000);
+                    return false;
+                }
+                
+                // posting...
+                try {
+                    document.getElementById('fundCardActionSheet').querySelector('.dismiss').click();
+                    const msg = "To complete this transaction, kindly prove your identity using your preferred card PIN.";
+                    const authorizationResult = await authorizeRequest(msg, 'fundCard');
+                    if (authorizationResult) {
+                        const amount = amountInput.value;
+                        const account = accountInput.value;
+                        const id = sessionStorage.getItem('cardId');
+                        if (!id){
+                            errorToast.querySelector('.message').innerHTML = "There's an internal problem. it's not your fault";
+                            toastbox(errorToast.id, 5000);
+                            return;
+                        }
+                        loader.style.display = 'flex';
+                        const url = '{% url "fundcard" %}';
+                        try{
+                            const response = await fetch(url, {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                    'X-CSRFToken': csrftoken,
+                                },
+                                body: JSON.stringify({ 'amount': amount, 'account': account, 'id': id }),
+                            })
+                            const data = await response.json();
+                                if (data.success){
+                                    successToast.querySelector('.message').innerHTML = data.success;
+                                    toastbox(successToast.id, 10000);
+                                    setTimeout(() => window.location.reload(), 3250)
+                                }else{
+                                    const responseElement = document.getElementById('response-canvas');
+                                    errorToast.querySelector('.message').innerHTML = data.error ? data.error : 'There was a problem funding your card. Please try again.';
+                                    toastbox(errorToast.id, 5000);
+                                }
+                        }catch(e){
+                                console.error('Error during API call:', e);
+                                errorToast.querySelector('.message').innerHTML = 'An error occurred while processing your request. Please try again later.';
+                                toastbox(errorToast.id, 5000);
+                                return;
+                        } finally {
+                            loader.style.display = 'none';
+                        }
+
+                    } else {
+                        errorToast.querySelector('.message').innerHTML = "Authorization failed. Please try again.";
+                        toastbox(errorToast.id, 5000);
+                        return;
+                    }
+                } catch (error) {
+                    console.error('Error during authorization:', error);
+                    errorToast.querySelector('.message').innerHTML = error.toString();
+                    toastbox(errorToast.id, 5000);
+                }
+            });
+
+            const defundCardForm = document.getElementById("defundCardActionSheet"); 
+
+            defundCardForm.addEventListener('submit', async function (e) {
+                e.preventDefault();
+                const amountInput = document.getElementById("defundingAmount");
+                const accountInput = document.getElementById("creditAccount");
+                if (amountInput.value === '' || isNaN(amountInput.value) || amountInput.value <= 0){
+                    errorToast.querySelector('.message').innerHTML = "Please enter the amount you want to defund";
+                    toastbox(errorToast.id, 5000);
+                    return false;
+                }
+                if (accountInput.value === ''){
+                    errorToast.querySelector('.message').innerHTML = "Please select the account to credit";
+                    toastbox(errorToast.id, 5000);
+                    return false;
+                }
+                try {
+                    document.getElementById('defundCardActionSheet').querySelector('.dismiss').click();
+                    const msg = "To complete this transaction, kindly prove your identity using your preferred card PIN.";
+                    const authorizationResult = await authorizeRequest(msg, 'defundCard');
+                    if (authorizationResult) {
+                        const amount = amountInput.value;
+                        const account = accountInput.value;
+                        const id = sessionStorage.getItem('cardId');
+                        if (!id){
+                            errorToast.querySelector('.message').innerHTML = "There's an internal problem. it's not your fault";
+                            toastbox(errorToast.id, 5000);
+                            return;
+                        }
+                        loader.style.display = 'flex';
+                        const url = '{% url "defundcard" %}';
+                        try{
+                            const response = await fetch(url, {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                    'X-CSRFToken': csrftoken,
+                                },
+                                body: JSON.stringify({ 'amount': amount, 'account': account, 'id': id }),
+                            })
+                            const data = await response.json();
+                                if (data.success){
+                                    successToast.querySelector('.message').innerHTML = data.success;
+                                    toastbox(successToast.id, 10000);
+                                    setTimeout(() => window.location.reload(), 3250)
+                                }else{
+                                    errorToast.querySelector('.message').innerHTML = data.error ? data.error : 'There was a problem funding your card. Please try again.';
+                                    toastbox(errorToast.id, 5000);
+                                }
+                        }catch(e){
+                                console.error('Error during API call:', e);
+                                errorToast.querySelector('.message').innerHTML = 'An error occurred while processing your request. Please try again later.';
+                                toastbox(errorToast.id, 5000);
+                                return;
+                        } finally {
+                            loader.style.display = 'none'
+                        }
+                    } else {
+                        errorToast.querySelector('.message').innerHTML = "Authorization failed. Please try again.";
+                        toastbox(errorToast.id, 5000);
+                        return;
+                    }
+                } catch (error) {
+                    console.error('Error during authorization:', error);
+                    errorToast.querySelector('.message').innerHTML = error.toString();
+                    toastbox(errorToast.id, 5000);
+                }
+            });       
+        });
+    </script>
+
+
+</body>
+
+</html>

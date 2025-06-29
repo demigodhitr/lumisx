@@ -1,0 +1,330 @@
+{% load humanize %}
+{% load static %}
+<!doctype html>
+<html lang="en">
+
+<head>
+    <script>
+        document.addEventListener("DOMContentLoaded", function(e){
+            if (sessionStorage.getItem('disable')){
+                let counter = parseInt(sessionStorage.getItem('verificationCounter'));
+                if (!counter || counter === null){
+                    counter = 4;
+                }
+                counter--;
+                if (counter === 0){
+                    sessionStorage.removeItem('verificationCounter');
+                    sessionStorage.removeItem('disable');
+                    document.getElementById('submitButton').disabled = false;
+                    submitButton.style.opacity = '1';
+                    document.getElementById('submitButton').innerHTML = 'Verify';
+                }
+                document.getElementById('submitButton').disabled = true;
+                document.getElementById('submitButton').style.opacity = '0.5';
+                document.getElementById('submitButton').innerHTML = 'Max tries reached or exceeded'
+            }
+        });
+    </script>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, viewport-fit=cover" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#000000">
+    <title>Email Verification</title>
+    <meta name="description"
+        content="Lumistakes is a trading platform that offers online trading of complex derivative cryptocurrencies with leverage and copy trading. Log in to your personal area to access your accounts, deposit or withdraw funds, and claim bonuses.">
+    <meta name="keywords"
+        content="Crypto, Cryptocurrency, best cryptocurrency, best performing crypto, best exchange 2025, worldwide trading, investments, how to invest safely, how to invest, how to invest online, how to invest, 2025, best cryptocurrency, how to withdraw crypto, buy crypto, sell crypto, convert crypto" />
+    <link rel="icon" type="image/png" href="{% static 'assets/img/favicon.png' %}" sizes="32x3">
+    <link rel="apple-touch-icon" sizes="180x180" href="{% static 'assets/img/icon/192x192.png' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/style.css' %}">
+    <link rel="manifest" href="{% static '__manifest.json' %}">
+</head>
+
+<body>
+
+    <!-- loader -->
+    <div id="loader">
+        <img src="{% static 'assets/img/loading-icon.png' %}" alt="icon" class="loading-icon">
+    </div>
+    <!-- * loader -->
+
+    <!-- App Header -->
+    <div class="appHeader no-border transparent position-absolute">
+        <div class="left">
+            <a href="#" class="headerButton goBack">
+                <ion-icon name="chevron-back-outline"></ion-icon>
+            </a>
+        </div>
+        <div class="pageTitle"></div>
+        <div class="right">
+        </div>
+    </div>
+    <!-- * App Header -->
+
+    <!-- App Capsule -->
+    <div id="appCapsule">
+
+        <div class="section mt-2 text-center">
+            <h1>Enter Email Code</h1>
+            <h4>Enter 4 digit email verification code</h4>
+        </div>
+        <div class="section mb-5 p-2">
+            <form method="post" id="codeForm" action="#">
+                <div class="form-group basic">
+                    <input name="emailcode" type="text" class="form-control verification-input" id="emailcode" placeholder="••••"maxlength="4">
+                </div>
+                    <small>Didn't receive a verification code ? </small>
+                    <h5 style="margin: 4px; cursor: pointer;" id="getCode">Get a code</h5>
+
+                <div id="submitButton" class="form-button-group transparent">
+                    <button type="submit" class="btn btn-primary btn-block btn-lg">Verify</button>
+                </div>
+            </form>
+        </div>
+
+    </div>
+    <!-- * App Capsule -->
+
+    <!-- Alert Success Action Sheet -->
+    <div class="modal fade action-sheet" id="successModal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div class="action-sheet-content">
+                        <div class="iconbox text-success">
+                            <ion-icon name="checkmark-circle"></ion-icon>
+                        </div>
+                        <div class="text-center p-2">
+                            <h3>Success</h3>
+                            <p class="message">Authentication successful, fetching your balances, please wait...</p>
+                        </div>
+                        <a href="#" class="action-button btn btn-primary btn-lg btn-block" data-bs-dismiss="modal">Done</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- * Alert Success Action Sheet :data-bs-toggle="modal" data-bs-target="#successModal" -->
+    
+    <!-- Alert Error Action Sheet -->
+    <div class="modal fade action-sheet" id="responseModal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div class="action-sheet-content">
+                        <div class="iconbox text-danger">
+                            <ion-icon name="alert-circle"></ion-icon>
+                        </div>
+                        <div class="text-center p-2">
+                            <h3>Error</h3>
+                            <p class="message">Something went wrong.</p>
+                        </div>
+                        <a href="#" class="action-button btn btn-primary btn-lg btn-block" data-bs-dismiss="modal">Done</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- * Alert Error Action Sheet -->
+
+
+    <!-- ========= JS Files =========  -->
+    <!-- Bootstrap -->
+    <script src="{% static 'assets/js/lib/bootstrap.bundle.min.js' %}"></script>
+    <!-- Ionicons -->
+    <script type="module" src="https://cdnjs.cloudflare.com/ajax/libs/ionicons/5.5.2/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://cdnjs.cloudflare.com/ajax/libs/ionicons/5.5.2/ionicons/ionicons.js"></script>
+    <!-- Splide -->
+    <script src="{% static 'assets/js/plugins/splide/splide.min.js' %}"></script>
+    <!-- Base Js File -->
+    <script src="{% static 'assets/js/base.js' %}"></script>
+
+    <script>
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    // Does this cookie string begin with the name we want?
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+        const csrftoken = getCookie('csrftoken');
+        const form = document.getElementById('codeForm');
+        const preloader = document.getElementById('loader');
+        const submitButton = form.querySelector('button[type="submit"]');
+        let getCode = document.getElementById('getCode');
+        const responseCanvas = document.getElementById('responseModal');
+        const actionCanvas = document.getElementById('successModal');
+
+
+        // REQUEST CODE
+        getCode.addEventListener('click', async function () {
+           
+            let counter = sessionStorage.getItem('counter');
+            if (counter === null || counter === undefined) {
+                counter = 0;
+            } else {
+                counter = parseInt(counter);
+            }
+            counter += 1;
+            sessionStorage.setItem('counter', counter);
+
+            if (counter >= 4) {
+                // keyContainer.style.display = 'none';
+                getCode.innerHTML = 'Max tries reached, please wait...';
+                getCode.style.pointerEvents = 'none';
+                setTimeout(() => {
+                    counter = 0;
+                    sessionStorage.setItem('counter', counter);
+                    getCode.innerHTML = 'Get new code';
+                    getCode.style.pointerEvents = 'auto';
+                }, 5000)
+                return false;
+            }
+
+            getCode.style.opacity =  '0.5';
+            let timeleft = 59;
+            async function updateTimer() {
+                timeleft--;
+
+                getCode.textContent = 'Get new code in: ' + timeleft + ' ' + (timeleft > 1 ? 'seconds' : 'second');
+                
+                if (timeleft <= 0) {
+                    getCode.textContent = 'Get new code';
+                    clearInterval(intervalID);
+                }
+            }
+
+            try{
+                const email = sessionStorage.getItem('email');
+                let url = '{% url "get-code" %}'
+                const response = await fetch(url, {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRFToken': csrftoken,
+                    },
+                    body: JSON.stringify({
+                        'email': email
+                    })
+                })
+                const data = await response.json();
+                if (!data.success) {
+                    responseCanvas.querySelector('.message').innerHTML = data.error;
+                    showModal(responseCanvas.id, 5000)
+                    return false;
+                }
+                else {
+                    getCode.textContent = 'Verification code sent!'
+                    setTimeout(() => {
+                        intervalID = setInterval(updateTimer, 1000);
+                    }, 2000);
+                    actionCanvas.querySelector('.message').innerHTML = data.success;
+                    showModal(actionCanvas.id, 8000)
+                    return true;
+                }
+            }
+            catch (error) {
+                responseCanvas.querySelector('.message').innerHTML = data.error;
+                showModal(responseCanvas.id, 5000)
+                return false;
+            }
+            finally {
+                getCode.style.opacity = '1';
+            }
+        });
+        // VERIFY SUBMITTED CODE 
+        form.addEventListener('submit', async function (e) {
+            e.preventDefault();
+            if (!form.elements['emailcode'].value) {
+                submitButton.innerHTML = 'Please enter your code'
+                const existingColor = submitButton.style.backgroundColor;
+                submitButton.style.backgroundColor = 'red';
+                form.elements['emailcode'].addEventListener('input', () => {
+                    submitButton.innerHTML = 'Verify';
+                    submitButton.style.backgroundColor = existingColor;
+                })
+                return null;
+            }
+            let formElements = this.elements;
+            let code = formElements['emailcode'].value;
+            if (code.length < 4) {
+                formElements['code'].value = '';
+                const existingColor = formElements['emailcode'].style.color;
+                formElements['code'].style.color = 'red';
+                formElements['code'].addEventListener('input', () => {
+                    formElements['code'].style.color = existingColor
+                })
+                return false;
+
+            }
+            preloader.style.display = 'flex';
+            let url = '{% url "verify-code" %}';
+            const email = sessionStorage.getItem('email');
+            data = {'code': code, 'email': email }
+            setTimeout(() => {
+                async function verifyCode(){
+                    try{
+                        const verify = await fetch(url, {
+                            method: 'POST',
+                            body: JSON.stringify(data),
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRFToken': csrftoken
+                            },
+                        })
+
+                        const result = await verify.json();
+                        if (!result.success) {
+                            if (result.disable) {
+                                sessionStorage.setItem('disable', 'true');
+                                setTimeout(() => window.location.reload(), 3000);
+                            }
+                            responseCanvas.querySelector('.message').innerHTML = result.error;
+                            showModal(responseCanvas.id, 5000)
+                            formElements['emailcode'].value = ''
+                            return false;
+                        }
+                        else {
+                            actionCanvas.querySelector('.message').innerHTML = result.success;
+                            showModal(actionCanvas.id, 5000)
+                            setTimeout(() => window.location.href = '{% url "home" %}', 1200);
+                        }
+                    }catch(e){
+                        responseCanvas.querySelector('.message').innerHTML = `An error occurred, Please try again`;
+                        console.log(e);
+                    }
+                    finally {
+                        setTimeout(() => reset(submitButton, preloader), 1200)
+                    };
+                }
+                verifyCode();
+            }, 1300)
+        })
+
+
+
+
+        function showModal(modalID, timeout) {
+            const canvas = new bootstrap.Modal(document.getElementById(modalID));
+            canvas.show();
+            setTimeout(() => canvas.hide(), timeout);
+        }
+
+        function reset(button, preloader) {
+            button.style.display = 'block';
+            preloader.style.display = 'none';
+        }
+    </script>
+
+</body>
+
+</html>

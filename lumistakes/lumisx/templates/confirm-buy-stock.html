@@ -1,0 +1,333 @@
+{% load humanize %}
+{% load static %}
+{% load custom_filters %}
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, viewport-fit=cover" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#000000">
+    <title>Purchase Stock</title>
+    <meta name="description"
+        content="Lumistakes is a trading platform that offers online trading of complex derivative cryptocurrencies with leverage and copy trading. Log in to your personal area to access your accounts, deposit or withdraw funds, and claim bonuses.">
+    <meta name="keywords"
+        content="Crypto, Cryptocurrency, best cryptocurrency, best performing crypto, best exchange 2025, worldwide trading, investments, how to invest safely, how to invest, how to invest online, how to invest, 2025, best cryptocurrency, how to withdraw crypto, buy crypto, sell crypto, convert crypto" />
+    <link rel="icon" type="image/png" href="{% static 'assets/img/favicon.png' %}" sizes="32x3">
+    <link rel="apple-touch-icon" sizes="180x180" href="{% static 'assets/img/icon/192x192.png' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/style.css' %}">
+    <link rel="manifest" href="{% static '__manifest.json' %}">
+</head>
+
+<body>
+
+    <!-- loader -->
+    <div id="loader">
+        <img src="{% static 'assets/img/loading-icon.png' %}" alt="icon" class="loading-icon">
+    </div>
+    <!-- * loader -->
+
+    <!-- App Header -->
+    <div class="appHeader no-border">
+        <div class="left">
+            <a href="#" class="headerButton goBack">
+                <ion-icon name="chevron-back-outline"></ion-icon>
+            </a>
+        </div>
+        <div class="pageTitle symbol">
+
+        </div>
+        <div class="right"> </div>
+    </div>
+    <!-- * App Header -->
+
+    <!-- App Capsule -->
+    <div id="appCapsule">
+
+        <div class="section">
+            <div class="splash-page mt-5 mb-5">
+
+                <div class="transfer-verification">
+                    <div class="transfer-amount">
+                        <span class="caption">Amount</span>
+                        <h2 class="text-primary">{{ request.user.profiles.preferred_currency.code }}<span class="amount"></span></h2>
+                    </div>
+                    <div class="from-to-block mb-5">
+                        <div class="item text-start">
+                            <img src="{% static 'assets/img/sample/avatar/avatar1.jpg' %}" alt="avatar"
+                                class="imaged w48">
+                            <strong><span style="text-transform: uppercase;" class="account">Lumis X</span> WALLET</strong>
+                        </div>
+                        <div class="item text-end">
+                            <img src="{% static 'assets/img/sample/avatar/avatar4.jpg' %}" alt="avatar"
+                                class="imaged w48">
+                            <strong>NASDAQ</strong>
+                        </div>
+                        <div class="arrow"></div>
+                    </div>
+                </div>
+                <h2 class="mb-2 mt-2">You're Buying <span class="symbol"></span>!</h2>
+                <p>
+                    <strong class="text-primary">{{ user.profiles.preferred_currency.code }}<span
+                            class="amount"></span> </strong> Will be debited from your <span
+                        class="account text-primary"> </span> account for <span class="quantity  text-primary"> </span> units of <span class="symbol text-primary"></span>. <br>Click Confirm to complete this transaction!
+                        <br><small 
+                        style="font-size: xx-small; line-height: 2px;" class="text-warning"><em>If you currently hold a share of this stock, the new lock period will override the previous lock period.</em></small> 
+                </p>
+            </div>
+        </div>
+
+        <div class="fixed-bar">
+            <div class="row">
+                <div class="col-6">
+                    <a href="javascript:history.back()" class="btn btn-lg btn-outline-secondary btn-block">Cancel</a>
+                </div>
+                <div class="col-6">
+                    <a id="confirm" href="#" class="btn btn-lg btn-primary btn-block">
+                        <span id="investmentLoader" style="display: none; height: 30px; width: 30px;"
+                            class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                        Confirm
+                    </a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <!-- * App Capsule -->
+
+    <!-- Alert Error Action Sheet -->
+    <div class="modal fade action-sheet" id="responseModal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div class="action-sheet-content">
+                        <div class="iconbox text-danger">
+                            <ion-icon name="alert-circle"></ion-icon>
+                        </div>
+                        <div class="text-center p-2">
+                            <h3>Error</h3>
+                            <p class="message">Something went wrong.</p>
+                        </div>
+                        <a id="action-button" href="#" class="btn btn-primary btn-lg btn-block"
+                            data-bs-dismiss="modal">Done</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- * Alert Error Action Sheet -->
+
+    <!-- Authorizaion Action Sheet -->
+    <div style="text-align: center;" class="modal fade" id="authorizationModal" tabindex="-1" role="dialog"
+        aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div style="text-align: center !important;" class="modal-header">
+                    <h5 class="modal-title" id="modalTitle">Authorize Transaction</h5>
+                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div style="text-align: center;" class="modal-body">
+                    <p class="message">To pay {{user.profiles.preferred_currency.code }}<span class="amount"> </span> for the purchase of <span class="quantity"> </span> units of <span class="symbol"> </span> using funds from your <span class="account"> </span> account, enter your preferred transaction card pin or click CANCEL to terminate. </p>
+                </div>
+    
+                <label class="label" for="pin">Card PIN</label>
+                <div class="form-group basic">
+                    <input name="pin" type="password" class="form-control verification-input" id="pin" placeholder="••••"
+                        maxlength="4">
+                </div>
+                <div style="display: flex; justify-content: space-around " class="modal-footer">
+                    <button id="reject" type="button" class="close btn btn-secondary"
+                        data-bs-dismiss="modal">Cancel</button>
+                    <button id="resolve" type="button" class="btn btn-primary">Authorize</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- ========= JS Files =========  -->
+    <!-- Bootstrap -->
+    <script src="{% static 'assets/js/lib/bootstrap.bundle.min.js' %}"></script>
+    <!-- Ionicons -->
+    <script type="module" src="https://cdnjs.cloudflare.com/ajax/libs/ionicons/5.5.2/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://cdnjs.cloudflare.com/ajax/libs/ionicons/5.5.2/ionicons/ionicons.js"></script>
+    <!-- Splide -->
+    <script src="{% static 'assets/js/plugins/splide/splide.min.js' %}"></script>
+    <!-- Base Js File -->
+    <script src="{% static 'assets/js/base.js' %}"></script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", async function (e) {
+
+            function getCookie(name) {
+                let cookieValue = null;
+                if (document.cookie && document.cookie !== '') {
+                    const cookies = document.cookie.split(';');
+                    for (let i = 0; i < cookies.length; i++) {
+                        const cookie = cookies[i].trim();
+                        // Does this cookie string begin with the name we want?
+                        if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                            break;
+                        }
+                    }
+                }
+                return cookieValue;
+            }
+            const csrftoken = getCookie('csrftoken');
+
+            const summary = sessionStorage.getItem('stockPurchase');
+            const confirmButton = document.getElementById('confirm')
+            const preloader = document.getElementById('investmentLoader');
+            const responseModal = document.querySelector('#responseModal');
+
+            if (summary) {
+                const data = JSON.parse(summary);
+
+                document.querySelectorAll('.amount').forEach(amount => amount.textContent = data.total_cost);
+                document.querySelectorAll('.account').forEach(account => account.textContent = data.debit_wallet);
+                document.querySelectorAll('.quantity').forEach(plan => plan.textContent = parseFloat(data.stock_quantity).toFixed(2));
+                document.querySelectorAll('.symbol').forEach(duration => duration.textContent = data.stock_symbol);
+
+                confirmButton.addEventListener('click', async function (e) {
+                    e.preventDefault();
+
+                    const formData = new FormData();
+                    for (let key in data) {
+                        if (data.hasOwnProperty(key)) {
+                            formData.append(key, data[key]);
+                        }
+                    }
+
+                    for (let [key, value] of formData.entries()) {
+                        console.log(`${key}: ${value}`);
+                    }
+
+                    try {
+                        const authorization = await authorizeRequest();
+                        this.disabled = true;
+                        this.textContent = '';
+                        this.appendChild(preloader);
+                        preloader.style.display = 'flex';
+                        const url = '{% url "confirm-stock-purchase" %}';
+
+                        const purchase = await fetch(url, {
+                            method: 'POST',
+                            body: formData,
+                            headers: {
+                                'X-CSRFToken': csrftoken,
+                            }
+                        })
+                        const result = await purchase.json();
+                        if (!result.success) {
+                            responseModal.querySelector('.message').innerHTML = result.error;
+                            const modal = new bootstrap.Modal(responseModal);
+                            modal.show();
+                            setTimeout(() => modal.hide(), 8000);
+                            return;
+                        } else {
+                            sessionStorage.setItem('stockSuccess', summary)
+                            sessionStorage.removeItem('stockPurchase');
+                            setTimeout(() => window.location.href = '{% url "stock_purchase_complete" %}', 1500);
+                        }
+
+                    } catch (e) {
+                        responseModal.querySelector('.message').innerHTML = e;
+                        const modal = new bootstrap.Modal(responseModal);
+                        modal.show();
+                        setTimeout(() => modal.hide(), 8000);
+                    }
+                    finally {
+                        setTimeout(() => {
+                            this.disabled = false;
+                            this.textContent = 'Confirm';
+                            preloader.style.display = 'none';
+                        }, 800)
+                    }
+
+                });
+            } else {
+                confirmButton.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const authModal = document.getElementById('authorizationModal');
+                    authModal.querySelector('.message').innerHTML = 'Nothing in your basket';
+                    const modal = new bootstrap.Modal(authModal);
+                    modal.show();
+                    setTimeout(() => {
+                        modal.hide();
+                        window.location.href = '{% url "home" %}';
+                    }, 5000);
+                });
+
+            }
+
+            function authorizeRequest() {
+                return new Promise((resolve, reject) => {
+                    const modalElement = document.getElementById('authorizationModal');
+                    const modal = new bootstrap.Modal(modalElement);
+                    modal.show();
+                    const resolveButton = modalElement.querySelector('#resolve');
+                    const pinInput = modalElement.querySelector('#pin');
+                    const closeButton = modalElement.querySelectorAll('.close');
+                    closeButton.forEach(close => close.addEventListener('click', () => {
+                        reject('Authorization Canceled')
+                    }))
+                    resolveButton.addEventListener('click', function (e) {
+                        e.preventDefault();
+                        if (!pinInput.value || pinInput.value.length < 4) {
+                            const existingColor = pinInput.style.borderColor;
+                            pinInput.style.borderColor = 'red';
+                            pinInput.value = '';
+                            pinInput.addEventListener('input', () => {
+                                if (pinInput.value.length === 4) {
+                                    pinInput.style.borderColor = existingColor;
+                                }
+                            }, { 'once': true });
+                            return;
+                        }
+                        const pin = pinInput.value;
+                        const url = '{% url "authorize" %}'
+                        fetch(url, {
+                            method: 'POST',
+                            body: JSON.stringify({ 'pin': pin }),
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRFToken': csrftoken
+                            }
+                        })
+                            .then(response => response.json())
+                            .then(data => {
+                                if (data.success) {
+                                    modal.hide();
+                                    resolve(data.success);
+                                } else {
+                                    pinInput.value = '';
+                                    modal.hide();
+                                    reject(data.error);
+                                }
+                            })
+                            .catch((e) => {
+                                console.error(e);
+                                modal.hide();
+                                reject('An error occurred...');
+                            })
+                            .finally(() => {
+                                pinInput.value = '';
+                            });
+
+                    });
+                });
+            }
+            
+        })
+    </script>
+
+
+</body>
+
+</html>

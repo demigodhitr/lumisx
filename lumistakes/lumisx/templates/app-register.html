@@ -1,0 +1,874 @@
+{% load humanize %}
+{% load static %}
+<!doctype html>
+<html lang="en">
+
+<head>
+    <style>
+        #blinker {
+            color: red;
+            animation: blink 0.5s ease-in-out;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+
+        /*  */
+        .google-signin {
+            position: relative;
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            text-decoration: none;
+            color: black;
+            overflow: hidden;
+        }
+
+        .circle {
+            background: white;
+            color: black;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 32px;
+            font-weight: bold;
+            z-index: 2;
+            flex-shrink: 0;
+        }
+
+        .rectangle {
+            background: white;
+            color: black;
+            border-radius: 0 10px 10px 0;
+            padding: 10px 20px;
+            font-size: 18px;
+            letter-spacing: 2px;
+            white-space: nowrap;
+            transform: translateX(-100%);
+            margin-left: -10px;
+            transition: transform 0.5s cubic-bezier(0.25, 1.5, 0.5, 1);
+        }
+
+        .expanded .rectangle {
+            transform: translateX(0);
+        }
+    </style>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, viewport-fit=cover" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#000000">
+    <title>Sign up</title>
+    <meta name="description"
+        content="Lumistakes is a trading platform that offers online trading of complex derivative cryptocurrencies with leverage and copy trading. Log in to your personal area to access your accounts, deposit or withdraw funds, and claim bonuses.">
+    <meta name="keywords"
+        content="Crypto, Cryptocurrency, best cryptocurrency, best performing crypto, best exchange 2025, worldwide trading, investments, how to invest safely, how to invest, how to invest online, how to invest, 2025, best cryptocurrency, how to withdraw crypto, buy crypto, sell crypto, convert crypto" />
+    <link rel="icon" type="image/png" href="{% static 'assets/img/favicon.png' %}" sizes="32x3">
+    <link rel="apple-touch-icon" sizes="180x180" href="{% static 'assets/img/icon/192x192.png' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/style.css' %}">
+    <link rel="manifest" href="{% static '__manifest.json' %}">
+</head>
+
+<body>
+
+    <!-- loader -->
+    <div id="loader">
+        <img src="{% static 'assets/img/loading-icon.png' %}" alt="icon" class="loading-icon">
+    </div>
+    <!-- * loader -->
+
+    <!-- App Header -->
+    <div class="appHeader no-border transparent position-absolute">
+        <div class="left">
+            <a href="#" class="headerButton goBack">
+                <ion-icon name="chevron-back-outline"></ion-icon>
+            </a>
+        </div>
+        <div class="pageTitle"></div>
+        <div class="right">
+            <a href="{% url 'signin' %}" class="headerButton">
+                Login
+            </a>
+        </div>
+    </div>
+    <!-- * App Header -->
+
+    <!-- App Capsule -->
+    <div id="appCapsule">
+
+        <div class="section mt-2 text-center">
+            <h1>Register now</h1>
+            <h4>Complete the registration form below to create your Lumis X account.</h4>
+            <p>Complete registration in one-tap using your google account. click the google icon to continue.</p>
+        </div>
+        <a data-url="{% url 'social:begin' 'google-oauth2' %}"  href="#" class="google-signin" id="signinButton">
+                <div class="circle"><img height="30" width="30" src="{% static 'assets/img/icon/google-icon.png' %}" alt=""></div>
+                <div class="rectangle">SIGN IN WITH GOOGLE</div>
+            </a>
+        <div class="section mb-5 p-2">
+            <form method="post" id="registrationForm" action="#">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="form-group basic">
+                            <div class="input-wrapper">
+                                <label class="label" for="email1">E-mail</label>
+                                <input name="email" type="email" class="form-control" id="email1" placeholder="Enter Your e-mail">
+                                <i class="clear-input">
+                                    <ion-icon name="close-circle"></ion-icon>
+                                </i>
+                            </div>
+                        </div>
+                        <div class="form-group basic">
+                            <div class="input-wrapper">
+                                <label class="label" for="firstname">Firstname</label>
+                                <input name="firstname" type="text" class="form-control" id="firstname" placeholder="Enter Your firstname">
+                                <i class="clear-input">
+                                    <ion-icon name="close-circle"></ion-icon>
+                                </i>
+                            </div>
+                        </div>
+                        <div class="form-group basic">
+                            <div class="input-wrapper">
+                                <label class="label" for="lastname">Lastname</label>
+                                <input name="lastname" type="text" class="form-control" id="lastname" placeholder="Enter Your lastname">
+                                <i class="clear-input">
+                                    <ion-icon name="close-circle"></ion-icon>
+                                </i>
+                            </div>
+                        </div>
+                        <div class="form-group basic">
+                            <div class="input-wrapper">
+                                <label class="label" for="nationality">Nationality</label>
+                                <select id="nationality" class="form-control" name="nationality" class="form-select rounded-xs"
+                                    aria-label="Floating label select example">
+                                    <option value="" selected disabled>Choose your Country of residence</option>
+                                    <option value="united-kingdom">United Kingdom</option>
+                                    <option value="united-states">United States</option>
+                                    <option value="afghanistan">Afghanistan</option>
+                                    <option value="albania">Albania</option>
+                                    <option value="algeria">Algeria</option>
+                                    <option value="andorra">Andorra</option>
+                                    <option value="angola">Angola</option>
+                                    <option value="antigua-and-barbuda">Antigua and Barbuda</option>
+                                    <option value="argentina">Argentina</option>
+                                    <option value="armenia">Armenia</option>
+                                    <option value="australia">Australia</option>
+                                    <option value="austria">Austria</option>
+                                    <option value="azerbaijan">Azerbaijan</option>
+                                    <option value="bahamas">Bahamas</option>
+                                    <option value="bahrain">Bahrain</option>
+                                    <option value="bangladesh">Bangladesh</option>
+                                    <option value="barbados">Barbados</option>
+                                    <option value="belarus">Belarus</option>
+                                    <option value="belgium">Belgium</option>
+                                    <option value="belize">Belize</option>
+                                    <option value="benin">Benin</option>
+                                    <option value="bhutan">Bhutan</option>
+                                    <option value="bolivia">Bolivia</option>
+                                    <option value="bosnia-and-herzegovina">Bosnia and Herzegovina</option>
+                                    <option value="botswana">Botswana</option>
+                                    <option value="brazil">Brazil</option>
+                                    <option value="brunei">Brunei</option>
+                                    <option value="bulgaria">Bulgaria</option>
+                                    <option value="burkina-faso">Burkina Faso</option>
+                                    <option value="burundi">Burundi</option>
+                                    <option value="cabo-verde">Cabo Verde</option>
+                                    <option value="cambodia">Cambodia</option>
+                                    <option value="cameroon">Cameroon</option>
+                                    <option value="canada">Canada</option>
+                                    <option value="central-african-republic">Central African Republic</option>
+                                    <option value="chad">Chad</option>
+                                    <option value="chile">Chile</option>
+                                    <option value="china">China</option>
+                                    <option value="colombia">Colombia</option>
+                                    <option value="comoros">Comoros</option>
+                                    <option value="congo-democratic-republic">Congo (Democratic Republic)</option>
+                                    <option value="congo-republic">Congo (Republic)</option>
+                                    <option value="costa-rica">Costa Rica</option>
+                                    <option value="cote-divoire">Côte d'Ivoire</option>
+                                    <option value="croatia">Croatia</option>
+                                    <option value="cuba">Cuba</option>
+                                    <option value="cyprus">Cyprus</option>
+                                    <option value="czech-republic">Czech Republic</option>
+                                    <option value="denmark">Denmark</option>
+                                    <option value="djibouti">Djibouti</option>
+                                    <option value="dominica">Dominica</option>
+                                    <option value="dominican-republic">Dominican Republic</option>
+                                    <option value="east-timor">East Timor (Timor-Leste)</option>
+                                    <option value="ecuador">Ecuador</option>
+                                    <option value="egypt">Egypt</option>
+                                    <option value="el-salvador">El Salvador</option>
+                                    <option value="equatorial-guinea">Equatorial Guinea</option>
+                                    <option value="eritrea">Eritrea</option>
+                                    <option value="estonia">Estonia</option>
+                                    <option value="eswatini">Eswatini</option>
+                                    <option value="ethiopia">Ethiopia</option>
+                                    <option value="fiji">Fiji</option>
+                                    <option value="finland">Finland</option>
+                                    <option value="france">France</option>
+                                    <option value="gabon">Gabon</option>
+                                    <option value="gambia">Gambia</option>
+                                    <option value="georgia">Georgia</option>
+                                    <option value="germany">Germany</option>
+                                    <option value="ghana">Ghana</option>
+                                    <option value="greece">Greece</option>
+                                    <option value="grenada">Grenada</option>
+                                    <option value="guatemala">Guatemala</option>
+                                    <option value="guinea">Guinea</option>
+                                    <option value="guinea-bissau">Guinea-Bissau</option>
+                                    <option value="guyana">Guyana</option>
+                                    <option value="haiti">Haiti</option>
+                                    <option value="honduras">Honduras</option>
+                                    <option value="hungary">Hungary</option>
+                                    <option value="iceland">Iceland</option>
+                                    <option value="india">India</option>
+                                    <option value="indonesia">Indonesia</option>
+                                    <option value="iran">Iran</option>
+                                    <option value="iraq">Iraq</option>
+                                    <option value="ireland">Ireland</option>
+                                    <option value="israel">Israel</option>
+                                    <option value="italy">Italy</option>
+                                    <option value="jamaica">Jamaica</option>
+                                    <option value="japan">Japan</option>
+                                    <option value="jordan">Jordan</option>
+                                    <option value="kazakhstan">Kazakhstan</option>
+                                    <option value="kenya">Kenya</option>
+                                    <option value="kiribati">Kiribati</option>
+                                    <option value="korea-north">Korea (North)</option>
+                                    <option value="korea-south">Korea (South)</option>
+                                    <option value="kosovo">Kosovo</option>
+                                    <option value="kuwait">Kuwait</option>
+                                    <option value="kyrgyzstan">Kyrgyzstan</option>
+                                    <option value="laos">Laos</option>
+                                    <option value="latvia">Latvia</option>
+                                    <option value="lebanon">Lebanon</option>
+                                    <option value="lesotho">Lesotho</option>
+                                    <option value="liberia">Liberia</option>
+                                    <option value="libya">Libya</option>
+                                    <option value="liechtenstein">Liechtenstein</option>
+                                    <option value="lithuania">Lithuania</option>
+                                    <option value="luxembourg">Luxembourg</option>
+                                    <option value="madagascar">Madagascar</option>
+                                    <option value="malawi">Malawi</option>
+                                    <option value="malaysia">Malaysia</option>
+                                    <option value="maldives">Maldives</option>
+                                    <option value="mali">Mali</option>
+                                    <option value="malta">Malta</option>
+                                    <option value="marshall-islands">Marshall Islands</option>
+                                    <option value="mauritania">Mauritania</option>
+                                    <option value="mauritius">Mauritius</option>
+                                    <option value="mexico">Mexico</option>
+                                    <option value="micronesia">Micronesia</option>
+                                    <option value="moldova">Moldova</option>
+                                    <option value="monaco">Monaco</option>
+                                    <option value="mongolia">Mongolia</option>
+                                    <option value="montenegro">Montenegro</option>
+                                    <option value="morocco">Morocco</option>
+                                    <option value="mozambique">Mozambique</option>
+                                    <option value="myanmar">Myanmar</option>
+                                    <option value="namibia">Namibia</option>
+                                    <option value="nauru">Nauru</option>
+                                    <option value="nepal">Nepal</option>
+                                    <option value="netherlands">Netherlands</option>
+                                    <option value="new-zealand">New Zealand</option>
+                                    <option value="nicaragua">Nicaragua</option>
+                                    <option value="niger">Niger</option>
+                                    <option value="nigeria">Nigeria</option>
+                                    <option value="north-macedonia">North Macedonia</option>
+                                    <option value="norway">Norway</option>
+                                    <option value="oman">Oman</option>
+                                    <option value="pakistan">Pakistan</option>
+                                    <option value="palau">Palau</option>
+                                    <option value="panama">Panama</option>
+                                    <option value="papua-new-guinea">Papua New Guinea</option>
+                                    <option value="paraguay">Paraguay</option>
+                                    <option value="peru">Peru</option>
+                                    <option value="philippines">Philippines</option>
+                                    <option value="poland">Poland</option>
+                                    <option value="portugal">Portugal</option>
+                                    <option value="qatar">Qatar</option>
+                                    <option value="romania">Romania</option>
+                                    <option value="russia">Russia</option>
+                                    <option value="rwanda">Rwanda</option>
+                                    <option value="saint-kitts-and-nevis">Saint Kitts and Nevis</option>
+                                    <option value="saint-lucia">Saint Lucia</option>
+                                    <option value="saint-vincent-and-the-grenadines">Saint Vincent and the Grenadines</option>
+                                    <option value="samoa">Samoa</option>
+                                    <option value="san-marino">San Marino</option>
+                                    <option value="sao-tome-and-principe">São Tomé and Príncipe</option>
+                                    <option value="saudi-arabia">Saudi Arabia</option>
+                                    <option value="senegal">Senegal</option>
+                                    <option value="serbia">Serbia</option>
+                                    <option value="seychelles">Seychelles</option>
+                                    <option value="sierra-leone">Sierra Leone</option>
+                                    <option value="singapore">Singapore</option>
+                                    <option value="slovakia">Slovakia</option>
+                                    <option value="slovenia">Slovenia</option>
+                                    <option value="solomon-islands">Solomon Islands</option>
+                                    <option value="somalia">Somalia</option>
+                                    <option value="south-africa">South Africa</option>
+                                    <option value="south-sudan">South Sudan</option>
+                                    <option value="spain">Spain</option>
+                                
+                                    <option value="sri-lanka">Sri Lanka</option>
+                                    <option value="sudan">Sudan</option>
+                                    <option value="suriname">Suriname</option>
+                                    <option value="sweden">Sweden</option>
+                                    <option value="switzerland">Switzerland</option>
+                                    <option value="syria">Syria</option>
+                                    <option value="taiwan">Taiwan</option>
+                                    <option value="tajikistan">Tajikistan</option>
+                                    <option value="tanzania">Tanzania</option>
+                                    <option value="thailand">Thailand</option>
+                                    <option value="togo">Togo</option>
+                                    <option value="tonga">Tonga</option>
+                                    <option value="trinidad-and-tobago">Trinidad and Tobago</option>
+                                    <option value="tunisia">Tunisia</option>
+                                    <option value="turkey">Turkey</option>
+                                    <option value="turkmenistan">Turkmenistan</option>
+                                    <option value="tuvalu">Tuvalu</option>
+                                    <option value="uganda">Uganda</option>
+                                    <option value="ukraine">Ukraine</option>
+                                    <option value="united-arab-emirates">United Arab Emirates</option>
+                                    <option value="uruguay">Uruguay</option>
+                                    <option value="uzbekistan">Uzbekistan</option>
+                                    <option value="vanuatu">Vanuatu</option>
+                                    <option value="vatican-city">Vatican City</option>
+                                    <option value="venezuela">Venezuela</option>
+                                    <option value="vietnam">Vietnam</option>
+                                    <option value="yemen">Yemen</option>
+                                    <option value="zambia">Zambia</option>
+                                    <option value="zimbabwe">Zimbabwe</option>
+                                </select>
+                                <i class="clear-input">
+                                    <ion-icon name="close-circle"></ion-icon>
+                                </i>
+                            </div>
+                        </div>
+
+                        <div class="form-group basic">
+                            <div class="input-wrapper">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="custom-file-upload" id="fileUpload1">
+                                            <input capture="user" name="picture" type="file" id="fileuploadInput" accept="image/*">
+                                            <label for="fileuploadInput">
+                                                <span>
+                                                    <strong>
+                                                        <ion-icon name="arrow-up-circle-outline"></ion-icon>
+                                                        <i>Upload a selfie Photo</i>
+                                                    </strong>
+                                                </span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group basic">
+                            <div class="input-wrapper">
+                                <label class="label" for="password1">Password</label>
+                                <input name="password1" type="password" class="form-control" id="password1" autocomplete="off" placeholder="Your password">
+                                <i class="clear-input">
+                                    <ion-icon name="close-circle"></ion-icon>
+                                </i>
+                            </div>
+                        </div>
+
+                        <div class="form-group basic">
+                            <div class="input-wrapper">
+                                <label class="label" for="password2">Password Again</label>
+                                <input name="password2" type="password" class="form-control" id="password2" autocomplete="off"
+                                    placeholder="Type password again">
+                                <i class="clear-input">
+                                    <ion-icon name="close-circle"></ion-icon>
+                                </i>
+                            </div>
+                        </div>
+
+                        <div class="form-group basic">
+                            <div class="input-wrapper">
+                                <label class="label" for="referral-code">Referral code (optional)</label>
+                                <input value="{{referral_code}}" name="referral-code" type="text" class="form-control" id="referral-code"placeholder="Optional">
+                                <i class="clear-input">
+                                    <ion-icon name="close-circle"></ion-icon>
+                                </i>
+                            </div>
+                        </div>
+
+                        <div class="custom-control custom-checkbox mt-2 mb-1">
+                            <div class="form-check">
+                                <input name="consent" required type="checkbox" class="form-check-input" id="consent">
+                                <label class="form-check-label" for="consent">
+                                    I agree <a href="#" data-bs-toggle="modal" data-bs-target="#termsModal">terms and conditions</a>
+                                </label>
+                            </div> <small style="display: none;" id="blinker">Please consent to terms of service</small>
+                        </div>
+                    </div>
+                </div>
+                <div style="z-index: 1;" class="form-button-group transparent">
+                    <button id="submit-button" type="submit" class="btn btn-primary btn-block btn-lg">Register</button>
+                </div>
+
+            </form>
+        </div>
+        
+    </div>
+    <!-- * App Capsule -->
+
+    <!-- Alert Success Action Sheet -->
+    <div class="modal fade action-sheet" id="successModal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div class="action-sheet-content">
+                        <div class="iconbox text-success">
+                            <ion-icon name="checkmark-circle"></ion-icon>
+                        </div>
+                        <div class="text-center p-2">
+                            <h3>Success</h3>
+                            <p class="message">Authentication successful, fetching your balances, please wait...</p>
+                        </div>
+                        <a href="#" class="action-button btn btn-primary btn-lg btn-block" data-bs-dismiss="modal">Done</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- * Alert Success Action Sheet :data-bs-toggle="modal" data-bs-target="#successModal" -->
+    
+    <!-- Alert Error Action Sheet -->
+    <div class="modal fade action-sheet" id="responseModal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div class="action-sheet-content">
+                        <div class="iconbox text-danger">
+                            <ion-icon name="alert-circle"></ion-icon>
+                        </div>
+                        <div class="text-center p-2">
+                            <h3>Error</h3>
+                            <p class="message">Something went wrong.</p>
+                        </div>
+                        <a href="#" class="action-button btn btn-primary btn-lg btn-block"
+                            data-bs-dismiss="modal">Done</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- * Alert Error Action Sheet -->
+
+
+    <!-- Terms Modal -->
+    <div class="modal fade modalbox" id="termsModal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Terms and Conditions</h5>
+                    <a href="#" data-bs-dismiss="modal">Close</a>
+                </div>
+                <div class="modal-body">
+                    <h6>Introduction</h6>
+                    <p>
+                        Welcome to Lumistakes. This page outlines the terms and conditions governing the use of our services. By accessing or using our platform, you agree to comply with these terms and conditions, as well as our privacy policy. Please read this document carefully, and feel free to contact us if you have any questions or require clarification.
+                    </p>
+    
+                    <h6>Eligibility</h6>
+                    <p>
+                        To use our services, you must be at least 18 years old. By registering on our platform, you confirm that you meet this age requirement and are legally permitted to engage in the activities offered by Lumistakes.
+                    </p>
+    
+                    <h6>Usage Guidelines</h6>
+                    <p>
+                        You agree to use our platform responsibly and refrain from engaging in any activities that could harm or disrupt our services, website, or other users. Prohibited activities include, but are not limited to:
+                        <ul>
+                            <li>Spamming or sending unsolicited messages</li>
+                            <li>Attempting to gain unauthorized access to our systems</li>
+                            <li>Distributing malware or harmful software</li>
+                            <li>Engaging in fraudulent activities</li>
+                            <li>Data mining or scraping.</li>
+                        </ul>
+                    </p>
+
+                    <h6>Third-Party Services</h6>
+                    <p>
+                        Our platform may include links to third-party websites or services. These links are provided for your convenience, and we do not endorse or assume any responsibility for the content, policies, or practices of these third parties. We encourage you to review the terms and privacy policies of any third-party services you interact with.
+                    </p>
+
+                    <h6>Account Suspension and Termination</h6>
+                    <p>
+                        We reserve the right to suspend or terminate your account at our sole discretion if we believe you have violated these terms or engaged in any prohibited activities. In such cases, you will be notified of the suspension or termination and provided with an explanation of the reasons behind our decision.
+                    </p>
+                    <p>
+                        If your account is terminated, you will no longer have access to our platform or services. Any remaining balances in your account may be subject to forfeiture, depending on the nature of the violation. You may contact our support team to appeal the decision or request further clarification.
+                    </p>
+
+                    <h6>Limitation of Liability</h6>
+                    <p>
+                        To the fullest extent permitted by law, Lumistakes and its affiliates, officers, directors, employees, and agents shall not be liable for any indirect, incidental, special, consequential, or punitive damages, including but not limited to loss of profits, data, or goodwill, arising out of or in connection with your use of our platform or services.
+                    </p>
+                    <p>
+                        Our total liability to you for any claims arising from or related to these terms shall not exceed the amount you have paid to us for the use of our services in the six months preceding the claim. This limitation of liability applies regardless of the legal theory on which the claim is based.
+                    </p>
+    
+                    <h6>Intellectual Property</h6>
+                    <p>
+                        All content on this platform, including text, graphics, logos, and software, is the exclusive property of Lumistakes or its content providers. This content is protected by copyright, trademark, and other applicable intellectual property laws. Unauthorized use of this content is strictly prohibited.
+                    </p>
+                    <h6>Services and Fees</h6>
+                    <p>You will incur any fees associated with any service you interact with. These fees may include transaction fees, virtual card activation fees. trading fees, and other relevant charges. You are responsible for paying these fees as they become due. You acknowledge that Lumistakes has no liability for any fees or charges incurred by you.</p>
+                    <ul>
+                        <li>
+                            If you use our proxy trading feature, you may incur losses or gains based on the performance of the asset being traded. You are responsible for understanding the risks involved in trading and managing your own risks
+                        </li>
+                        <li>
+                            You must also ensure that you are compliant with all applicable laws and regulations in your jurisdiction when using this service.
+                        </li>
+                        <li>In some cases, you may be required to recharge your account to cover any fees incurred by you during the trade where your available balance is insufficient to cover the said accumulated fees.</li>
+                    </ul>
+                    
+                    <h6>Privacy</h6>
+                    <p>
+                        Your use of our platform is subject to our Privacy Policy, which explains how we collect, use, and safeguard your personal information. By using our services, you consent to the practices outlined in our Privacy Policy.
+                    </p>
+    
+                    <h6>Changes to Terms</h6>
+                    <p>
+                        We reserve the right to update or modify these terms at any time. Any changes will be posted on this page, and continued use of our platform constitutes acceptance of the updated terms. We encourage you to review this page periodically.
+                    </p>
+                    <h6>Severability </h6>
+                    <p>
+                        If any provision of these terms is deemed unenforceable or invalid due to legal or contractual reasons, the remaining provisions will remain in full force and effect.
+                        <br>
+                        read more about our <a onclick="window.location.href = this.href" href="{% url 'terms-of-service' %}?#policy-section">Privacy Policy</a> and <a onclick="window.location.href = this.href" href="{% url 'terms-of-service' %}?#terms-section">Terms of Service</a>.
+                    </p>
+    
+                    <h6>Contact</h6>
+                    <p>
+                        For any questions or concerns regarding these terms, please contact us at <a onclick="window.location.href = this.href" href="mailto:support@lumistakes.com">support@lumistakes.com</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- * Terms Modal -->
+
+
+    <!-- ========= JS Files =========  -->
+    <!-- Bootstrap -->
+    <script src="{% static 'assets/js/lib/bootstrap.bundle.min.js' %}"></script>
+    <!-- Ionicons -->
+    <script type="module" src="https://cdnjs.cloudflare.com/ajax/libs/ionicons/5.5.2/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://cdnjs.cloudflare.com/ajax/libs/ionicons/5.5.2/ionicons/ionicons.js"></script>
+    <!-- Splide -->
+    <script src="{% static 'assets/js/plugins/splide/splide.min.js' %}"></script>
+    <!-- Base Js File -->
+    <script src="{% static 'assets/js/base.js' %}"></script>
+
+    <script>
+        // Get csrf token from cookies.
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    // Does this cookie string begin with the name we want?
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+        const csrftoken = getCookie('csrftoken');
+        const preloader = document.getElementById('loader');
+        const form = document.getElementById('registrationForm');
+        const submitButton = form.querySelector('#submit-button');
+        const actionCanvas = document.getElementById('successModal');
+        const responseCanvas = document.getElementById('responseModal');
+
+        document.getElementById('registrationForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+            this.querySelectorAll('small').forEach(s => {
+                s.style.display = 'none';
+            });
+            
+            if (!document.getElementById('consent').checked) {
+                alert('Please accept the terms of service to continue');
+                document.getElementById('blinker').style.display = 'block';
+                this.addEventListener('change', () => document.getElementById('blinker').style.display = 'none');
+                return false;
+            }
+            const formFields = this.elements;
+            for (var i = 0; i < formFields.length; i++) {
+                if (formFields[i].type !== 'submit' && formFields[i].name !== 'referral-code' && formFields[i].value === '') {
+                    const border = formFields[i].style.border
+                    formFields[i].style.border = '2px solid red';
+                    formFields[i].style.boxShadow = '1px 2px 20px 1px red';
+                    formFields[i].scrollIntoView({
+                        behavior:'smooth',
+                        block:'end'
+                    });
+                    formFields[i].addEventListener('input', function (e) {
+                        this.style.border = border;
+                        this.style.boxShadow = 'none';
+                    })
+                    return false;
+                } else {
+                    formFields[i].style.border = 'none';
+                    formFields[i].style.boxShadow = 'none';
+                }
+            }
+            if (formFields['password1'].value.length < 6) {
+                let s = document.createElement('small');
+                s.innerHTML = 'Password should be at least 6 characters long';
+                s.style.color = 'red';
+                formFields['password1'].parentElement.appendChild(s);
+                formFields['password1'].addEventListener('input', function (e) {
+                    this.parentElement.querySelector('small').remove();
+                }, once = true)
+                return false;
+            }
+            const invalidPasswords = [
+                '123456', '000000', '654321', '111111', '121212', '999999',
+                'password', '123123', 'qwerty', 'abc123', 'letmein', 'welcome',
+                'iloveyou', 'admin', '1234', 'monkey', 'dragon', 'sunshine',
+                '12345', '12345678', 'football', 'princess', 'superman',
+                '1q2w3e4r', 'passw0rd', 'qwertyuiop', 'baseball', 'password1',
+                '1234567', '123456789', '696969', 'batman', 'trustno1', 'michael',
+                'shadow', 'buster', 'soccer', 'harley', 'ginger', 'tigger', 'cookie',
+                'maggie', 'jordan', 'charlie', 'andrew', 'jessica', 'pepper', 'cheese',
+                'hunter', 'secret', 'killer', 'sparky', 'summer', 'winter', 'fallout',
+                'spring', 'p@ssw0rd', 'ninja', 'test', 'hello', 'welcome1', 'qazwsx',
+                'zaq1zaq1', 'loveme', 'lovely', 'freedom', 'whatever', 'blabla', '1qaz2wsx',
+                'mustang', 'ranger', 'starwars', 'qwerty123', 'qwerty1', 'azerty',
+                'abcd1234', '1q2w3e', 'admin123', 'trustme', 'admin1', 'pa$$w0rd',
+                
+                'qwe123', 'qweqwe', '321321', 'password123', '1g2w3e4r', '112233', '12341234',
+                'asdfgh', 'asdfghjkl', 'zxcvbn', 'zxcvbnm', 'q1w2e3', 'q1w2e3r4', 'pass1234',
+                'myspace1', 'qweasdzxc', 'user', 'unknown', 'administrator', '1password',
+                'root', 'god', 'pass', 'pass123', 'passw0rd1', 'hello123', 'adminadmin',
+                'login', 'default', 'access', 'letmein123', 'user1234', 'abcabc',
+                '00000000', 'asdfasdf', 'aaaaaa', '11111111', '12121212', 'qazxsw',
+                'zse4xdr5', 'pass123', 'changeme', 'newpass', 'asdf1234', 'temp1234',
+                'temp123', 'pa55word', 'welcome123', 'trustnoone', 'loveyou', 'batman123',
+                'killer123', 'monkey123', 'dragon123', 'superman123', 'master', 'qwer1234',
+                '1a2b3c4d', '1qazxsw2', 'mypass123', 'adminpass', 'adminpassword',
+                'login123', 'test123', 'abcdabcd', 'football1', 'basketball', 'hockey',
+                'soccer1', 'baseball1', 'pokemon', 'pokemon123', 'gamer123', 'gamer',
+                'letmein1', 'sunshine1', 'shadow123', 'shadow1', 'michael123', 'michael1',
+                'charlie123', 'jordan123', 'hunter123', 'buster123', 'pepper123', 'winter123',
+                'summer123', 'fall123', 'spring123', 'sparky123', 'ninja123', 'mustang1',
+                'ranger1', 'qazwsxedc', 'zaq1xsw2', 'zaq12wsx', 'zaq1wsx2', 'adminadmin123'
+            ];
+
+            const password = formFields['password1'].value;
+            if (invalidPasswords.includes(password)) {
+                let s = document.createElement('small');
+                s.textContent = 'Password is too weak or too common'
+                s.style.color = 'red';
+                formFields['password1'].parentElement.appendChild(s);
+                formFields['password1'].addEventListener('input', function (e) {
+                    this.parentElement.querySelector('small').remove();
+                })
+                return false;
+            }
+            if (formFields['password1'].value !== formFields['password2'].value) {
+                let s = document.createElement('small');
+                s.textContent = 'Passwords do not match'
+                s.style.color = 'red';
+                formFields['password2'].parentElement.appendChild(s);
+                formFields['password2'].addEventListener('input', function (e) {
+                    this.parentElement.querySelector('small').remove();
+                })
+                return false;
+            }
+            preloader.style.display = 'flex';
+            submitButton.style.display = 'none';
+
+            let formData = new FormData(this);
+            let url = '{% url "signup" %}';
+            setTimeout(async () => {
+                try{
+                    const registration = await fetch(url, {
+                        method: 'POST',
+                        body: formData,
+                        headers: {
+                            'X-CSRFToken': csrftoken
+                        }
+                    })
+                    const result = await registration.json();
+                    if (!result.success) {
+                        if (result.verify) {
+                            const email = result.email;
+                            sessionStorage.setItem('email', email);
+                            const url = '{% url "email-verification" %}'
+                            let button = actionCanvas.querySelector('.action-button');
+                            button.textContent = 'Verify Email';
+                            button.addEventListener('click', () => {
+                                window.location.href = url;
+                            })
+                            actionCanvas.querySelector('.message').innerHTML = result.verify;
+                            showModal(actionCanvas.id);
+                            return false;
+                        }
+                        else if (result.error) {
+                            responseCanvas.querySelector('.message').innerHTML = result.error;
+                            showModal(responseCanvas.id);
+                            return false;
+                        }
+                        else {
+                            throw new Error('Something went wrong, please contact support');
+                        }
+                    }
+                    else {
+                        actionCanvas.querySelector('.message').style.color = 'green';
+                        actionCanvas.querySelector('.message').style.fontWeight = 'bold';
+
+                        actionCanvas.querySelector('.message') = result.success;
+                        showModal(actionCanvas.id);
+                        setTimeout(() => window.location.href = '{% url "home" %}', 1500);
+                    }
+                    
+                }catch(e){
+                    console.error(error);
+                    alert('Something went wrong, please try again');
+
+                }
+                finally {
+                    setTimeout(() => reset(submitButton, preloader), 1250);
+                    formFields['password1'].value = '';
+                    formFields['password2'].value = '';
+
+                }
+            }, 1200);
+        })
+
+
+
+        function reset(button, preloader) {
+            button.style.display = 'block';
+            preloader.style.display = 'none';
+        }
+
+        function showModal(modalID) {
+            const modal = new bootstrap.Modal(document.getElementById(modalID));
+            modal.show();
+        }
+
+
+        const texts = [
+            'SAVE | INVEST | TRADE.  <br>  All in one place'
+        ];
+
+        const typingSpeed = 80; // Typing speed in milliseconds
+        const erasingSpeed = 45; // Erasing speed in milliseconds
+        const delayBetweenTexts = 1300; // Delay between typing and erasing
+
+        let currentText = 0;
+        let currentChar = 0;
+        let isErasing = false;
+        const typingTextElement = document.getElementById('typing-text');
+
+        function type() {
+            const text = texts[currentText];
+            if (!isErasing && currentChar < text.length) {
+                typingTextElement.innerHTML = text.substring(0, currentChar + 1);
+                currentChar++;
+                setTimeout(type, typingSpeed);
+            } else if (isErasing && currentChar > 0) {
+                typingTextElement.innerHTML = text.substring(0, currentChar - 1);
+                currentChar--;
+                setTimeout(type, erasingSpeed);
+            } else if (!isErasing && currentChar === text.length) {
+                setTimeout(() => {
+                    isErasing = true;
+                    setTimeout(type, erasingSpeed);
+                }, delayBetweenTexts);
+            } else if (isErasing && currentChar === 0) {
+                isErasing = false;
+                currentText = (currentText + 1) % texts.length;
+                setTimeout(type, typingSpeed);
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+
+            const signinButton = document.getElementById('signinButton');
+            let expanded = false;
+
+            signinButton.addEventListener('click', function(e) {
+                if (!expanded) {
+                    e.preventDefault();
+                    signinButton.classList.add('expanded');
+                    expanded = true;
+                } else {
+                    e.preventDefault();
+                    const next = new URLSearchParams(window.location.search).get('next') || '{% url "home" %}';
+                    const loginUrl = this.dataset.url + '?next=' + encodeURIComponent(next);
+                    window.location.href = loginUrl;
+                }
+            });
+
+            // Request location Permission
+
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(successCallback, errorCallback);
+            } else {
+                console.log("Geolocation is not supported by this browser.");
+            }
+            function successCallback(position) {
+                const latitude = position.coords.latitude;
+                const longitude = position.coords.longitude;
+                fetch(`https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${latitude}&longitude=${longitude}&localityLanguage=en`)
+                    .then(response => response.json())
+                    .then(data => {
+                        const nationality = data.countryName;
+                        console.log('User\'s nationality:', nationality);
+                        sessionStorage.setItem('nationality', nationality);
+                        let url = "{% url 'getcountry' 'c' %}";
+                        url = url.replace("c", nationality);
+                        fetch(url)
+                        .then(response => response.json())
+                        .then(data => {
+                                if (data.success) {} else {console.log(data.error);}
+                        })
+                        .catch(error => console.log(error));
+                    })
+                    .catch(error => {
+                        console.log('Error fetching location data:', error);
+                    });
+            }
+
+            function errorCallback(error) {
+                switch (error.code) {
+                    case error.PERMISSION_DENIED:
+                        console.log("User denied the request for Geolocation.");
+                        break;
+                    case error.POSITION_UNAVAILABLE:
+                        console.log("Location information is unavailable.");
+                        break;
+                    case error.TIMEOUT:
+                        console.log("The request to get user location timed out.");
+                        break;
+                    case error.UNKNOWN_ERROR:
+                        console.log("An unknown error occurred.");
+                        break;
+                }
+                console.log('Error getting location:', error);
+            }
+            setTimeout(type, delayBetweenTexts);
+        });
+    </script>
+</body>
+
+</html>

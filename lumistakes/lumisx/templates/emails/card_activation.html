@@ -1,0 +1,74 @@
+{% load custom_filters %}
+{% load humanize %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>New Card Activation</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            padding: 20px;
+        }
+
+        .container {
+            text-align: center;
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #fff;
+            border-radius: 10px;
+            padding: 20px;
+        }
+
+        h1 {
+            color: #6f1cf5;
+        }
+    </style>
+</head>
+<body>
+    <div style="text-align: center;" class="container">
+        <div style="display: flex; align-items: center; justify-content: center;">
+            <img style="width: 100%;" src="https://i.ibb.co/VpSQgDpg/lumistake.png" alt="Logo">
+        </div>
+        <h1>Your Lumis X Virtual Card is Now Active!</h1>
+        <p>Dear {{ instance.user.get_full_name }},</p>
+        <p>
+            We are delighted to inform you that your new Lumis X blockchain-powered virtual card has been successfully activated. You can now use your card to carry out secure financial transactions on your account, as well as make blockchain-secured payments on any platform that accepts such card payments.
+        </p>
+        <p style="text-align: left;">Your card details:</p>
+        <ul style="text-align: left;">
+            <li><strong>Card Holder:</strong> {{ instance.card_holder }}</li>
+            <li><strong>Card Number:</strong> {{ instance.card_number|mask_number }}</li>
+            <li><strong>Expiry Date:</strong> {{ instance.expiry_date|date:"m/Y"}}</li>
+            <li><strong>CVV:</strong> ***</li>
+            {% if instance.email_pin %}
+                <p><em style="color: red">NEVER share your PIN with anyone, including Lumis X staff. We will never request your PIN through any channel.</em></p>
+                <li><strong style="opacity: 0.3;">Card PIN:</strong> {{ instance.pin }}</li>
+                <p><em style="color: red;">For your security, please store this email in a safe place and delete it from your inbox after noting your PIN.</em></p>
+            {% endif %}
+            <li><strong>Card Balance:</strong>
+                {{ user.profiles.preferred_currency.code }}
+                {% with user.profiles.preferred_currency.symbol as to_currency %}
+                    {% if to_currency != "GBP" %}
+                        {% if to_currency == "USD" %}
+                            {{ instance.available_amount|converter:"GBP_USD"|intcomma }}
+                        {% elif to_currency == "EUR" %}
+                            {{ instance.available_amount|converter:"GBP_EUR"|intcomma }}
+                        {% endif %}
+                    {% else %}
+                        {{ instance.available_amount|intcomma }}
+                    {% endif %}
+                {% endwith %}
+            </li>
+            <li><strong>Card Status:</strong> {{ instance.card_status }}</li>
+        </ul>
+        <p>Thank you for choosing Lumis X. We are committed to providing you with secure and innovative financial solutions.</p>
+        <p>Best regards,</p>
+        <p>The Lumis X Team</p>
+        <p><a href="https://lumisx.exchange">lumisx.exchange</a></p>
+    </div>
+</body>
+</html>

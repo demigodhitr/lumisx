@@ -1,0 +1,87 @@
+{% load custom_filters %}
+{% load humanize %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Withdrawal Request Approved</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #fff;
+            border-radius: 10px;
+            padding: 20px;
+        }
+
+        h1 {
+            color: #00cc00;
+        }
+        th{
+            background-color: #6f1cf5;
+            color: #fff;
+        }
+    </style>
+</head>
+
+<body>
+    <div style="text-align: center;" class="container">
+        <img style="width: 100%;" src="https://i.ibb.co/VpSQgDpg/lumistake.png" alt="Logo">
+        <h1>Withdrawal Request Approved</h1>
+        <p>Dear {{ instance.user.get_full_name }},</p>
+        <p>We are pleased to inform you that your recent withdrawal request has been approved and sent to your specified address.</p>
+        <p>Details of the approved withdrawal:</p>
+        <div style="width: 100%; overflow-x: auto;">
+            <table border="1" style="width: 300px; overflow: auto; border-collapse: collapse;">
+                <tr>
+                    <th>WITHDRAWAL AMOUNT</th>
+                    <th>WITHDRAWAL NETWORK</th>
+                    <th>WITHDRAWAL ADDRESS</th>
+                    <th>WITHDRAWAL STATUS</th>
+                    <th>WITHDRAWAL ID</th>
+                    <th>WITHDRAWAL DATE</th>
+                </tr>
+                <tr>
+                    <td>
+                        {{ user.profiles.preferred_currency.code }}
+                        {% with user.profiles.preferred_currency.symbol as to_currency %}
+                            {% if to_currency != "GBP" %}
+                                {% if to_currency == "USD" %}
+                                    {{ instance.amount|converter:"GBP_USD"|intcomma }}
+                                {% elif to_currency == "EUR" %}
+                                    {{ instance.amount|converter:"GBP_EUR"|intcomma }}
+                                {% endif %}
+                            {% else %}
+                                {{ instance.amount|intcomma }}
+                            {% endif %}
+                        {% endwith %}
+                    
+                    </td>
+                    <td>{{ instance.network }}</td>
+                    <td>{{ instance.address }}</td>
+                    <td>{{ instance.status }}</td>
+                    <td>#{{ instance.RequestID }}</td>
+                    <td>{{ instance.created_at|date:"F d, Y H:i:s" }}</td>
+                </tr>
+            </table>
+        </div>
+        <div style="text-align: right; color: #00cc00;">
+            <h5><strong>System comment:</strong></h5>
+            <p><em>{{ instance.status_message }}</em></p>
+        </div>
+        <br>
+        <p>Thank you,</p>
+        <p>The LumisX Team</p>
+        <p><a href="https://lumisx.exchange">LumisX</a></p>
+    </div>
+</body>
+
+</html>
