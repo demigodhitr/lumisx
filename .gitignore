@@ -1,0 +1,10 @@
+.zip
+*.zip
+lumistakes/*.zip
+**/.zip
+.env
+.vscode
+/lumilibrary/
+.env
+**/.env
+lumistakes/templates.zip
