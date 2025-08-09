@@ -1,0 +1,16 @@
+ERROR 2025-07-25 11:28:09,368 log Internal Server Error: /lumisx/api/checkbalance
+Traceback (most recent call last):
+  File "C:\Users\achod\OneDrive\Desktop\Archive\brokers\lumistakes-project\lumilibrary\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\achod\OneDrive\Desktop\Archive\brokers\lumistakes-project\lumilibrary\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\achod\OneDrive\Desktop\Archive\brokers\lumistakes-project\lumilibrary\Lib\site-packages\django\contrib\auth\decorators.py", line 60, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\achod\OneDrive\Desktop\Archive\brokers\lumistakes-project\lumistakes\lumisx\views.py", line 1277, in checkbalance
+    amount = Decimal(amount)
+             ^^^^^^^^^^^^^^^
+decimal.InvalidOperation: [<class 'decimal.ConversionSyntax'>]
+ERROR 2025-07-25 11:28:09,379 basehttp "POST /lumisx/api/checkbalance HTTP/1.1" 500 82602

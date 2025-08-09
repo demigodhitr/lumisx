@@ -1,0 +1,1083 @@
+{
+  "status": "done",
+  "assets": {
+    "asset-manifest.json": {
+      "name": "asset-manifest.json",
+      "path": "C:\\Users\\achod\\OneDrive\\Desktop\\Archive\\brokers\\lumistakes-project\\lumistakes\\WalletConnect\\app\\build\\asset-manifest.json",
+      "publicPath": "/asset-manifest.json"
+    },
+    "index.html": {
+      "name": "index.html",
+      "path": "C:\\Users\\achod\\OneDrive\\Desktop\\Archive\\brokers\\lumistakes-project\\lumistakes\\WalletConnect\\app\\build\\index.html",
+      "publicPath": "/index.html"
+    },
+    "static/css/main.f855e6bc.css": {
+      "name": "static/css/main.f855e6bc.css",
+      "path": "C:\\Users\\achod\\OneDrive\\Desktop\\Archive\\brokers\\lumistakes-project\\lumistakes\\WalletConnect\\app\\build\\static\\css\\main.f855e6bc.css",
+      "publicPath": "/static/css/main.f855e6bc.css"
+    },
+    "static/css/main.f855e6bc.css.map": {
+      "name": "static/css/main.f855e6bc.css.map",
+      "path": "C:\\Users\\achod\\OneDrive\\Desktop\\Archive\\brokers\\lumistakes-project\\lumistakes\\WalletConnect\\app\\build\\static\\css\\main.f855e6bc.css.map",
+      "publicPath": "/static/css/main.f855e6bc.css.map"
+    },
+    "static/js/101.4867d20e.chunk.js": {
+      "name": "static/js/101.4867d20e.chunk.js",
+      "path": "C:\\Users\\achod\\OneDrive\\Desktop\\Archive\\brokers\\lumistakes-project\\lumistakes\\WalletConnect\\app\\build\\static\\js\\101.4867d20e.chunk.js",
+      "publicPath": "/static/js/101.4867d20e.chunk.js"
+    },
+    "static/js/101.4867d20e.chunk.js.map": {
+      "name": "static/js/101.4867d20e.chunk.js.map",
+      "path": "C:\\Users\\achod\\OneDrive\\Desktop\\Archive\\brokers\\lumistakes-project\\lumistakes\\WalletConnect\\app\\build\\static\\js\\101.4867d20e.chunk.js.map",
+      "publicPath": "/static/js/101.4867d20e.chunk.js.map"
+    },
+    "static/js/1117.474fd35b.chunk.js": {
+      "name": "static/js/1117.474fd35b.chunk.js",
+      "path": "C:\\Users\\achod\\OneDrive\\Desktop\\Archive\\brokers\\lumistakes-project\\lumistakes\\WalletConnect\\app\\build\\static\\js\\1117.474fd35b.chunk.js",
+      "publicPath": "/static/js/1117.474fd35b.chunk.js"
+    },
+    "static/js/1117.474fd35b.chunk.js.map": {
+      "name": "static/js/1117.474fd35b.chunk.js.map",
+      "path": "C:\\Users\\achod\\OneDrive\\Desktop\\Archive\\brokers\\lumistakes-project\\lumistakes\\WalletConnect\\app\\build\\static\\js\\1117.474fd35b.chunk.js.map",
+      "publicPath": "/static/js/1117.474fd35b.chunk.js.map"
+    },
+    "static/js/1131.e89d844f.chunk.js": {
+      "name": "static/js/1131.e89d844f.chunk.js",
+      "path": "C:\\Users\\achod\\OneDrive\\Desktop\\Archive\\brokers\\lumistakes-project\\lumistakes\\WalletConnect\\app\\build\\static\\js\\1131.e89d844f.chunk.js",
+      "publicPath": "/static/js/1131.e89d844f.chunk.js"
+    },
+    "static/js/1131.e89d844f.chunk.js.map": {
+      "name": "static/js/1131.e89d844f.chunk.js.map",
+      "path": "C:\\Users\\achod\\OneDrive\\Desktop\\Archive\\brokers\\lumistakes-project\\lumistakes\\WalletConnect\\app\\build\\static\\js\\1131.e89d844f.chunk.js.map",
+      "publicPath": "/static/js/1131.e89d844f.chunk.js.map"
+    },
+    "static/js/1150.d2967a6f.chunk.js": {
+      "name": "static/js/1150.d2967a6f.chunk.js",
+      "path": "C:\\Users\\achod\\OneDrive\\Desktop\\Archive\\brokers\\lumistakes-project\\lumistakes\\WalletConnect\\app\\build\\static\\js\\1150.d2967a6f.chunk.js",
+      "publicPath": "/static/js/1150.d2967a6f.chunk.js"
+    },
+    "static/js/1150.d2967a6f.chunk.js.map": {
+      "name": "static/js/1150.d2967a6f.chunk.js.map",
+      "path": "C:\\Users\\achod\\OneDrive\\Desktop\\Archive\\brokers\\lumistakes-project\\lumistakes\\WalletConnect\\app\\build\\static\\js\\1150.d2967a6f.chunk.js.map",
+      "publicPath": "/static/js/1150.d2967a6f.chunk.js.map"
+    },
+    "static/js/1191.47109c33.chunk.js": {
+      "name": "static/js/1191.47109c33.chunk.js",
+      "path": "C:\\Users\\achod\\OneDrive\\Desktop\\Archive\\brokers\\lumistakes-project\\lumistakes\\WalletConnect\\app\\build\\static\\js\\1191.47109c33.chunk.js",
+      "publicPath": "/static/js/1191.47109c33.chunk.js"
+    },
+    "static/js/1191.47109c33.chunk.js.LICENSE.txt": {
+      "name": "static/js/1191.47109c33.chunk.js.LICENSE.txt",
+      "path": "C:\\Users\\achod\\OneDrive\\Desktop\\Archive\\brokers\\lumistakes-project\\lumistakes\\WalletConnect\\app\\build\\static\\js\\1191.47109c33.chunk.js.LICENSE.txt",
+      "publicPath": "/static/js/1191.47109c33.chunk.js.LICENSE.txt"
+    },
+    "static/js/1191.47109c33.chunk.js.map": {
+      "name": "static/js/1191.47109c33.chunk.js.map",
+      "path": "C:\\Users\\achod\\OneDrive\\Desktop\\Archive\\brokers\\lumistakes-project\\lumistakes\\WalletConnect\\app\\build\\static\\js\\1191.47109c33.chunk.js.map",
+      "publicPath": "/static/js/1191.47109c33.chunk.js.map"
+    },
+    "static/js/1250.82ca768c.chunk.js": {
+      "name": "static/js/1250.82ca768c.chunk.js",
+      "path": "C:\\Users\\achod\\OneDrive\\Desktop\\Archive\\brokers\\lumistakes-project\\lumistakes\\WalletConnect\\app\\build\\static\\js\\1250.82ca768c.chunk.js",
+      "publicPath": "/static/js/1250.82ca768c.chunk.js"
+    },
+    "static/js/1250.82ca768c.chunk.js.map": {
+      "name": "static/js/1250.82ca768c.chunk.js.map",
+      "path": "C:\\Users\\achod\\OneDrive\\Desktop\\Archive\\brokers\\lumistakes-project\\lumistakes\\WalletConnect\\app\\build\\static\\js\\1250.82ca768c.chunk.js.map",
+      "publicPath": "/static/js/1250.82ca768c.chunk.js.map"
+    },
+    "static/js/1284.1dc602f3.chunk.js": {
+      "name": "static/js/1284.1dc602f3.chunk.js",
+      "path": "C:\\Users\\achod\\OneDrive\\Desktop\\Archive\\brokers\\lumistakes-project\\lumistakes\\WalletConnect\\app\\build\\static\\js\\1284.1dc602f3.chunk.js",
+      "publicPath": "/static/js/1284.1dc602f3.chunk.js"
+    },
+    "static/js/1284.1dc602f3.chunk.js.map": {
+      "name": "static/js/1284.1dc602f3.chunk.js.map",
+      "path": "C:\\Users\\achod\\OneDrive\\Desktop\\Archive\\brokers\\lumistakes-project\\lumistakes\\WalletConnect\\app\\build\\static\\js\\1284.1dc602f3.chunk.js.map",
+      "publicPath": "/static/js/1284.1dc602f3.chunk.js.map"
+    },
+    "static/js/1487.507fadef.chunk.js": {
+      "name": "static/js/1487.507fadef.chunk.js",
+      "path": "C:\\Users\\achod\\OneDrive\\Desktop\\Archive\\brokers\\lumistakes-project\\lumistakes\\WalletConnect\\app\\build\\static\\js\\1487.507fadef.chunk.js",
+      "publicPath": "/static/js/1487.507fadef.chunk.js"
+    },
+    "static/js/1487.507fadef.chunk.js.map": {
+      "name": "static/js/1487.507fadef.chunk.js.map",
+      "path": "C:\\Users\\achod\\OneDrive\\Desktop\\Archive\\brokers\\lumistakes-project\\lumistakes\\WalletConnect\\app\\build\\static\\js\\1487.507fadef.chunk.js.map",
+      "publicPath": "/static/js/1487.507fadef.chunk.js.map"
+    },
+    "static/js/1519.87e9fec0.chunk.js": {
+      "name": "static/js/1519.87e9fec0.chunk.js",
+      "path": "C:\\Users\\achod\\OneDrive\\Desktop\\Archive\\brokers\\lumistakes-project\\lumistakes\\WalletConnect\\app\\build\\static\\js\\1519.87e9fec0.chunk.js",
+      "publicPath": "/static/js/1519.87e9fec0.chunk.js"
+    },
+    "static/js/1519.87e9fec0.chunk.js.map": {
+      "name": "static/js/1519.87e9fec0.chunk.js.map",
+      "path": "C:\\Users\\achod\\OneDrive\\Desktop\\Archive\\brokers\\lumistakes-project\\lumistakes\\WalletConnect\\app\\build\\static\\js\\1519.87e9fec0.chunk.js.map",
+      "publicPath": "/static/js/1519.87e9fec0.chunk.js.map"
+    },
+    "static/js/1520.fa75ce54.chunk.js": {
+      "name": "static/js/1520.fa75ce54.chunk.js",
+      "path": "C:\\Users\\achod\\OneDrive\\Desktop\\Archive\\brokers\\lumistakes-project\\lumistakes\\WalletConnect\\app\\build\\static\\js\\1520.fa75ce54.chunk.js",
+      "publicPath": "/static/js/1520.fa75ce54.chunk.js"
+    },
+    "static/js/1520.fa75ce54.chunk.js.map": {
+      "name": "static/js/1520.fa75ce54.chunk.js.map",
+      "path": "C:\\Users\\achod\\OneDrive\\Desktop\\Archive\\brokers\\lumistakes-project\\lumistakes\\WalletConnect\\app\\build\\static\\js\\1520.fa75ce54.chunk.js.map",
+      "publicPath": "/static/js/1520.fa75ce54.chunk.js.map"
+    },
+    "static/js/1525.ea4f1ddf.chunk.js": {
+      "name": "static/js/1525.ea4f1ddf.chunk.js",
+      "path": "C:\\Users\\achod\\OneDrive\\Desktop\\Archive\\brokers\\lumistakes-project\\lumistakes\\WalletConnect\\app\\build\\static\\js\\1525.ea4f1ddf.chunk.js",
+      "publicPath": "/static/js/1525.ea4f1ddf.chunk.js"
+    },
+    "static/js/1525.ea4f1ddf.chunk.js.map": {
+      "name": "static/js/1525.ea4f1ddf.chunk.js.map",
+      "path": "C:\\Users\\achod\\OneDrive\\Desktop\\Archive\\brokers\\lumistakes-project\\lumistakes\\WalletConnect\\app\\build\\static\\js\\1525.ea4f1ddf.chunk.js.map",
+      "publicPath": "/static/js/1525.ea4f1ddf.chunk.js.map"
+    },
+    "static/js/1542.663c15b0.chunk.js": {
+      "name": "static/js/1542.663c15b0.chunk.js",
+      "path": "C:\\Users\\achod\\OneDrive\\Desktop\\Archive\\brokers\\lumistakes-project\\lumistakes\\WalletConnect\\app\\build\\static\\js\\1542.663c15b0.chunk.js",
+      "publicPath": "/static/js/1542.663c15b0.chunk.js"
+    },
+    "static/js/1542.663c15b0.chunk.js.map": {
+      "name": "static/js/1542.663c15b0.chunk.js.map",
+      "path": "C:\\Users\\achod\\OneDrive\\Desktop\\Archive\\brokers\\lumistakes-project\\lumistakes\\WalletConnect\\app\\build\\static\\js\\1542.663c15b0.chunk.js.map",
+      "publicPath": "/static/js/1542.663c15b0.chunk.js.map"
+    },
+    "static/js/1854.6b6394a9.chunk.js": {
+      "name": "static/js/1854.6b6394a9.chunk.js",
+      "path": "C:\\Users\\achod\\OneDrive\\Desktop\\Archive\\brokers\\lumistakes-project\\lumistakes\\WalletConnect\\app\\build\\static\\js\\1854.6b6394a9.chunk.js",
+      "publicPath": "/static/js/1854.6b6394a9.chunk.js"
+    },
+    "static/js/1854.6b6394a9.chunk.js.map": {
+      "name": "static/js/1854.6b6394a9.chunk.js.map",
+      "path": "C:\\Users\\achod\\OneDrive\\Desktop\\Archive\\brokers\\lumistakes-project\\lumistakes\\WalletConnect\\app\\build\\static\\js\\1854.6b6394a9.chunk.js.map",
+      "publicPath": "/static/js/1854.6b6394a9.chunk.js.map"
+    },
+    "static/js/1925.904605fe.chunk.js": {
+      "name": "static/js/1925.904605fe.chunk.js",
+      "path": "C:\\Users\\achod\\OneDrive\\Desktop\\Archive\\brokers\\lumistakes-project\\lumistakes\\WalletConnect\\app\\build\\static\\js\\1925.904605fe.chunk.js",
+      "publicPath": "/static/js/1925.904605fe.chunk.js"
+    },
+    "static/js/1925.904605fe.chunk.js.map": {
+      "name": "static/js/1925.904605fe.chunk.js.map",
+      "path": "C:\\Users\\achod\\OneDrive\\Desktop\\Archive\\brokers\\lumistakes-project\\lumistakes\\WalletConnect\\app\\build\\static\\js\\1925.904605fe.chunk.js.map",
+      "publicPath": "/static/js/1925.904605fe.chunk.js.map"
+    },
+    "static/js/2011.661b8fad.chunk.js": {
+      "name": "static/js/2011.661b8fad.chunk.js",
+      "path": "C:\\Users\\achod\\OneDrive\\Desktop\\Archive\\brokers\\lumistakes-project\\lumistakes\\WalletConnect\\app\\build\\static\\js\\2011.661b8fad.chunk.js",
+      "publicPath": "/static/js/2011.661b8fad.chunk.js"
+    },
+    "static/js/2011.661b8fad.chunk.js.map": {
+      "name": "static/js/2011.661b8fad.chunk.js.map",
+      "path": "C:\\Users\\achod\\OneDrive\\Desktop\\Archive\\brokers\\lumistakes-project\\lumistakes\\WalletConnect\\app\\build\\static\\js\\2011.661b8fad.chunk.js.map",
+      "publicPath": "/static/js/2011.661b8fad.chunk.js.map"
+    },
+    "static/js/2383.28307ade.chunk.js": {
+      "name": "static/js/2383.28307ade.chunk.js",
+      "path": "C:\\Users\\achod\\OneDrive\\Desktop\\Archive\\brokers\\lumistakes-project\\lumistakes\\WalletConnect\\app\\build\\static\\js\\2383.28307ade.chunk.js",
+      "publicPath": "/static/js/2383.28307ade.chunk.js"
+    },
+    "static/js/2383.28307ade.chunk.js.LICENSE.txt": {
+      "name": "static/js/2383.28307ade.chunk.js.LICENSE.txt",
+      "path": "C:\\Users\\achod\\OneDrive\\Desktop\\Archive\\brokers\\lumistakes-project\\lumistakes\\WalletConnect\\app\\build\\static\\js\\2383.28307ade.chunk.js.LICENSE.txt",
+      "publicPath": "/static/js/2383.28307ade.chunk.js.LICENSE.txt"
+    },
+    "static/js/2383.28307ade.chunk.js.map": {
+      "name": "static/js/2383.28307ade.chunk.js.map",
+      "path": "C:\\Users\\achod\\OneDrive\\Desktop\\Archive\\brokers\\lumistakes-project\\lumistakes\\WalletConnect\\app\\build\\static\\js\\2383.28307ade.chunk.js.map",
+      "publicPath": "/static/js/2383.28307ade.chunk.js.map"
+    },
+    "static/js/2415.e8023954.chunk.js": {
+      "name": "static/js/2415.e8023954.chunk.js",
+      "path": "C:\\Users\\achod\\OneDrive\\Desktop\\Archive\\brokers\\lumistakes-project\\lumistakes\\WalletConnect\\app\\build\\static\\js\\2415.e8023954.chunk.js",
+      "publicPath": "/static/js/2415.e8023954.chunk.js"
+    },
+    "static/js/2415.e8023954.chunk.js.map": {
+      "name": "static/js/2415.e8023954.chunk.js.map",
+      "path": "C:\\Users\\achod\\OneDrive\\Desktop\\Archive\\brokers\\lumistakes-project\\lumistakes\\WalletConnect\\app\\build\\static\\js\\2415.e8023954.chunk.js.map",
+      "publicPath": "/static/js/2415.e8023954.chunk.js.map"
+    },
+    "static/js/2456.0a2c769e.chunk.js": {
+      "name": "static/js/2456.0a2c769e.chunk.js",
+      "path": "C:\\Users\\achod\\OneDrive\\Desktop\\Archive\\brokers\\lumistakes-project\\lumistakes\\WalletConnect\\app\\build\\static\\js\\2456.0a2c769e.chunk.js",
+      "publicPath": "/static/js/2456.0a2c769e.chunk.js"
+    },
+    "static/js/2456.0a2c769e.chunk.js.map": {
+      "name": "static/js/2456.0a2c769e.chunk.js.map",
+      "path": "C:\\Users\\achod\\OneDrive\\Desktop\\Archive\\brokers\\lumistakes-project\\lumistakes\\WalletConnect\\app\\build\\static\\js\\2456.0a2c769e.chunk.js.map",
+      "publicPath": "/static/js/2456.0a2c769e.chunk.js.map"
+    },
+    "static/js/2463.8cfeda83.chunk.js": {
+      "name": "static/js/2463.8cfeda83.chunk.js",
+      "path": "C:\\Users\\achod\\OneDrive\\Desktop\\Archive\\brokers\\lumistakes-project\\lumistakes\\WalletConnect\\app\\build\\static\\js\\2463.8cfeda83.chunk.js",
+      "publicPath": "/static/js/2463.8cfeda83.chunk.js"
+    },
+    "static/js/2463.8cfeda83.chunk.js.map": {
+      "name": "static/js/2463.8cfeda83.chunk.js.map",
+      "path": "C:\\Users\\achod\\OneDrive\\Desktop\\Archive\\brokers\\lumistakes-project\\lumistakes\\WalletConnect\\app\\build\\static\\js\\2463.8cfeda83.chunk.js.map",
+      "publicPath": "/static/js/2463.8cfeda83.chunk.js.map"
+    },
+    "static/js/2784.446f5862.chunk.js": {
+      "name": "static/js/2784.446f5862.chunk.js",
+      "path": "C:\\Users\\achod\\OneDrive\\Desktop\\Archive\\brokers\\lumistakes-project\\lumistakes\\WalletConnect\\app\\build\\static\\js\\2784.446f5862.chunk.js",
+      "publicPath": "/static/js/2784.446f5862.chunk.js"
+    },
+    "static/js/2784.446f5862.chunk.js.map": {
+      "name": "static/js/2784.446f5862.chunk.js.map",
+      "path": "C:\\Users\\achod\\OneDrive\\Desktop\\Archive\\brokers\\lumistakes-project\\lumistakes\\WalletConnect\\app\\build\\static\\js\\2784.446f5862.chunk.js.map",
+      "publicPath": "/static/js/2784.446f5862.chunk.js.map"
+    },
+    "static/js/2821.0056c5a9.chunk.js": {
+      "name": "static/js/2821.0056c5a9.chunk.js",
+      "path": "C:\\Users\\achod\\OneDrive\\Desktop\\Archive\\brokers\\lumistakes-project\\lumistakes\\WalletConnect\\app\\build\\static\\js\\2821.0056c5a9.chunk.js",
+      "publicPath": "/static/js/2821.0056c5a9.chunk.js"
+    },
+    "static/js/2821.0056c5a9.chunk.js.map": {
+      "name": "static/js/2821.0056c5a9.chunk.js.map",
+      "path": "C:\\Users\\achod\\OneDrive\\Desktop\\Archive\\brokers\\lumistakes-project\\lumistakes\\WalletConnect\\app\\build\\static\\js\\2821.0056c5a9.chunk.js.map",
+      "publicPath": "/static/js/2821.0056c5a9.chunk.js.map"
+    },
+    "static/js/2926.b74dff3e.chunk.js": {
+      "name": "static/js/2926.b74dff3e.chunk.js",
+      "path": "C:\\Users\\achod\\OneDrive\\Desktop\\Archive\\brokers\\lumistakes-project\\lumistakes\\WalletConnect\\app\\build\\static\\js\\2926.b74dff3e.chunk.js",
+      "publicPath": "/static/js/2926.b74dff3e.chunk.js"
+    },
+    "static/js/2926.b74dff3e.chunk.js.map": {
+      "name": "static/js/2926.b74dff3e.chunk.js.map",
+      "path": "C:\\Users\\achod\\OneDrive\\Desktop\\Archive\\brokers\\lumistakes-project\\lumistakes\\WalletConnect\\app\\build\\static\\js\\2926.b74dff3e.chunk.js.map",
+      "publicPath": "/static/js/2926.b74dff3e.chunk.js.map"
+    },
+    "static/js/3005.b95bf8bd.chunk.js": {
+      "name": "static/js/3005.b95bf8bd.chunk.js",
+      "path": "C:\\Users\\achod\\OneDrive\\Desktop\\Archive\\brokers\\lumistakes-project\\lumistakes\\WalletConnect\\app\\build\\static\\js\\3005.b95bf8bd.chunk.js",
+      "publicPath": "/static/js/3005.b95bf8bd.chunk.js"
+    },
+    "static/js/3005.b95bf8bd.chunk.js.map": {
+      "name": "static/js/3005.b95bf8bd.chunk.js.map",
+      "path": "C:\\Users\\achod\\OneDrive\\Desktop\\Archive\\brokers\\lumistakes-project\\lumistakes\\WalletConnect\\app\\build\\static\\js\\3005.b95bf8bd.chunk.js.map",
+      "publicPath": "/static/js/3005.b95bf8bd.chunk.js.map"
+    },
+    "static/js/3101.52306871.chunk.js": {
+      "name": "static/js/3101.52306871.chunk.js",
+      "path": "C:\\Users\\achod\\OneDrive\\Desktop\\Archive\\brokers\\lumistakes-project\\lumistakes\\WalletConnect\\app\\build\\static\\js\\3101.52306871.chunk.js",
+      "publicPath": "/static/js/3101.52306871.chunk.js"
+    },
+    "static/js/3101.52306871.chunk.js.LICENSE.txt": {
+      "name": "static/js/3101.52306871.chunk.js.LICENSE.txt",
+      "path": "C:\\Users\\achod\\OneDrive\\Desktop\\Archive\\brokers\\lumistakes-project\\lumistakes\\WalletConnect\\app\\build\\static\\js\\3101.52306871.chunk.js.LICENSE.txt",
+      "publicPath": "/static/js/3101.52306871.chunk.js.LICENSE.txt"
+    },
+    "static/js/3101.52306871.chunk.js.map": {
+      "name": "static/js/3101.52306871.chunk.js.map",
+      "path": "C:\\Users\\achod\\OneDrive\\Desktop\\Archive\\brokers\\lumistakes-project\\lumistakes\\WalletConnect\\app\\build\\static\\js\\3101.52306871.chunk.js.map",
+      "publicPath": "/static/js/3101.52306871.chunk.js.map"
+    },
+    "static/js/3137.4b6a6c8d.chunk.js": {
+      "name": "static/js/3137.4b6a6c8d.chunk.js",
+      "path": "C:\\Users\\achod\\OneDrive\\Desktop\\Archive\\brokers\\lumistakes-project\\lumistakes\\WalletConnect\\app\\build\\static\\js\\3137.4b6a6c8d.chunk.js",
+      "publicPath": "/static/js/3137.4b6a6c8d.chunk.js"
+    },
+    "static/js/3137.4b6a6c8d.chunk.js.map": {
+      "name": "static/js/3137.4b6a6c8d.chunk.js.map",
+      "path": "C:\\Users\\achod\\OneDrive\\Desktop\\Archive\\brokers\\lumistakes-project\\lumistakes\\WalletConnect\\app\\build\\static\\js\\3137.4b6a6c8d.chunk.js.map",
+      "publicPath": "/static/js/3137.4b6a6c8d.chunk.js.map"
+    },
+    "static/js/3293.57d15b79.chunk.js": {
+      "name": "static/js/3293.57d15b79.chunk.js",
+      "path": "C:\\Users\\achod\\OneDrive\\Desktop\\Archive\\brokers\\lumistakes-project\\lumistakes\\WalletConnect\\app\\build\\static\\js\\3293.57d15b79.chunk.js",
+      "publicPath": "/static/js/3293.57d15b79.chunk.js"
+    },
+    "static/js/3293.57d15b79.chunk.js.map": {
+      "name": "static/js/3293.57d15b79.chunk.js.map",
+      "path": "C:\\Users\\achod\\OneDrive\\Desktop\\Archive\\brokers\\lumistakes-project\\lumistakes\\WalletConnect\\app\\build\\static\\js\\3293.57d15b79.chunk.js.map",
+      "publicPath": "/static/js/3293.57d15b79.chunk.js.map"
+    },
+    "static/js/3430.5c75c9ed.chunk.js": {
+      "name": "static/js/3430.5c75c9ed.chunk.js",
+      "path": "C:\\Users\\achod\\OneDrive\\Desktop\\Archive\\brokers\\lumistakes-project\\lumistakes\\WalletConnect\\app\\build\\static\\js\\3430.5c75c9ed.chunk.js",
+      "publicPath": "/static/js/3430.5c75c9ed.chunk.js"
+    },
+    "static/js/3430.5c75c9ed.chunk.js.map": {
+      "name": "static/js/3430.5c75c9ed.chunk.js.map",
+      "path": "C:\\Users\\achod\\OneDrive\\Desktop\\Archive\\brokers\\lumistakes-project\\lumistakes\\WalletConnect\\app\\build\\static\\js\\3430.5c75c9ed.chunk.js.map",
+      "publicPath": "/static/js/3430.5c75c9ed.chunk.js.map"
+    },
+    "static/js/3448.ff647a81.chunk.js": {
+      "name": "static/js/3448.ff647a81.chunk.js",
+      "path": "C:\\Users\\achod\\OneDrive\\Desktop\\Archive\\brokers\\lumistakes-project\\lumistakes\\WalletConnect\\app\\build\\static\\js\\3448.ff647a81.chunk.js",
+      "publicPath": "/static/js/3448.ff647a81.chunk.js"
+    },
+    "static/js/3448.ff647a81.chunk.js.map": {
+      "name": "static/js/3448.ff647a81.chunk.js.map",
+      "path": "C:\\Users\\achod\\OneDrive\\Desktop\\Archive\\brokers\\lumistakes-project\\lumistakes\\WalletConnect\\app\\build\\static\\js\\3448.ff647a81.chunk.js.map",
+      "publicPath": "/static/js/3448.ff647a81.chunk.js.map"
+    },
+    "static/js/3576.b05b0aff.chunk.js": {
+      "name": "static/js/3576.b05b0aff.chunk.js",
+      "path": "C:\\Users\\achod\\OneDrive\\Desktop\\Archive\\brokers\\lumistakes-project\\lumistakes\\WalletConnect\\app\\build\\static\\js\\3576.b05b0aff.chunk.js",
+      "publicPath": "/static/js/3576.b05b0aff.chunk.js"
+    },
+    "static/js/3576.b05b0aff.chunk.js.map": {
+      "name": "static/js/3576.b05b0aff.chunk.js.map",
+      "path": "C:\\Users\\achod\\OneDrive\\Desktop\\Archive\\brokers\\lumistakes-project\\lumistakes\\WalletConnect\\app\\build\\static\\js\\3576.b05b0aff.chunk.js.map",
+      "publicPath": "/static/js/3576.b05b0aff.chunk.js.map"
+    },
+    "static/js/3596.2d0f6c41.chunk.js": {
+      "name": "static/js/3596.2d0f6c41.chunk.js",
+      "path": "C:\\Users\\achod\\OneDrive\\Desktop\\Archive\\brokers\\lumistakes-project\\lumistakes\\WalletConnect\\app\\build\\static\\js\\3596.2d0f6c41.chunk.js",
+      "publicPath": "/static/js/3596.2d0f6c41.chunk.js"
+    },
+    "static/js/3596.2d0f6c41.chunk.js.map": {
+      "name": "static/js/3596.2d0f6c41.chunk.js.map",
+      "path": "C:\\Users\\achod\\OneDrive\\Desktop\\Archive\\brokers\\lumistakes-project\\lumistakes\\WalletConnect\\app\\build\\static\\js\\3596.2d0f6c41.chunk.js.map",
+      "publicPath": "/static/js/3596.2d0f6c41.chunk.js.map"
+    },
+    "static/js/3656.e9b524b3.chunk.js": {
+      "name": "static/js/3656.e9b524b3.chunk.js",
+      "path": "C:\\Users\\achod\\OneDrive\\Desktop\\Archive\\brokers\\lumistakes-project\\lumistakes\\WalletConnect\\app\\build\\static\\js\\3656.e9b524b3.chunk.js",
+      "publicPath": "/static/js/3656.e9b524b3.chunk.js"
+    },
+    "static/js/3656.e9b524b3.chunk.js.map": {
+      "name": "static/js/3656.e9b524b3.chunk.js.map",
+      "path": "C:\\Users\\achod\\OneDrive\\Desktop\\Archive\\brokers\\lumistakes-project\\lumistakes\\WalletConnect\\app\\build\\static\\js\\3656.e9b524b3.chunk.js.map",
+      "publicPath": "/static/js/3656.e9b524b3.chunk.js.map"
+    },
+    "static/js/3697.99b869b3.chunk.js": {
+      "name": "static/js/3697.99b869b3.chunk.js",
+      "path": "C:\\Users\\achod\\OneDrive\\Desktop\\Archive\\brokers\\lumistakes-project\\lumistakes\\WalletConnect\\app\\build\\static\\js\\3697.99b869b3.chunk.js",
+      "publicPath": "/static/js/3697.99b869b3.chunk.js"
+    },
+    "static/js/3697.99b869b3.chunk.js.map": {
+      "name": "static/js/3697.99b869b3.chunk.js.map",
+      "path": "C:\\Users\\achod\\OneDrive\\Desktop\\Archive\\brokers\\lumistakes-project\\lumistakes\\WalletConnect\\app\\build\\static\\js\\3697.99b869b3.chunk.js.map",
+      "publicPath": "/static/js/3697.99b869b3.chunk.js.map"
+    },
+    "static/js/374.13d4944e.chunk.js": {
+      "name": "static/js/374.13d4944e.chunk.js",
+      "path": "C:\\Users\\achod\\OneDrive\\Desktop\\Archive\\brokers\\lumistakes-project\\lumistakes\\WalletConnect\\app\\build\\static\\js\\374.13d4944e.chunk.js",
+      "publicPath": "/static/js/374.13d4944e.chunk.js"
+    },
+    "static/js/374.13d4944e.chunk.js.map": {
+      "name": "static/js/374.13d4944e.chunk.js.map",
+      "path": "C:\\Users\\achod\\OneDrive\\Desktop\\Archive\\brokers\\lumistakes-project\\lumistakes\\WalletConnect\\app\\build\\static\\js\\374.13d4944e.chunk.js.map",
+      "publicPath": "/static/js/374.13d4944e.chunk.js.map"
+    },
+    "static/js/395.da14fd89.chunk.js": {
+      "name": "static/js/395.da14fd89.chunk.js",
+      "path": "C:\\Users\\achod\\OneDrive\\Desktop\\Archive\\brokers\\lumistakes-project\\lumistakes\\WalletConnect\\app\\build\\static\\js\\395.da14fd89.chunk.js",
+      "publicPath": "/static/js/395.da14fd89.chunk.js"
+    },
+    "static/js/395.da14fd89.chunk.js.map": {
+      "name": "static/js/395.da14fd89.chunk.js.map",
+      "path": "C:\\Users\\achod\\OneDrive\\Desktop\\Archive\\brokers\\lumistakes-project\\lumistakes\\WalletConnect\\app\\build\\static\\js\\395.da14fd89.chunk.js.map",
+      "publicPath": "/static/js/395.da14fd89.chunk.js.map"
+    },
+    "static/js/4004.3902b095.chunk.js": {
+      "name": "static/js/4004.3902b095.chunk.js",
+      "path": "C:\\Users\\achod\\OneDrive\\Desktop\\Archive\\brokers\\lumistakes-project\\lumistakes\\WalletConnect\\app\\build\\static\\js\\4004.3902b095.chunk.js",
+      "publicPath": "/static/js/4004.3902b095.chunk.js"
+    },
+    "static/js/4004.3902b095.chunk.js.map": {
+      "name": "static/js/4004.3902b095.chunk.js.map",
+      "path": "C:\\Users\\achod\\OneDrive\\Desktop\\Archive\\brokers\\lumistakes-project\\lumistakes\\WalletConnect\\app\\build\\static\\js\\4004.3902b095.chunk.js.map",
+      "publicPath": "/static/js/4004.3902b095.chunk.js.map"
+    },
+    "static/js/4093.9668fbb0.chunk.js": {
+      "name": "static/js/4093.9668fbb0.chunk.js",
+      "path": "C:\\Users\\achod\\OneDrive\\Desktop\\Archive\\brokers\\lumistakes-project\\lumistakes\\WalletConnect\\app\\build\\static\\js\\4093.9668fbb0.chunk.js",
+      "publicPath": "/static/js/4093.9668fbb0.chunk.js"
+    },
+    "static/js/4093.9668fbb0.chunk.js.map": {
+      "name": "static/js/4093.9668fbb0.chunk.js.map",
+      "path": "C:\\Users\\achod\\OneDrive\\Desktop\\Archive\\brokers\\lumistakes-project\\lumistakes\\WalletConnect\\app\\build\\static\\js\\4093.9668fbb0.chunk.js.map",
+      "publicPath": "/static/js/4093.9668fbb0.chunk.js.map"
+    },
+    "static/js/4246.befa4f56.chunk.js": {
+      "name": "static/js/4246.befa4f56.chunk.js",
+      "path": "C:\\Users\\achod\\OneDrive\\Desktop\\Archive\\brokers\\lumistakes-project\\lumistakes\\WalletConnect\\app\\build\\static\\js\\4246.befa4f56.chunk.js",
+      "publicPath": "/static/js/4246.befa4f56.chunk.js"
+    },
+    "static/js/4246.befa4f56.chunk.js.map": {
+      "name": "static/js/4246.befa4f56.chunk.js.map",
+      "path": "C:\\Users\\achod\\OneDrive\\Desktop\\Archive\\brokers\\lumistakes-project\\lumistakes\\WalletConnect\\app\\build\\static\\js\\4246.befa4f56.chunk.js.map",
+      "publicPath": "/static/js/4246.befa4f56.chunk.js.map"
+    },
+    "static/js/4310.a97f30f8.chunk.js": {
+      "name": "static/js/4310.a97f30f8.chunk.js",
+      "path": "C:\\Users\\achod\\OneDrive\\Desktop\\Archive\\brokers\\lumistakes-project\\lumistakes\\WalletConnect\\app\\build\\static\\js\\4310.a97f30f8.chunk.js",
+      "publicPath": "/static/js/4310.a97f30f8.chunk.js"
+    },
+    "static/js/4310.a97f30f8.chunk.js.map": {
+      "name": "static/js/4310.a97f30f8.chunk.js.map",
+      "path": "C:\\Users\\achod\\OneDrive\\Desktop\\Archive\\brokers\\lumistakes-project\\lumistakes\\WalletConnect\\app\\build\\static\\js\\4310.a97f30f8.chunk.js.map",
+      "publicPath": "/static/js/4310.a97f30f8.chunk.js.map"
+    },
+    "static/js/4500.b7c458bc.chunk.js": {
+      "name": "static/js/4500.b7c458bc.chunk.js",
+      "path": "C:\\Users\\achod\\OneDrive\\Desktop\\Archive\\brokers\\lumistakes-project\\lumistakes\\WalletConnect\\app\\build\\static\\js\\4500.b7c458bc.chunk.js",
+      "publicPath": "/static/js/4500.b7c458bc.chunk.js"
+    },
+    "static/js/4500.b7c458bc.chunk.js.map": {
+      "name": "static/js/4500.b7c458bc.chunk.js.map",
+      "path": "C:\\Users\\achod\\OneDrive\\Desktop\\Archive\\brokers\\lumistakes-project\\lumistakes\\WalletConnect\\app\\build\\static\\js\\4500.b7c458bc.chunk.js.map",
+      "publicPath": "/static/js/4500.b7c458bc.chunk.js.map"
+    },
+    "static/js/4625.5a18ce9b.chunk.js": {
+      "name": "static/js/4625.5a18ce9b.chunk.js",
+      "path": "C:\\Users\\achod\\OneDrive\\Desktop\\Archive\\brokers\\lumistakes-project\\lumistakes\\WalletConnect\\app\\build\\static\\js\\4625.5a18ce9b.chunk.js",
+      "publicPath": "/static/js/4625.5a18ce9b.chunk.js"
+    },
+    "static/js/4625.5a18ce9b.chunk.js.map": {
+      "name": "static/js/4625.5a18ce9b.chunk.js.map",
+      "path": "C:\\Users\\achod\\OneDrive\\Desktop\\Archive\\brokers\\lumistakes-project\\lumistakes\\WalletConnect\\app\\build\\static\\js\\4625.5a18ce9b.chunk.js.map",
+      "publicPath": "/static/js/4625.5a18ce9b.chunk.js.map"
+    },
+    "static/js/4661.fe8a7cec.chunk.js": {
+      "name": "static/js/4661.fe8a7cec.chunk.js",
+      "path": "C:\\Users\\achod\\OneDrive\\Desktop\\Archive\\brokers\\lumistakes-project\\lumistakes\\WalletConnect\\app\\build\\static\\js\\4661.fe8a7cec.chunk.js",
+      "publicPath": "/static/js/4661.fe8a7cec.chunk.js"
+    },
+    "static/js/4661.fe8a7cec.chunk.js.map": {
+      "name": "static/js/4661.fe8a7cec.chunk.js.map",
+      "path": "C:\\Users\\achod\\OneDrive\\Desktop\\Archive\\brokers\\lumistakes-project\\lumistakes\\WalletConnect\\app\\build\\static\\js\\4661.fe8a7cec.chunk.js.map",
+      "publicPath": "/static/js/4661.fe8a7cec.chunk.js.map"
+    },
+    "static/js/4682.88f1a4da.chunk.js": {
+      "name": "static/js/4682.88f1a4da.chunk.js",
+      "path": "C:\\Users\\achod\\OneDrive\\Desktop\\Archive\\brokers\\lumistakes-project\\lumistakes\\WalletConnect\\app\\build\\static\\js\\4682.88f1a4da.chunk.js",
+      "publicPath": "/static/js/4682.88f1a4da.chunk.js"
+    },
+    "static/js/4682.88f1a4da.chunk.js.map": {
+      "name": "static/js/4682.88f1a4da.chunk.js.map",
+      "path": "C:\\Users\\achod\\OneDrive\\Desktop\\Archive\\brokers\\lumistakes-project\\lumistakes\\WalletConnect\\app\\build\\static\\js\\4682.88f1a4da.chunk.js.map",
+      "publicPath": "/static/js/4682.88f1a4da.chunk.js.map"
+    },
+    "static/js/4708.84ca2042.chunk.js": {
+      "name": "static/js/4708.84ca2042.chunk.js",
+      "path": "C:\\Users\\achod\\OneDrive\\Desktop\\Archive\\brokers\\lumistakes-project\\lumistakes\\WalletConnect\\app\\build\\static\\js\\4708.84ca2042.chunk.js",
+      "publicPath": "/static/js/4708.84ca2042.chunk.js"
+    },
+    "static/js/4708.84ca2042.chunk.js.map": {
+      "name": "static/js/4708.84ca2042.chunk.js.map",
+      "path": "C:\\Users\\achod\\OneDrive\\Desktop\\Archive\\brokers\\lumistakes-project\\lumistakes\\WalletConnect\\app\\build\\static\\js\\4708.84ca2042.chunk.js.map",
+      "publicPath": "/static/js/4708.84ca2042.chunk.js.map"
+    },
+    "static/js/4780.f42afb31.chunk.js": {
+      "name": "static/js/4780.f42afb31.chunk.js",
+      "path": "C:\\Users\\achod\\OneDrive\\Desktop\\Archive\\brokers\\lumistakes-project\\lumistakes\\WalletConnect\\app\\build\\static\\js\\4780.f42afb31.chunk.js",
+      "publicPath": "/static/js/4780.f42afb31.chunk.js"
+    },
+    "static/js/4780.f42afb31.chunk.js.LICENSE.txt": {
+      "name": "static/js/4780.f42afb31.chunk.js.LICENSE.txt",
+      "path": "C:\\Users\\achod\\OneDrive\\Desktop\\Archive\\brokers\\lumistakes-project\\lumistakes\\WalletConnect\\app\\build\\static\\js\\4780.f42afb31.chunk.js.LICENSE.txt",
+      "publicPath": "/static/js/4780.f42afb31.chunk.js.LICENSE.txt"
+    },
+    "static/js/4780.f42afb31.chunk.js.map": {
+      "name": "static/js/4780.f42afb31.chunk.js.map",
+      "path": "C:\\Users\\achod\\OneDrive\\Desktop\\Archive\\brokers\\lumistakes-project\\lumistakes\\WalletConnect\\app\\build\\static\\js\\4780.f42afb31.chunk.js.map",
+      "publicPath": "/static/js/4780.f42afb31.chunk.js.map"
+    },
+    "static/js/4865.057ad891.chunk.js": {
+      "name": "static/js/4865.057ad891.chunk.js",
+      "path": "C:\\Users\\achod\\OneDrive\\Desktop\\Archive\\brokers\\lumistakes-project\\lumistakes\\WalletConnect\\app\\build\\static\\js\\4865.057ad891.chunk.js",
+      "publicPath": "/static/js/4865.057ad891.chunk.js"
+    },
+    "static/js/4865.057ad891.chunk.js.map": {
+      "name": "static/js/4865.057ad891.chunk.js.map",
+      "path": "C:\\Users\\achod\\OneDrive\\Desktop\\Archive\\brokers\\lumistakes-project\\lumistakes\\WalletConnect\\app\\build\\static\\js\\4865.057ad891.chunk.js.map",
+      "publicPath": "/static/js/4865.057ad891.chunk.js.map"
+    },
+    "static/js/4931.c676df7e.chunk.js": {
+      "name": "static/js/4931.c676df7e.chunk.js",
+      "path": "C:\\Users\\achod\\OneDrive\\Desktop\\Archive\\brokers\\lumistakes-project\\lumistakes\\WalletConnect\\app\\build\\static\\js\\4931.c676df7e.chunk.js",
+      "publicPath": "/static/js/4931.c676df7e.chunk.js"
+    },
+    "static/js/4931.c676df7e.chunk.js.map": {
+      "name": "static/js/4931.c676df7e.chunk.js.map",
+      "path": "C:\\Users\\achod\\OneDrive\\Desktop\\Archive\\brokers\\lumistakes-project\\lumistakes\\WalletConnect\\app\\build\\static\\js\\4931.c676df7e.chunk.js.map",
+      "publicPath": "/static/js/4931.c676df7e.chunk.js.map"
+    },
+    "static/js/5010.01c56c05.chunk.js": {
+      "name": "static/js/5010.01c56c05.chunk.js",
+      "path": "C:\\Users\\achod\\OneDrive\\Desktop\\Archive\\brokers\\lumistakes-project\\lumistakes\\WalletConnect\\app\\build\\static\\js\\5010.01c56c05.chunk.js",
+      "publicPath": "/static/js/5010.01c56c05.chunk.js"
+    },
+    "static/js/5010.01c56c05.chunk.js.map": {
+      "name": "static/js/5010.01c56c05.chunk.js.map",
+      "path": "C:\\Users\\achod\\OneDrive\\Desktop\\Archive\\brokers\\lumistakes-project\\lumistakes\\WalletConnect\\app\\build\\static\\js\\5010.01c56c05.chunk.js.map",
+      "publicPath": "/static/js/5010.01c56c05.chunk.js.map"
+    },
+    "static/js/5024.9ac7616b.chunk.js": {
+      "name": "static/js/5024.9ac7616b.chunk.js",
+      "path": "C:\\Users\\achod\\OneDrive\\Desktop\\Archive\\brokers\\lumistakes-project\\lumistakes\\WalletConnect\\app\\build\\static\\js\\5024.9ac7616b.chunk.js",
+      "publicPath": "/static/js/5024.9ac7616b.chunk.js"
+    },
+    "static/js/5024.9ac7616b.chunk.js.map": {
+      "name": "static/js/5024.9ac7616b.chunk.js.map",
+      "path": "C:\\Users\\achod\\OneDrive\\Desktop\\Archive\\brokers\\lumistakes-project\\lumistakes\\WalletConnect\\app\\build\\static\\js\\5024.9ac7616b.chunk.js.map",
+      "publicPath": "/static/js/5024.9ac7616b.chunk.js.map"
+    },
+    "static/js/526.2637634f.chunk.js": {
+      "name": "static/js/526.2637634f.chunk.js",
+      "path": "C:\\Users\\achod\\OneDrive\\Desktop\\Archive\\brokers\\lumistakes-project\\lumistakes\\WalletConnect\\app\\build\\static\\js\\526.2637634f.chunk.js",
+      "publicPath": "/static/js/526.2637634f.chunk.js"
+    },
+    "static/js/526.2637634f.chunk.js.map": {
+      "name": "static/js/526.2637634f.chunk.js.map",
+      "path": "C:\\Users\\achod\\OneDrive\\Desktop\\Archive\\brokers\\lumistakes-project\\lumistakes\\WalletConnect\\app\\build\\static\\js\\526.2637634f.chunk.js.map",
+      "publicPath": "/static/js/526.2637634f.chunk.js.map"
+    },
+    "static/js/5311.7c030d9b.chunk.js": {
+      "name": "static/js/5311.7c030d9b.chunk.js",
+      "path": "C:\\Users\\achod\\OneDrive\\Desktop\\Archive\\brokers\\lumistakes-project\\lumistakes\\WalletConnect\\app\\build\\static\\js\\5311.7c030d9b.chunk.js",
+      "publicPath": "/static/js/5311.7c030d9b.chunk.js"
+    },
+    "static/js/5311.7c030d9b.chunk.js.map": {
+      "name": "static/js/5311.7c030d9b.chunk.js.map",
+      "path": "C:\\Users\\achod\\OneDrive\\Desktop\\Archive\\brokers\\lumistakes-project\\lumistakes\\WalletConnect\\app\\build\\static\\js\\5311.7c030d9b.chunk.js.map",
+      "publicPath": "/static/js/5311.7c030d9b.chunk.js.map"
+    },
+    "static/js/5333.2856e1fb.chunk.js": {
+      "name": "static/js/5333.2856e1fb.chunk.js",
+      "path": "C:\\Users\\achod\\OneDrive\\Desktop\\Archive\\brokers\\lumistakes-project\\lumistakes\\WalletConnect\\app\\build\\static\\js\\5333.2856e1fb.chunk.js",
+      "publicPath": "/static/js/5333.2856e1fb.chunk.js"
+    },
+    "static/js/5333.2856e1fb.chunk.js.map": {
+      "name": "static/js/5333.2856e1fb.chunk.js.map",
+      "path": "C:\\Users\\achod\\OneDrive\\Desktop\\Archive\\brokers\\lumistakes-project\\lumistakes\\WalletConnect\\app\\build\\static\\js\\5333.2856e1fb.chunk.js.map",
+      "publicPath": "/static/js/5333.2856e1fb.chunk.js.map"
+    },
+    "static/js/5465.41b010ad.chunk.js": {
+      "name": "static/js/5465.41b010ad.chunk.js",
+      "path": "C:\\Users\\achod\\OneDrive\\Desktop\\Archive\\brokers\\lumistakes-project\\lumistakes\\WalletConnect\\app\\build\\static\\js\\5465.41b010ad.chunk.js",
+      "publicPath": "/static/js/5465.41b010ad.chunk.js"
+    },
+    "static/js/5465.41b010ad.chunk.js.map": {
+      "name": "static/js/5465.41b010ad.chunk.js.map",
+      "path": "C:\\Users\\achod\\OneDrive\\Desktop\\Archive\\brokers\\lumistakes-project\\lumistakes\\WalletConnect\\app\\build\\static\\js\\5465.41b010ad.chunk.js.map",
+      "publicPath": "/static/js/5465.41b010ad.chunk.js.map"
+    },
+    "static/js/5596.6472a3e0.chunk.js": {
+      "name": "static/js/5596.6472a3e0.chunk.js",
+      "path": "C:\\Users\\achod\\OneDrive\\Desktop\\Archive\\brokers\\lumistakes-project\\lumistakes\\WalletConnect\\app\\build\\static\\js\\5596.6472a3e0.chunk.js",
+      "publicPath": "/static/js/5596.6472a3e0.chunk.js"
+    },
+    "static/js/5596.6472a3e0.chunk.js.map": {
+      "name": "static/js/5596.6472a3e0.chunk.js.map",
+      "path": "C:\\Users\\achod\\OneDrive\\Desktop\\Archive\\brokers\\lumistakes-project\\lumistakes\\WalletConnect\\app\\build\\static\\js\\5596.6472a3e0.chunk.js.map",
+      "publicPath": "/static/js/5596.6472a3e0.chunk.js.map"
+    },
+    "static/js/5656.ac87c34c.chunk.js": {
+      "name": "static/js/5656.ac87c34c.chunk.js",
+      "path": "C:\\Users\\achod\\OneDrive\\Desktop\\Archive\\brokers\\lumistakes-project\\lumistakes\\WalletConnect\\app\\build\\static\\js\\5656.ac87c34c.chunk.js",
+      "publicPath": "/static/js/5656.ac87c34c.chunk.js"
+    },
+    "static/js/5656.ac87c34c.chunk.js.map": {
+      "name": "static/js/5656.ac87c34c.chunk.js.map",
+      "path": "C:\\Users\\achod\\OneDrive\\Desktop\\Archive\\brokers\\lumistakes-project\\lumistakes\\WalletConnect\\app\\build\\static\\js\\5656.ac87c34c.chunk.js.map",
+      "publicPath": "/static/js/5656.ac87c34c.chunk.js.map"
+    },
+    "static/js/5710.2ad89336.chunk.js": {
+      "name": "static/js/5710.2ad89336.chunk.js",
+      "path": "C:\\Users\\achod\\OneDrive\\Desktop\\Archive\\brokers\\lumistakes-project\\lumistakes\\WalletConnect\\app\\build\\static\\js\\5710.2ad89336.chunk.js",
+      "publicPath": "/static/js/5710.2ad89336.chunk.js"
+    },
+    "static/js/5710.2ad89336.chunk.js.map": {
+      "name": "static/js/5710.2ad89336.chunk.js.map",
+      "path": "C:\\Users\\achod\\OneDrive\\Desktop\\Archive\\brokers\\lumistakes-project\\lumistakes\\WalletConnect\\app\\build\\static\\js\\5710.2ad89336.chunk.js.map",
+      "publicPath": "/static/js/5710.2ad89336.chunk.js.map"
+    },
+    "static/js/5911.404f2292.chunk.js": {
+      "name": "static/js/5911.404f2292.chunk.js",
+      "path": "C:\\Users\\achod\\OneDrive\\Desktop\\Archive\\brokers\\lumistakes-project\\lumistakes\\WalletConnect\\app\\build\\static\\js\\5911.404f2292.chunk.js",
+      "publicPath": "/static/js/5911.404f2292.chunk.js"
+    },
+    "static/js/5911.404f2292.chunk.js.map": {
+      "name": "static/js/5911.404f2292.chunk.js.map",
+      "path": "C:\\Users\\achod\\OneDrive\\Desktop\\Archive\\brokers\\lumistakes-project\\lumistakes\\WalletConnect\\app\\build\\static\\js\\5911.404f2292.chunk.js.map",
+      "publicPath": "/static/js/5911.404f2292.chunk.js.map"
+    },
+    "static/js/5938.837cc439.chunk.js": {
+      "name": "static/js/5938.837cc439.chunk.js",
+      "path": "C:\\Users\\achod\\OneDrive\\Desktop\\Archive\\brokers\\lumistakes-project\\lumistakes\\WalletConnect\\app\\build\\static\\js\\5938.837cc439.chunk.js",
+      "publicPath": "/static/js/5938.837cc439.chunk.js"
+    },
+    "static/js/5938.837cc439.chunk.js.map": {
+      "name": "static/js/5938.837cc439.chunk.js.map",
+      "path": "C:\\Users\\achod\\OneDrive\\Desktop\\Archive\\brokers\\lumistakes-project\\lumistakes\\WalletConnect\\app\\build\\static\\js\\5938.837cc439.chunk.js.map",
+      "publicPath": "/static/js/5938.837cc439.chunk.js.map"
+    },
+    "static/js/6003.e950907f.chunk.js": {
+      "name": "static/js/6003.e950907f.chunk.js",
+      "path": "C:\\Users\\achod\\OneDrive\\Desktop\\Archive\\brokers\\lumistakes-project\\lumistakes\\WalletConnect\\app\\build\\static\\js\\6003.e950907f.chunk.js",
+      "publicPath": "/static/js/6003.e950907f.chunk.js"
+    },
+    "static/js/6003.e950907f.chunk.js.map": {
+      "name": "static/js/6003.e950907f.chunk.js.map",
+      "path": "C:\\Users\\achod\\OneDrive\\Desktop\\Archive\\brokers\\lumistakes-project\\lumistakes\\WalletConnect\\app\\build\\static\\js\\6003.e950907f.chunk.js.map",
+      "publicPath": "/static/js/6003.e950907f.chunk.js.map"
+    },
+    "static/js/6118.47e5082e.chunk.js": {
+      "name": "static/js/6118.47e5082e.chunk.js",
+      "path": "C:\\Users\\achod\\OneDrive\\Desktop\\Archive\\brokers\\lumistakes-project\\lumistakes\\WalletConnect\\app\\build\\static\\js\\6118.47e5082e.chunk.js",
+      "publicPath": "/static/js/6118.47e5082e.chunk.js"
+    },
+    "static/js/6118.47e5082e.chunk.js.map": {
+      "name": "static/js/6118.47e5082e.chunk.js.map",
+      "path": "C:\\Users\\achod\\OneDrive\\Desktop\\Archive\\brokers\\lumistakes-project\\lumistakes\\WalletConnect\\app\\build\\static\\js\\6118.47e5082e.chunk.js.map",
+      "publicPath": "/static/js/6118.47e5082e.chunk.js.map"
+    },
+    "static/js/6147.3619ed00.chunk.js": {
+      "name": "static/js/6147.3619ed00.chunk.js",
+      "path": "C:\\Users\\achod\\OneDrive\\Desktop\\Archive\\brokers\\lumistakes-project\\lumistakes\\WalletConnect\\app\\build\\static\\js\\6147.3619ed00.chunk.js",
+      "publicPath": "/static/js/6147.3619ed00.chunk.js"
+    },
+    "static/js/6147.3619ed00.chunk.js.map": {
+      "name": "static/js/6147.3619ed00.chunk.js.map",
+      "path": "C:\\Users\\achod\\OneDrive\\Desktop\\Archive\\brokers\\lumistakes-project\\lumistakes\\WalletConnect\\app\\build\\static\\js\\6147.3619ed00.chunk.js.map",
+      "publicPath": "/static/js/6147.3619ed00.chunk.js.map"
+    },
+    "static/js/621.095acd13.chunk.js": {
+      "name": "static/js/621.095acd13.chunk.js",
+      "path": "C:\\Users\\achod\\OneDrive\\Desktop\\Archive\\brokers\\lumistakes-project\\lumistakes\\WalletConnect\\app\\build\\static\\js\\621.095acd13.chunk.js",
+      "publicPath": "/static/js/621.095acd13.chunk.js"
+    },
+    "static/js/621.095acd13.chunk.js.map": {
+      "name": "static/js/621.095acd13.chunk.js.map",
+      "path": "C:\\Users\\achod\\OneDrive\\Desktop\\Archive\\brokers\\lumistakes-project\\lumistakes\\WalletConnect\\app\\build\\static\\js\\621.095acd13.chunk.js.map",
+      "publicPath": "/static/js/621.095acd13.chunk.js.map"
+    },
+    "static/js/6243.4762d447.chunk.js": {
+      "name": "static/js/6243.4762d447.chunk.js",
+      "path": "C:\\Users\\achod\\OneDrive\\Desktop\\Archive\\brokers\\lumistakes-project\\lumistakes\\WalletConnect\\app\\build\\static\\js\\6243.4762d447.chunk.js",
+      "publicPath": "/static/js/6243.4762d447.chunk.js"
+    },
+    "static/js/6243.4762d447.chunk.js.map": {
+      "name": "static/js/6243.4762d447.chunk.js.map",
+      "path": "C:\\Users\\achod\\OneDrive\\Desktop\\Archive\\brokers\\lumistakes-project\\lumistakes\\WalletConnect\\app\\build\\static\\js\\6243.4762d447.chunk.js.map",
+      "publicPath": "/static/js/6243.4762d447.chunk.js.map"
+    },
+    "static/js/6426.0b19231d.chunk.js": {
+      "name": "static/js/6426.0b19231d.chunk.js",
+      "path": "C:\\Users\\achod\\OneDrive\\Desktop\\Archive\\brokers\\lumistakes-project\\lumistakes\\WalletConnect\\app\\build\\static\\js\\6426.0b19231d.chunk.js",
+      "publicPath": "/static/js/6426.0b19231d.chunk.js"
+    },
+    "static/js/6426.0b19231d.chunk.js.map": {
+      "name": "static/js/6426.0b19231d.chunk.js.map",
+      "path": "C:\\Users\\achod\\OneDrive\\Desktop\\Archive\\brokers\\lumistakes-project\\lumistakes\\WalletConnect\\app\\build\\static\\js\\6426.0b19231d.chunk.js.map",
+      "publicPath": "/static/js/6426.0b19231d.chunk.js.map"
+    },
+    "static/js/6453.58e134c6.chunk.js": {
+      "name": "static/js/6453.58e134c6.chunk.js",
+      "path": "C:\\Users\\achod\\OneDrive\\Desktop\\Archive\\brokers\\lumistakes-project\\lumistakes\\WalletConnect\\app\\build\\static\\js\\6453.58e134c6.chunk.js",
+      "publicPath": "/static/js/6453.58e134c6.chunk.js"
+    },
+    "static/js/6453.58e134c6.chunk.js.map": {
+      "name": "static/js/6453.58e134c6.chunk.js.map",
+      "path": "C:\\Users\\achod\\OneDrive\\Desktop\\Archive\\brokers\\lumistakes-project\\lumistakes\\WalletConnect\\app\\build\\static\\js\\6453.58e134c6.chunk.js.map",
+      "publicPath": "/static/js/6453.58e134c6.chunk.js.map"
+    },
+    "static/js/6495.4b73d023.chunk.js": {
+      "name": "static/js/6495.4b73d023.chunk.js",
+      "path": "C:\\Users\\achod\\OneDrive\\Desktop\\Archive\\brokers\\lumistakes-project\\lumistakes\\WalletConnect\\app\\build\\static\\js\\6495.4b73d023.chunk.js",
+      "publicPath": "/static/js/6495.4b73d023.chunk.js"
+    },
+    "static/js/6495.4b73d023.chunk.js.map": {
+      "name": "static/js/6495.4b73d023.chunk.js.map",
+      "path": "C:\\Users\\achod\\OneDrive\\Desktop\\Archive\\brokers\\lumistakes-project\\lumistakes\\WalletConnect\\app\\build\\static\\js\\6495.4b73d023.chunk.js.map",
+      "publicPath": "/static/js/6495.4b73d023.chunk.js.map"
+    },
+    "static/js/6549.3525f128.chunk.js": {
+      "name": "static/js/6549.3525f128.chunk.js",
+      "path": "C:\\Users\\achod\\OneDrive\\Desktop\\Archive\\brokers\\lumistakes-project\\lumistakes\\WalletConnect\\app\\build\\static\\js\\6549.3525f128.chunk.js",
+      "publicPath": "/static/js/6549.3525f128.chunk.js"
+    },
+    "static/js/6549.3525f128.chunk.js.map": {
+      "name": "static/js/6549.3525f128.chunk.js.map",
+      "path": "C:\\Users\\achod\\OneDrive\\Desktop\\Archive\\brokers\\lumistakes-project\\lumistakes\\WalletConnect\\app\\build\\static\\js\\6549.3525f128.chunk.js.map",
+      "publicPath": "/static/js/6549.3525f128.chunk.js.map"
+    },
+    "static/js/6629.e861d970.chunk.js": {
+      "name": "static/js/6629.e861d970.chunk.js",
+      "path": "C:\\Users\\achod\\OneDrive\\Desktop\\Archive\\brokers\\lumistakes-project\\lumistakes\\WalletConnect\\app\\build\\static\\js\\6629.e861d970.chunk.js",
+      "publicPath": "/static/js/6629.e861d970.chunk.js"
+    },
+    "static/js/6629.e861d970.chunk.js.map": {
+      "name": "static/js/6629.e861d970.chunk.js.map",
+      "path": "C:\\Users\\achod\\OneDrive\\Desktop\\Archive\\brokers\\lumistakes-project\\lumistakes\\WalletConnect\\app\\build\\static\\js\\6629.e861d970.chunk.js.map",
+      "publicPath": "/static/js/6629.e861d970.chunk.js.map"
+    },
+    "static/js/6749.bb52e847.chunk.js": {
+      "name": "static/js/6749.bb52e847.chunk.js",
+      "path": "C:\\Users\\achod\\OneDrive\\Desktop\\Archive\\brokers\\lumistakes-project\\lumistakes\\WalletConnect\\app\\build\\static\\js\\6749.bb52e847.chunk.js",
+      "publicPath": "/static/js/6749.bb52e847.chunk.js"
+    },
+    "static/js/6749.bb52e847.chunk.js.map": {
+      "name": "static/js/6749.bb52e847.chunk.js.map",
+      "path": "C:\\Users\\achod\\OneDrive\\Desktop\\Archive\\brokers\\lumistakes-project\\lumistakes\\WalletConnect\\app\\build\\static\\js\\6749.bb52e847.chunk.js.map",
+      "publicPath": "/static/js/6749.bb52e847.chunk.js.map"
+    },
+    "static/js/6867.10ca6ed7.chunk.js": {
+      "name": "static/js/6867.10ca6ed7.chunk.js",
+      "path": "C:\\Users\\achod\\OneDrive\\Desktop\\Archive\\brokers\\lumistakes-project\\lumistakes\\WalletConnect\\app\\build\\static\\js\\6867.10ca6ed7.chunk.js",
+      "publicPath": "/static/js/6867.10ca6ed7.chunk.js"
+    },
+    "static/js/6867.10ca6ed7.chunk.js.LICENSE.txt": {
+      "name": "static/js/6867.10ca6ed7.chunk.js.LICENSE.txt",
+      "path": "C:\\Users\\achod\\OneDrive\\Desktop\\Archive\\brokers\\lumistakes-project\\lumistakes\\WalletConnect\\app\\build\\static\\js\\6867.10ca6ed7.chunk.js.LICENSE.txt",
+      "publicPath": "/static/js/6867.10ca6ed7.chunk.js.LICENSE.txt"
+    },
+    "static/js/6867.10ca6ed7.chunk.js.map": {
+      "name": "static/js/6867.10ca6ed7.chunk.js.map",
+      "path": "C:\\Users\\achod\\OneDrive\\Desktop\\Archive\\brokers\\lumistakes-project\\lumistakes\\WalletConnect\\app\\build\\static\\js\\6867.10ca6ed7.chunk.js.map",
+      "publicPath": "/static/js/6867.10ca6ed7.chunk.js.map"
+    },
+    "static/js/6970.f04fe33d.chunk.js": {
+      "name": "static/js/6970.f04fe33d.chunk.js",
+      "path": "C:\\Users\\achod\\OneDrive\\Desktop\\Archive\\brokers\\lumistakes-project\\lumistakes\\WalletConnect\\app\\build\\static\\js\\6970.f04fe33d.chunk.js",
+      "publicPath": "/static/js/6970.f04fe33d.chunk.js"
+    },
+    "static/js/6970.f04fe33d.chunk.js.map": {
+      "name": "static/js/6970.f04fe33d.chunk.js.map",
+      "path": "C:\\Users\\achod\\OneDrive\\Desktop\\Archive\\brokers\\lumistakes-project\\lumistakes\\WalletConnect\\app\\build\\static\\js\\6970.f04fe33d.chunk.js.map",
+      "publicPath": "/static/js/6970.f04fe33d.chunk.js.map"
+    },
+    "static/js/7.0bac9dd8.chunk.js": {
+      "name": "static/js/7.0bac9dd8.chunk.js",
+      "path": "C:\\Users\\achod\\OneDrive\\Desktop\\Archive\\brokers\\lumistakes-project\\lumistakes\\WalletConnect\\app\\build\\static\\js\\7.0bac9dd8.chunk.js",
+      "publicPath": "/static/js/7.0bac9dd8.chunk.js"
+    },
+    "static/js/7.0bac9dd8.chunk.js.LICENSE.txt": {
+      "name": "static/js/7.0bac9dd8.chunk.js.LICENSE.txt",
+      "path": "C:\\Users\\achod\\OneDrive\\Desktop\\Archive\\brokers\\lumistakes-project\\lumistakes\\WalletConnect\\app\\build\\static\\js\\7.0bac9dd8.chunk.js.LICENSE.txt",
+      "publicPath": "/static/js/7.0bac9dd8.chunk.js.LICENSE.txt"
+    },
+    "static/js/7.0bac9dd8.chunk.js.map": {
+      "name": "static/js/7.0bac9dd8.chunk.js.map",
+      "path": "C:\\Users\\achod\\OneDrive\\Desktop\\Archive\\brokers\\lumistakes-project\\lumistakes\\WalletConnect\\app\\build\\static\\js\\7.0bac9dd8.chunk.js.map",
+      "publicPath": "/static/js/7.0bac9dd8.chunk.js.map"
+    },
+    "static/js/7055.a0ee01a4.chunk.js": {
+      "name": "static/js/7055.a0ee01a4.chunk.js",
+      "path": "C:\\Users\\achod\\OneDrive\\Desktop\\Archive\\brokers\\lumistakes-project\\lumistakes\\WalletConnect\\app\\build\\static\\js\\7055.a0ee01a4.chunk.js",
+      "publicPath": "/static/js/7055.a0ee01a4.chunk.js"
+    },
+    "static/js/7055.a0ee01a4.chunk.js.map": {
+      "name": "static/js/7055.a0ee01a4.chunk.js.map",
+      "path": "C:\\Users\\achod\\OneDrive\\Desktop\\Archive\\brokers\\lumistakes-project\\lumistakes\\WalletConnect\\app\\build\\static\\js\\7055.a0ee01a4.chunk.js.map",
+      "publicPath": "/static/js/7055.a0ee01a4.chunk.js.map"
+    },
+    "static/js/7069.786b9d7f.chunk.js": {
+      "name": "static/js/7069.786b9d7f.chunk.js",
+      "path": "C:\\Users\\achod\\OneDrive\\Desktop\\Archive\\brokers\\lumistakes-project\\lumistakes\\WalletConnect\\app\\build\\static\\js\\7069.786b9d7f.chunk.js",
+      "publicPath": "/static/js/7069.786b9d7f.chunk.js"
+    },
+    "static/js/7069.786b9d7f.chunk.js.map": {
+      "name": "static/js/7069.786b9d7f.chunk.js.map",
+      "path": "C:\\Users\\achod\\OneDrive\\Desktop\\Archive\\brokers\\lumistakes-project\\lumistakes\\WalletConnect\\app\\build\\static\\js\\7069.786b9d7f.chunk.js.map",
+      "publicPath": "/static/js/7069.786b9d7f.chunk.js.map"
+    },
+    "static/js/7134.3de7b805.chunk.js": {
+      "name": "static/js/7134.3de7b805.chunk.js",
+      "path": "C:\\Users\\achod\\OneDrive\\Desktop\\Archive\\brokers\\lumistakes-project\\lumistakes\\WalletConnect\\app\\build\\static\\js\\7134.3de7b805.chunk.js",
+      "publicPath": "/static/js/7134.3de7b805.chunk.js"
+    },
+    "static/js/7134.3de7b805.chunk.js.map": {
+      "name": "static/js/7134.3de7b805.chunk.js.map",
+      "path": "C:\\Users\\achod\\OneDrive\\Desktop\\Archive\\brokers\\lumistakes-project\\lumistakes\\WalletConnect\\app\\build\\static\\js\\7134.3de7b805.chunk.js.map",
+      "publicPath": "/static/js/7134.3de7b805.chunk.js.map"
+    },
+    "static/js/7217.0fe7b2d3.chunk.js": {
+      "name": "static/js/7217.0fe7b2d3.chunk.js",
+      "path": "C:\\Users\\achod\\OneDrive\\Desktop\\Archive\\brokers\\lumistakes-project\\lumistakes\\WalletConnect\\app\\build\\static\\js\\7217.0fe7b2d3.chunk.js",
+      "publicPath": "/static/js/7217.0fe7b2d3.chunk.js"
+    },
+    "static/js/7217.0fe7b2d3.chunk.js.map": {
+      "name": "static/js/7217.0fe7b2d3.chunk.js.map",
+      "path": "C:\\Users\\achod\\OneDrive\\Desktop\\Archive\\brokers\\lumistakes-project\\lumistakes\\WalletConnect\\app\\build\\static\\js\\7217.0fe7b2d3.chunk.js.map",
+      "publicPath": "/static/js/7217.0fe7b2d3.chunk.js.map"
+    },
+    "static/js/752.81ccb56c.chunk.js": {
+      "name": "static/js/752.81ccb56c.chunk.js",
+      "path": "C:\\Users\\achod\\OneDrive\\Desktop\\Archive\\brokers\\lumistakes-project\\lumistakes\\WalletConnect\\app\\build\\static\\js\\752.81ccb56c.chunk.js",
+      "publicPath": "/static/js/752.81ccb56c.chunk.js"
+    },
+    "static/js/752.81ccb56c.chunk.js.map": {
+      "name": "static/js/752.81ccb56c.chunk.js.map",
+      "path": "C:\\Users\\achod\\OneDrive\\Desktop\\Archive\\brokers\\lumistakes-project\\lumistakes\\WalletConnect\\app\\build\\static\\js\\752.81ccb56c.chunk.js.map",
+      "publicPath": "/static/js/752.81ccb56c.chunk.js.map"
+    },
+    "static/js/7556.3f4e0cc0.chunk.js": {
+      "name": "static/js/7556.3f4e0cc0.chunk.js",
+      "path": "C:\\Users\\achod\\OneDrive\\Desktop\\Archive\\brokers\\lumistakes-project\\lumistakes\\WalletConnect\\app\\build\\static\\js\\7556.3f4e0cc0.chunk.js",
+      "publicPath": "/static/js/7556.3f4e0cc0.chunk.js"
+    },
+    "static/js/7556.3f4e0cc0.chunk.js.map": {
+      "name": "static/js/7556.3f4e0cc0.chunk.js.map",
+      "path": "C:\\Users\\achod\\OneDrive\\Desktop\\Archive\\brokers\\lumistakes-project\\lumistakes\\WalletConnect\\app\\build\\static\\js\\7556.3f4e0cc0.chunk.js.map",
+      "publicPath": "/static/js/7556.3f4e0cc0.chunk.js.map"
+    },
+    "static/js/7610.f7f936c0.chunk.js": {
+      "name": "static/js/7610.f7f936c0.chunk.js",
+      "path": "C:\\Users\\achod\\OneDrive\\Desktop\\Archive\\brokers\\lumistakes-project\\lumistakes\\WalletConnect\\app\\build\\static\\js\\7610.f7f936c0.chunk.js",
+      "publicPath": "/static/js/7610.f7f936c0.chunk.js"
+    },
+    "static/js/7610.f7f936c0.chunk.js.map": {
+      "name": "static/js/7610.f7f936c0.chunk.js.map",
+      "path": "C:\\Users\\achod\\OneDrive\\Desktop\\Archive\\brokers\\lumistakes-project\\lumistakes\\WalletConnect\\app\\build\\static\\js\\7610.f7f936c0.chunk.js.map",
+      "publicPath": "/static/js/7610.f7f936c0.chunk.js.map"
+    },
+    "static/js/7654.8f625488.chunk.js": {
+      "name": "static/js/7654.8f625488.chunk.js",
+      "path": "C:\\Users\\achod\\OneDrive\\Desktop\\Archive\\brokers\\lumistakes-project\\lumistakes\\WalletConnect\\app\\build\\static\\js\\7654.8f625488.chunk.js",
+      "publicPath": "/static/js/7654.8f625488.chunk.js"
+    },
+    "static/js/7654.8f625488.chunk.js.map": {
+      "name": "static/js/7654.8f625488.chunk.js.map",
+      "path": "C:\\Users\\achod\\OneDrive\\Desktop\\Archive\\brokers\\lumistakes-project\\lumistakes\\WalletConnect\\app\\build\\static\\js\\7654.8f625488.chunk.js.map",
+      "publicPath": "/static/js/7654.8f625488.chunk.js.map"
+    },
+    "static/js/7751.13cfc5fa.chunk.js": {
+      "name": "static/js/7751.13cfc5fa.chunk.js",
+      "path": "C:\\Users\\achod\\OneDrive\\Desktop\\Archive\\brokers\\lumistakes-project\\lumistakes\\WalletConnect\\app\\build\\static\\js\\7751.13cfc5fa.chunk.js",
+      "publicPath": "/static/js/7751.13cfc5fa.chunk.js"
+    },
+    "static/js/7751.13cfc5fa.chunk.js.map": {
+      "name": "static/js/7751.13cfc5fa.chunk.js.map",
+      "path": "C:\\Users\\achod\\OneDrive\\Desktop\\Archive\\brokers\\lumistakes-project\\lumistakes\\WalletConnect\\app\\build\\static\\js\\7751.13cfc5fa.chunk.js.map",
+      "publicPath": "/static/js/7751.13cfc5fa.chunk.js.map"
+    },
+    "static/js/792.299939ac.chunk.js": {
+      "name": "static/js/792.299939ac.chunk.js",
+      "path": "C:\\Users\\achod\\OneDrive\\Desktop\\Archive\\brokers\\lumistakes-project\\lumistakes\\WalletConnect\\app\\build\\static\\js\\792.299939ac.chunk.js",
+      "publicPath": "/static/js/792.299939ac.chunk.js"
+    },
+    "static/js/792.299939ac.chunk.js.map": {
+      "name": "static/js/792.299939ac.chunk.js.map",
+      "path": "C:\\Users\\achod\\OneDrive\\Desktop\\Archive\\brokers\\lumistakes-project\\lumistakes\\WalletConnect\\app\\build\\static\\js\\792.299939ac.chunk.js.map",
+      "publicPath": "/static/js/792.299939ac.chunk.js.map"
+    },
+    "static/js/7942.f4fefae3.chunk.js": {
+      "name": "static/js/7942.f4fefae3.chunk.js",
+      "path": "C:\\Users\\achod\\OneDrive\\Desktop\\Archive\\brokers\\lumistakes-project\\lumistakes\\WalletConnect\\app\\build\\static\\js\\7942.f4fefae3.chunk.js",
+      "publicPath": "/static/js/7942.f4fefae3.chunk.js"
+    },
+    "static/js/7942.f4fefae3.chunk.js.map": {
+      "name": "static/js/7942.f4fefae3.chunk.js.map",
+      "path": "C:\\Users\\achod\\OneDrive\\Desktop\\Archive\\brokers\\lumistakes-project\\lumistakes\\WalletConnect\\app\\build\\static\\js\\7942.f4fefae3.chunk.js.map",
+      "publicPath": "/static/js/7942.f4fefae3.chunk.js.map"
+    },
+    "static/js/8007.03753ed8.chunk.js": {
+      "name": "static/js/8007.03753ed8.chunk.js",
+      "path": "C:\\Users\\achod\\OneDrive\\Desktop\\Archive\\brokers\\lumistakes-project\\lumistakes\\WalletConnect\\app\\build\\static\\js\\8007.03753ed8.chunk.js",
+      "publicPath": "/static/js/8007.03753ed8.chunk.js"
+    },
+    "static/js/8007.03753ed8.chunk.js.map": {
+      "name": "static/js/8007.03753ed8.chunk.js.map",
+      "path": "C:\\Users\\achod\\OneDrive\\Desktop\\Archive\\brokers\\lumistakes-project\\lumistakes\\WalletConnect\\app\\build\\static\\js\\8007.03753ed8.chunk.js.map",
+      "publicPath": "/static/js/8007.03753ed8.chunk.js.map"
+    },
+    "static/js/8126.70bacb0b.chunk.js": {
+      "name": "static/js/8126.70bacb0b.chunk.js",
+      "path": "C:\\Users\\achod\\OneDrive\\Desktop\\Archive\\brokers\\lumistakes-project\\lumistakes\\WalletConnect\\app\\build\\static\\js\\8126.70bacb0b.chunk.js",
+      "publicPath": "/static/js/8126.70bacb0b.chunk.js"
+    },
+    "static/js/8126.70bacb0b.chunk.js.map": {
+      "name": "static/js/8126.70bacb0b.chunk.js.map",
+      "path": "C:\\Users\\achod\\OneDrive\\Desktop\\Archive\\brokers\\lumistakes-project\\lumistakes\\WalletConnect\\app\\build\\static\\js\\8126.70bacb0b.chunk.js.map",
+      "publicPath": "/static/js/8126.70bacb0b.chunk.js.map"
+    },
+    "static/js/8417.231a71cd.chunk.js": {
+      "name": "static/js/8417.231a71cd.chunk.js",
+      "path": "C:\\Users\\achod\\OneDrive\\Desktop\\Archive\\brokers\\lumistakes-project\\lumistakes\\WalletConnect\\app\\build\\static\\js\\8417.231a71cd.chunk.js",
+      "publicPath": "/static/js/8417.231a71cd.chunk.js"
+    },
+    "static/js/8417.231a71cd.chunk.js.map": {
+      "name": "static/js/8417.231a71cd.chunk.js.map",
+      "path": "C:\\Users\\achod\\OneDrive\\Desktop\\Archive\\brokers\\lumistakes-project\\lumistakes\\WalletConnect\\app\\build\\static\\js\\8417.231a71cd.chunk.js.map",
+      "publicPath": "/static/js/8417.231a71cd.chunk.js.map"
+    },
+    "static/js/8471.8150a4bb.chunk.js": {
+      "name": "static/js/8471.8150a4bb.chunk.js",
+      "path": "C:\\Users\\achod\\OneDrive\\Desktop\\Archive\\brokers\\lumistakes-project\\lumistakes\\WalletConnect\\app\\build\\static\\js\\8471.8150a4bb.chunk.js",
+      "publicPath": "/static/js/8471.8150a4bb.chunk.js"
+    },
+    "static/js/8471.8150a4bb.chunk.js.map": {
+      "name": "static/js/8471.8150a4bb.chunk.js.map",
+      "path": "C:\\Users\\achod\\OneDrive\\Desktop\\Archive\\brokers\\lumistakes-project\\lumistakes\\WalletConnect\\app\\build\\static\\js\\8471.8150a4bb.chunk.js.map",
+      "publicPath": "/static/js/8471.8150a4bb.chunk.js.map"
+    },
+    "static/js/8486.17cc7568.chunk.js": {
+      "name": "static/js/8486.17cc7568.chunk.js",
+      "path": "C:\\Users\\achod\\OneDrive\\Desktop\\Archive\\brokers\\lumistakes-project\\lumistakes\\WalletConnect\\app\\build\\static\\js\\8486.17cc7568.chunk.js",
+      "publicPath": "/static/js/8486.17cc7568.chunk.js"
+    },
+    "static/js/8486.17cc7568.chunk.js.map": {
+      "name": "static/js/8486.17cc7568.chunk.js.map",
+      "path": "C:\\Users\\achod\\OneDrive\\Desktop\\Archive\\brokers\\lumistakes-project\\lumistakes\\WalletConnect\\app\\build\\static\\js\\8486.17cc7568.chunk.js.map",
+      "publicPath": "/static/js/8486.17cc7568.chunk.js.map"
+    },
+    "static/js/8606.01b9c0a9.chunk.js": {
+      "name": "static/js/8606.01b9c0a9.chunk.js",
+      "path": "C:\\Users\\achod\\OneDrive\\Desktop\\Archive\\brokers\\lumistakes-project\\lumistakes\\WalletConnect\\app\\build\\static\\js\\8606.01b9c0a9.chunk.js",
+      "publicPath": "/static/js/8606.01b9c0a9.chunk.js"
+    },
+    "static/js/8606.01b9c0a9.chunk.js.map": {
+      "name": "static/js/8606.01b9c0a9.chunk.js.map",
+      "path": "C:\\Users\\achod\\OneDrive\\Desktop\\Archive\\brokers\\lumistakes-project\\lumistakes\\WalletConnect\\app\\build\\static\\js\\8606.01b9c0a9.chunk.js.map",
+      "publicPath": "/static/js/8606.01b9c0a9.chunk.js.map"
+    },
+    "static/js/88.f7f2dff1.chunk.js": {
+      "name": "static/js/88.f7f2dff1.chunk.js",
+      "path": "C:\\Users\\achod\\OneDrive\\Desktop\\Archive\\brokers\\lumistakes-project\\lumistakes\\WalletConnect\\app\\build\\static\\js\\88.f7f2dff1.chunk.js",
+      "publicPath": "/static/js/88.f7f2dff1.chunk.js"
+    },
+    "static/js/88.f7f2dff1.chunk.js.map": {
+      "name": "static/js/88.f7f2dff1.chunk.js.map",
+      "path": "C:\\Users\\achod\\OneDrive\\Desktop\\Archive\\brokers\\lumistakes-project\\lumistakes\\WalletConnect\\app\\build\\static\\js\\88.f7f2dff1.chunk.js.map",
+      "publicPath": "/static/js/88.f7f2dff1.chunk.js.map"
+    },
+    "static/js/8817.11c0fc6d.chunk.js": {
+      "name": "static/js/8817.11c0fc6d.chunk.js",
+      "path": "C:\\Users\\achod\\OneDrive\\Desktop\\Archive\\brokers\\lumistakes-project\\lumistakes\\WalletConnect\\app\\build\\static\\js\\8817.11c0fc6d.chunk.js",
+      "publicPath": "/static/js/8817.11c0fc6d.chunk.js"
+    },
+    "static/js/8817.11c0fc6d.chunk.js.map": {
+      "name": "static/js/8817.11c0fc6d.chunk.js.map",
+      "path": "C:\\Users\\achod\\OneDrive\\Desktop\\Archive\\brokers\\lumistakes-project\\lumistakes\\WalletConnect\\app\\build\\static\\js\\8817.11c0fc6d.chunk.js.map",
+      "publicPath": "/static/js/8817.11c0fc6d.chunk.js.map"
+    },
+    "static/js/8926.68419e4b.chunk.js": {
+      "name": "static/js/8926.68419e4b.chunk.js",
+      "path": "C:\\Users\\achod\\OneDrive\\Desktop\\Archive\\brokers\\lumistakes-project\\lumistakes\\WalletConnect\\app\\build\\static\\js\\8926.68419e4b.chunk.js",
+      "publicPath": "/static/js/8926.68419e4b.chunk.js"
+    },
+    "static/js/8926.68419e4b.chunk.js.map": {
+      "name": "static/js/8926.68419e4b.chunk.js.map",
+      "path": "C:\\Users\\achod\\OneDrive\\Desktop\\Archive\\brokers\\lumistakes-project\\lumistakes\\WalletConnect\\app\\build\\static\\js\\8926.68419e4b.chunk.js.map",
+      "publicPath": "/static/js/8926.68419e4b.chunk.js.map"
+    },
+    "static/js/900.a5bc78d2.chunk.js": {
+      "name": "static/js/900.a5bc78d2.chunk.js",
+      "path": "C:\\Users\\achod\\OneDrive\\Desktop\\Archive\\brokers\\lumistakes-project\\lumistakes\\WalletConnect\\app\\build\\static\\js\\900.a5bc78d2.chunk.js",
+      "publicPath": "/static/js/900.a5bc78d2.chunk.js"
+    },
+    "static/js/900.a5bc78d2.chunk.js.map": {
+      "name": "static/js/900.a5bc78d2.chunk.js.map",
+      "path": "C:\\Users\\achod\\OneDrive\\Desktop\\Archive\\brokers\\lumistakes-project\\lumistakes\\WalletConnect\\app\\build\\static\\js\\900.a5bc78d2.chunk.js.map",
+      "publicPath": "/static/js/900.a5bc78d2.chunk.js.map"
+    },
+    "static/js/9053.43678ae7.chunk.js": {
+      "name": "static/js/9053.43678ae7.chunk.js",
+      "path": "C:\\Users\\achod\\OneDrive\\Desktop\\Archive\\brokers\\lumistakes-project\\lumistakes\\WalletConnect\\app\\build\\static\\js\\9053.43678ae7.chunk.js",
+      "publicPath": "/static/js/9053.43678ae7.chunk.js"
+    },
+    "static/js/9053.43678ae7.chunk.js.map": {
+      "name": "static/js/9053.43678ae7.chunk.js.map",
+      "path": "C:\\Users\\achod\\OneDrive\\Desktop\\Archive\\brokers\\lumistakes-project\\lumistakes\\WalletConnect\\app\\build\\static\\js\\9053.43678ae7.chunk.js.map",
+      "publicPath": "/static/js/9053.43678ae7.chunk.js.map"
+    },
+    "static/js/9075.b13c774c.chunk.js": {
+      "name": "static/js/9075.b13c774c.chunk.js",
+      "path": "C:\\Users\\achod\\OneDrive\\Desktop\\Archive\\brokers\\lumistakes-project\\lumistakes\\WalletConnect\\app\\build\\static\\js\\9075.b13c774c.chunk.js",
+      "publicPath": "/static/js/9075.b13c774c.chunk.js"
+    },
+    "static/js/9075.b13c774c.chunk.js.map": {
+      "name": "static/js/9075.b13c774c.chunk.js.map",
+      "path": "C:\\Users\\achod\\OneDrive\\Desktop\\Archive\\brokers\\lumistakes-project\\lumistakes\\WalletConnect\\app\\build\\static\\js\\9075.b13c774c.chunk.js.map",
+      "publicPath": "/static/js/9075.b13c774c.chunk.js.map"
+    },
+    "static/js/9190.e7706094.chunk.js": {
+      "name": "static/js/9190.e7706094.chunk.js",
+      "path": "C:\\Users\\achod\\OneDrive\\Desktop\\Archive\\brokers\\lumistakes-project\\lumistakes\\WalletConnect\\app\\build\\static\\js\\9190.e7706094.chunk.js",
+      "publicPath": "/static/js/9190.e7706094.chunk.js"
+    },
+    "static/js/9190.e7706094.chunk.js.map": {
+      "name": "static/js/9190.e7706094.chunk.js.map",
+      "path": "C:\\Users\\achod\\OneDrive\\Desktop\\Archive\\brokers\\lumistakes-project\\lumistakes\\WalletConnect\\app\\build\\static\\js\\9190.e7706094.chunk.js.map",
+      "publicPath": "/static/js/9190.e7706094.chunk.js.map"
+    },
+    "static/js/9197.9a8b68b5.chunk.js": {
+      "name": "static/js/9197.9a8b68b5.chunk.js",
+      "path": "C:\\Users\\achod\\OneDrive\\Desktop\\Archive\\brokers\\lumistakes-project\\lumistakes\\WalletConnect\\app\\build\\static\\js\\9197.9a8b68b5.chunk.js",
+      "publicPath": "/static/js/9197.9a8b68b5.chunk.js"
+    },
+    "static/js/9197.9a8b68b5.chunk.js.map": {
+      "name": "static/js/9197.9a8b68b5.chunk.js.map",
+      "path": "C:\\Users\\achod\\OneDrive\\Desktop\\Archive\\brokers\\lumistakes-project\\lumistakes\\WalletConnect\\app\\build\\static\\js\\9197.9a8b68b5.chunk.js.map",
+      "publicPath": "/static/js/9197.9a8b68b5.chunk.js.map"
+    },
+    "static/js/9466.141d5158.chunk.js": {
+      "name": "static/js/9466.141d5158.chunk.js",
+      "path": "C:\\Users\\achod\\OneDrive\\Desktop\\Archive\\brokers\\lumistakes-project\\lumistakes\\WalletConnect\\app\\build\\static\\js\\9466.141d5158.chunk.js",
+      "publicPath": "/static/js/9466.141d5158.chunk.js"
+    },
+    "static/js/9539.d8db2d18.chunk.js": {
+      "name": "static/js/9539.d8db2d18.chunk.js",
+      "path": "C:\\Users\\achod\\OneDrive\\Desktop\\Archive\\brokers\\lumistakes-project\\lumistakes\\WalletConnect\\app\\build\\static\\js\\9539.d8db2d18.chunk.js",
+      "publicPath": "/static/js/9539.d8db2d18.chunk.js"
+    },
+    "static/js/9539.d8db2d18.chunk.js.map": {
+      "name": "static/js/9539.d8db2d18.chunk.js.map",
+      "path": "C:\\Users\\achod\\OneDrive\\Desktop\\Archive\\brokers\\lumistakes-project\\lumistakes\\WalletConnect\\app\\build\\static\\js\\9539.d8db2d18.chunk.js.map",
+      "publicPath": "/static/js/9539.d8db2d18.chunk.js.map"
+    },
+    "static/js/9729.35a0c4e7.chunk.js": {
+      "name": "static/js/9729.35a0c4e7.chunk.js",
+      "path": "C:\\Users\\achod\\OneDrive\\Desktop\\Archive\\brokers\\lumistakes-project\\lumistakes\\WalletConnect\\app\\build\\static\\js\\9729.35a0c4e7.chunk.js",
+      "publicPath": "/static/js/9729.35a0c4e7.chunk.js"
+    },
+    "static/js/9729.35a0c4e7.chunk.js.map": {
+      "name": "static/js/9729.35a0c4e7.chunk.js.map",
+      "path": "C:\\Users\\achod\\OneDrive\\Desktop\\Archive\\brokers\\lumistakes-project\\lumistakes\\WalletConnect\\app\\build\\static\\js\\9729.35a0c4e7.chunk.js.map",
+      "publicPath": "/static/js/9729.35a0c4e7.chunk.js.map"
+    },
+    "static/js/9867.dc4cc9b3.chunk.js": {
+      "name": "static/js/9867.dc4cc9b3.chunk.js",
+      "path": "C:\\Users\\achod\\OneDrive\\Desktop\\Archive\\brokers\\lumistakes-project\\lumistakes\\WalletConnect\\app\\build\\static\\js\\9867.dc4cc9b3.chunk.js",
+      "publicPath": "/static/js/9867.dc4cc9b3.chunk.js"
+    },
+    "static/js/9867.dc4cc9b3.chunk.js.map": {
+      "name": "static/js/9867.dc4cc9b3.chunk.js.map",
+      "path": "C:\\Users\\achod\\OneDrive\\Desktop\\Archive\\brokers\\lumistakes-project\\lumistakes\\WalletConnect\\app\\build\\static\\js\\9867.dc4cc9b3.chunk.js.map",
+      "publicPath": "/static/js/9867.dc4cc9b3.chunk.js.map"
+    },
+    "static/js/main.6f92262d.js": {
+      "name": "static/js/main.6f92262d.js",
+      "path": "C:\\Users\\achod\\OneDrive\\Desktop\\Archive\\brokers\\lumistakes-project\\lumistakes\\WalletConnect\\app\\build\\static\\js\\main.6f92262d.js",
+      "publicPath": "/static/js/main.6f92262d.js"
+    },
+    "static/js/main.6f92262d.js.LICENSE.txt": {
+      "name": "static/js/main.6f92262d.js.LICENSE.txt",
+      "path": "C:\\Users\\achod\\OneDrive\\Desktop\\Archive\\brokers\\lumistakes-project\\lumistakes\\WalletConnect\\app\\build\\static\\js\\main.6f92262d.js.LICENSE.txt",
+      "publicPath": "/static/js/main.6f92262d.js.LICENSE.txt"
+    },
+    "static/js/main.6f92262d.js.map": {
+      "name": "static/js/main.6f92262d.js.map",
+      "path": "C:\\Users\\achod\\OneDrive\\Desktop\\Archive\\brokers\\lumistakes-project\\lumistakes\\WalletConnect\\app\\build\\static\\js\\main.6f92262d.js.map",
+      "publicPath": "/static/js/main.6f92262d.js.map"
+    },
+    "static/media/index.d5b35ece7c425af5eaae.cjs": {
+      "name": "static/media/index.d5b35ece7c425af5eaae.cjs",
+      "path": "C:\\Users\\achod\\OneDrive\\Desktop\\Archive\\brokers\\lumistakes-project\\lumistakes\\WalletConnect\\app\\build\\static\\media\\index.d5b35ece7c425af5eaae.cjs",
+      "publicPath": "/static/media/index.d5b35ece7c425af5eaae.cjs",
+      "sourceFilename": "node_modules/@coinbase/wallet-sdk/dist/vendor-js/eth-eip712-util/index.cjs"
+    },
+    "static/media/logo.6ce24c58023cc2f8fd88fe9d219db6c6.svg": {
+      "name": "static/media/logo.6ce24c58023cc2f8fd88fe9d219db6c6.svg",
+      "path": "C:\\Users\\achod\\OneDrive\\Desktop\\Archive\\brokers\\lumistakes-project\\lumistakes\\WalletConnect\\app\\build\\static\\media\\logo.6ce24c58023cc2f8fd88fe9d219db6c6.svg",
+      "publicPath": "/static/media/logo.6ce24c58023cc2f8fd88fe9d219db6c6.svg"
+    }
+  },
+  "chunks": {
+    "main": [
+      "static/css/main.f855e6bc.css",
+      "static/js/main.6f92262d.js"
+    ]
+  },
+  "publicPath": "/"
+}

@@ -1,0 +1,130 @@
+@media only screen and (max-width:1024px) {
+#main-menu ul li {padding: 0px 5px;}
+#main-menu ul li a {font-size: 12px;}
+.block-menu {
+	padding: 9px 30px;
+	margin-top:0px;
+}
+#main-menu {
+	margin-top: 5px;
+}
+}
+
+@media only screen and (max-width:800px) {
+#main-menu ul li {padding: 0px 5px;}
+#main-menu ul li a {font-size: 12px;}
+.block-menu {
+	padding: 9px 30px;
+	margin-top:0px;
+}
+#main-menu {
+	margin-top: 5px;
+}
+}
+
+/*START 768PX SIZE DEVICE*/
+@media only screen and (max-width:768px) {
+.bg-faded {background-color:#0a1634;}
+.navbar-fixed {background: #0a1634;}
+.navbar-brand { padding-top: 20px;}
+.slicknav_menu {
+	font-size: 15px;
+	box-sizing: border-box;
+	background: transparent;
+	padding: 0;
+	margin-top: 10px;
+}
+#main-menu {
+	margin-top: 5px;
+}
+#main-menu ul li a {font-size: 12px;}
+#main-menu ul li {padding: 0px 3px;}
+.block-menu {
+	padding: 9px 30px;
+	margin-top:0px;
+}
+ 
+.home_bg {
+	height: auto;
+}
+.hero-text h2 {font-size: 40px;line-height: 46px;}
+.hero-text-img {
+	padding-top:50px;
+	padding-bottom:50px;
+}
+.about-img{margin-top:60px;}
+.single_process {
+	margin-bottom: 30px;
+}
+.platform-img img {
+	margin-bottom: 50px;
+}
+.platform-target img {
+	margin-top: 50px;
+}
+.mvp-img img {
+	margin-top: 50px;
+}
+.token_sale_bg {
+	padding: 50px 15px;
+	border-radius: 5px;
+	margin-bottom: 30px;
+}
+.token-img img {
+	margin-bottom: 50px;
+}
+.contact {margin-top:60px;}
+.map iframe {padding-right: 0px;}
+.partner {margin-top:60px;}
+
+}
+@media only screen and (max-width:736px) {
+.block-menu {text-align:center;width:130px;}
+}
+
+/*START 480PX SIZE DEVICE*/
+@media only screen and (max-width:480px) {
+.home_bg {
+	height: auto;
+}
+.slicknav_menu {margin-top: -35px;}
+.slicknav_nav ul {margin-top:15px;}
+.block-menu {
+	display: inline-block !important;
+	padding: 9px 30px!important;
+}
+    .hero-text h2 {
+		padding-top: 200px;
+        font-size: 30px;
+        line-height: 40px;
+    }
+
+.whitepaper_img {
+	text-align: center;
+	margin-bottom: 50px;
+}
+.roadmap span {left: 48%;}
+.faq_tab .card .card-header .btn {font-size:14px;}
+.faq_tab .card .card-header .btn::after {top: 26px;}
+.single_footer {margin-top: 30px;}
+
+
+}
+
+/*START 320PX SIZE DEVICE*/
+@media only screen and (max-width:320px) {
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+

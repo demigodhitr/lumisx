@@ -1,0 +1,1192 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>{{app_name}} | Smart P2P Investment Platform with Escrow Security</title>
+    <meta content="{{app_name}} | Smart P2P Investment Platform with Escrow Security" property="og:title">
+    <meta content="{{app_name}} | Smart P2P Investment Platform with Escrow Security" property="twitter:title">
+    <meta name="description" content="{{app_name}} connects investors with verified traders through a secure escrow system. Experience transparent, automated, and safe P2P investments with full confidence.">
+
+
+    <link rel="icon" type="image/png" href="{% static 'assets/img/favicon.png' %}" sizes="32x3">
+		<link rel="apple-touch-icon" sizes="180x180" href="{% static 'assets/img/icon/192x192.png' %}">
+
+    <!-- Start::Global Styles (used by all pages) -->
+    <link href="{% static 'home-assets/assets/css/styles.bundle.css' %}" rel="stylesheet" type="text/css" />
+    <!-- End::Global Styles -->
+    <!-- Start::Plugins (used by this page) -->
+    <link href="{% static 'home-assets/assets/plugins/slick/slick.css' %}" rel="stylesheet" type="text/css" />
+    <link href="{% static 'home-assets/assets/plugins/aos-master/src/aos.css' %}" rel="stylesheet" type="text/css" />
+    <link href="{% static 'home-assets/assets/plugins/apexcharts/apexcharts.css' %}" rel="stylesheet" type="text/css" />
+    <!-- End::Plugins -->
+    <!-- Start::Page Styles (used by this page) -->
+    <link href="{% static 'home-assets/assets/css/pages/landing-page-v3.css' %}" rel="stylesheet" type="text/css" />
+    <!-- End::Page Styles -->
+    <style>
+      input, textarea, select {
+        font-size: 17px;
+      }
+
+      @media (min-width: 1024px) {
+        .market {
+          margin-left: 240px;
+        }
+      }
+    </style>
+  </head>
+
+  <body class="">
+    
+    <!-- Start::Navbar V1 -->
+    <nav class="navbar navbar-expand-lg header-navbar header-navbar--v1" data-aos="fade-down">
+      <div class="container">
+        <a class="navbar-brand" href="{% url 'homepage' %}">
+          <img height="20" width="100%" class="navbar-brand__icon" src="{{app_logo}}" alt="C" />
+        </a>
+        <button class="navbar-toggler js-navbar-toggler ml-auto" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <img src="{% static 'home-assets/assets/media/images/icons/menu.svg' %}" alt="MENU" />
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <div class="navbar-collapse__content">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+              <li class="nav-item">
+                <a class="nav-link" href="#about-us">About Company</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'home' %}">Lumis X (web)</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'landing' %}">Lumis X (mobile)</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'exchange' %}">Exchange</a>
+              </li>
+            </ul>
+            <div class="navbar-buttons navbar-buttons--mobile">
+              <a href="{% url 'signin' %}" class="btn btn-secondary btn-sm">Sign in</a>
+              <a href="{% url 'signup' %}" class="btn btn-primary  btn-sm">Get Started</a>
+            </div>
+          </div>
+        </div>
+        <div class="navbar-buttons navbar-buttons--dekstop">
+          <a href="{% url 'signin' %}" class="btn btn-secondary btn-sm">Sign in</a>
+              <a href="{% url 'signup' %}" class="btn btn-primary  btn-sm">Get Started</a>
+        </div>
+      </div>
+    </nav>
+    <!-- End::Navbar V1 -->
+    <!-- Start::Hero Section -->
+    <section class="hero hero--v3">
+      <div class="hero__background hero__background--gradient">
+        <img class="hero__gradient-bg" src="{% static 'home-assets/assets/media/images/landing-page-v3/landing-page-v3-hero-gradient.svg' %}" alt="Background Gradient Hero" />
+      </div>
+      <div class="hero__background hero__background--pattern-1">
+        <img class="hero__pattern-bg" src="{% static 'home-assets/assets/media/images/landing-page-v3/landing-page-v3-hero-pattern--1.svg' %}" alt="Background Pattern Hero" />
+      </div>
+      <div class="hero__background hero__background--pattern-2">
+        <img class="hero__pattern-bg" src="{% static 'home-assets/assets/media/images/landing-page-v3/landing-page-v3-hero-pattern--2.svg' %}" alt="Background Pattern Hero" />
+      </div>
+      <div class="hero__background hero__background--pattern-3">
+        <img class="hero__pattern-bg" src="{% static 'home-assets/assets/media/images/landing-page-v3/landing-page-v3-hero-pattern--3.svg' %}" alt="Background Pattern Hero" />
+      </div>
+      <div class="hero__background--mobile hero__background--gradient">
+        <img class="hero__gradient-bg" src="{% static 'home-assets/assets/media/images/landing-page-v3/mobile-landing-page-v3-hero-gradient.svg' %}" alt="Background Gradient Hero Mobile" />
+      </div>
+      <div class="hero__background--mobile hero__background--pattern-1">
+        <img class="hero__pattern-bg" src="{% static 'home-assets/assets/media/images/landing-page-v3/mobile-landing-page-v3-hero-pattern-1.svg' %}" alt="Background Pattern Hero Mobile 1" />
+      </div>
+      <div class="hero__background--mobile hero__background--pattern-2">
+        <img class="hero__pattern-bg" src="{% static 'home-assets/assets/media/images/landing-page-v3/mobile-landing-page-v3-hero-pattern-2.svg' %}" alt="Background Pattern Hero Mobile 2" />
+      </div>
+      <div class="hero__background--mobile hero__background--pattern-3">
+        <img class="hero__pattern-bg" src="{% static 'home-assets/assets/media/images/landing-page-v3/mobile-landing-page-v3-hero-pattern-3.svg' %}" alt="Background Pattern Hero Mobile 3" />
+      </div>
+      <div class="container">
+        <div class="hero__container">
+          <h1 class="hero__title" data-aos="fade-up">Invest Smarter with Lumis X — Where Trust Meets Opportunity.</h1>
+          <p class="fb-lg hero__subtitle" data-aos="fade-up" data-aos-delay="100">
+            Connect with verified traders. Secure your funds with escrow. Earn profits transparently in a decentralized investment ecosystem built for the future.
+          </p>
+          <form class="mini-form" data-aos="zoom-in-up" data-aos-delay="200">
+            <a style="width: 100%;" href="{% url 'landing' %}" class="btn btn-primary mini-form__submit" value="Join Lumis X">Join Lumis X</a>
+          </form>
+        </div>
+      </div>
+      
+    </section>
+    <!-- End::Hero Section -->
+    
+    <!-- Start::Assets Table Section -->
+    <section style="margin: 0px auto;" class="assets assets--v3">
+      <div class="container text-center">
+        <div class="assets__container">
+          <!-- Start::Table Section -->
+          <div class="table-wrapper table--type-2" data-aos="zoom-in-up">
+            <!-- TradingView Widget BEGIN -->
+          <div class="market text-center tradingview-widget-container">
+            <div class="tradingview-widget-container__widget"></div>
+            <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-market-quotes.js" async>
+            {
+            "colorTheme": "dark",
+            "locale": "en",
+            "largeChartUrl": "",
+            "isTransparent": false,
+            "showSymbolLogo": true,
+            "backgroundColor": "#0F0F0F",
+            "support_host": "https://www.lumisx.exchange",
+            "width": "600",
+            "height": "550",
+            "symbolsGroups": [
+              {
+                "name": "Indices",
+                "symbols": [
+                  {
+                    "name": "FOREXCOM:SPXUSD",
+                    "displayName": "S&P 500 Index"
+                  },
+                  {
+                    "name": "FOREXCOM:NSXUSD",
+                    "displayName": "US 100 Cash CFD"
+                  },
+                  {
+                    "name": "FOREXCOM:DJI",
+                    "displayName": "Dow Jones Industrial Average Index"
+                  },
+                  {
+                    "name": "INDEX:NKY",
+                    "displayName": "Japan 225"
+                  },
+                  {
+                    "name": "INDEX:DEU40",
+                    "displayName": "DAX Index"
+                  },
+                  {
+                    "name": "FOREXCOM:UKXGBP",
+                    "displayName": "FTSE 100 Index"
+                  }
+                ]
+              },
+              {
+                "name": "Futures",
+                "symbols": [
+                  {
+                    "name": "BMFBOVESPA:ISP1!",
+                    "displayName": "S&P 500"
+                  },
+                  {
+                    "name": "BMFBOVESPA:EUR1!",
+                    "displayName": "Euro"
+                  },
+                  {
+                    "name": "CMCMARKETS:GOLD",
+                    "displayName": "Gold"
+                  },
+                  {
+                    "name": "PYTH:WTI3!",
+                    "displayName": "WTI Crude Oil"
+                  },
+                  {
+                    "name": "BMFBOVESPA:CCM1!",
+                    "displayName": "Corn"
+                  }
+                ]
+              },
+              {
+                "name": "Bonds",
+                "symbols": [
+                  {
+                    "name": "EUREX:FGBL1!",
+                    "displayName": "Euro Bund"
+                  },
+                  {
+                    "name": "EUREX:FBTP1!",
+                    "displayName": "Euro BTP"
+                  },
+                  {
+                    "name": "EUREX:FGBM1!",
+                    "displayName": "Euro BOBL"
+                  }
+                ]
+              },
+              {
+                "name": "Forex",
+                "symbols": [
+                  {
+                    "name": "FX:EURUSD",
+                    "displayName": "EUR to USD"
+                  },
+                  {
+                    "name": "FX:GBPUSD",
+                    "displayName": "GBP to USD"
+                  },
+                  {
+                    "name": "FX:USDJPY",
+                    "displayName": "USD to JPY"
+                  },
+                  {
+                    "name": "FX:USDCHF",
+                    "displayName": "USD to CHF"
+                  },
+                  {
+                    "name": "FX:AUDUSD",
+                    "displayName": "AUD to USD"
+                  },
+                  {
+                    "name": "FX:USDCAD",
+                    "displayName": "USD to CAD"
+                  }
+                ]
+              },
+              {
+                "name": "crypto ",
+                "symbols": [
+                  {
+                    "name": "BINANCE:BTCUSDT",
+                    "displayName": ""
+                  },
+                  {
+                    "name": "BINANCE:BTCUSDT.P",
+                    "displayName": ""
+                  },
+                  {
+                    "name": "INDEX:BTCUSD",
+                    "displayName": ""
+                  },
+                  {
+                    "name": "BINANCE:ETHUSDT",
+                    "displayName": ""
+                  },
+                  {
+                    "name": "BINANCE:DOGEUSDT",
+                    "displayName": ""
+                  },
+                  {
+                    "name": "BINANCE:ETHUSD",
+                    "displayName": ""
+                  },
+                  {
+                    "name": "BINANCE:SOLUSDT.P",
+                    "displayName": ""
+                  }
+                ]
+              }
+            ]
+          }
+            </script>
+          </div>
+          <!-- TradingView Widget END -->
+          </div>
+          <!-- End::Table Section -->      
+          <a href="{% url 'portfolio' %}" class="assets__view-more" data-aos="fade-right" data-aos-delay="200">
+            <span>View more prices</span>
+            <img class="icon" src="{% static 'home-assets/assets/media/images/icons/arrow-line-right.svg' %}" alt=">" />
+          </a>
+        </div>
+      </div>
+    </section>
+    <!-- End::Assets Table Section -->
+
+    <!-- Start::About Us Section -->
+    <section id="about-us" class="why-choose-us why-choose-us--v3">
+      <div class="why-choose-us__background why-choose-us__background--pattern-1">
+        <img class="why-choose-us__pattern-bg" src="{% static 'home-assets/assets/media/images/landing-page-v3/landing-page-v3-why-choose-us-pattern-1.svg' %}" alt="Background Pattern why-choose-us" />
+      </div>
+      <div class="why-choose-us__background why-choose-us__background--pattern-2">
+        <img class="why-choose-us__pattern-bg" src="{% static 'home-assets/assets/media/images/landing-page-v3/landing-page-v3-why-choose-us-pattern-2.svg' %}" alt="Background Pattern why-choose-us" />
+      </div>
+
+      <div class="text-center container">
+        <h2 class="why-choose-us__title text-center" data-aos="zoom-in-up">
+          About {{app_name}}
+        </h2>
+        <p class="fb-regular why-choose-us__subtitle text-center" data-aos="zoom-in-up" data-aos-delay="100">
+          {{app_name}} is a next-gen peer-to-peer investment platform that connects traders and investors through secure, escrow-backed transactions. We empower individuals to grow wealth with transparency, safety, and confidence.
+        </p>
+
+        <div class="why-choose-us__groups">
+          <div class="why-choose-us__items" data-aos="zoom-in-up" data-aos-delay="200">
+            <div class="why-choose-us-items__header">
+              <img width="100" height="100" class="why-choose-us-items__icon" src="{% static 'home-assets/assets/media/images/icons/vision.png' %}" alt="Our Vision" />
+            </div>
+            <div class="why-choose-us-items__content">
+              <h5 class="why-choose-us-item__title">Our Vision</h5>
+              <p class="fb-regular why-choose-us-item__desc">
+                To democratize access to real-world investment opportunities using modern web3 tools, smart contracts, and trusted traders.
+              </p>
+            </div>
+          </div>
+
+          <div class="why-choose-us__items" data-aos="zoom-in-up" data-aos-delay="300">
+            <div class="why-choose-us-items__header">
+              <img height="100" width="100" class="why-choose-us-items__icon" src="{% static 'home-assets/assets/media/images/icons/success.png' %}" alt="Our Mission" />
+            </div>
+            <div class="why-choose-us-items__content">
+              <h5 class="why-choose-us-item__title">Our Mission</h5>
+              <p class="fb-regular why-choose-us-item__desc">
+                To provide a secure, transparent, and beginner-friendly environment where anyone can invest or trade with confidence.
+              </p>
+            </div>
+          </div>
+
+          <div class="why-choose-us__items" data-aos="zoom-in-up" data-aos-delay="400">
+            <div class="why-choose-us-items__header">
+              <img width="100" height="100" class="why-choose-us-items__icon" src="{% static 'home-assets/assets/media/images/icons/values.png' %}" alt="Core Values" />
+            </div>
+            <div class="why-choose-us-items__content">
+              <h5 class="why-choose-us-item__title">Core Values</h5>
+              <p class="fb-regular why-choose-us-item__desc">
+                Transparency, innovation, security, and community-first design are the pillars driving {{app_name}} forward.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- End::About Us Section -->
+
+    
+    <!-- Start::Features Section -->
+    <section class="feature feature--v3">
+      <div class="feature__background feature__background--gradient">
+        <img class="feature__gradient-bg" src="{% static 'home-assets/assets/media/images/landing-page-v3/landing-page-v3-feature-gradient.svg' %}" alt="Background Gradient feature" />
+      </div>
+      <div class="feature__background feature__background--pattern">
+        <img class="feature__pattern-bg" src="{% static 'home-assets/assets/media/images/landing-page-v3/landing-page-v3-feature-pattern.svg' %}" alt="Background Pattern feature" />
+      </div>
+      <div class="feature__background--mobile feature__background--gradient">
+        <img class="feature__gradient-bg" src="{% static 'home-assets/assets/media/images/landing-page-v3/mobile-landing-page-v3-feature-gradient.svg' %}" alt="Background Gradient Feature Mobile" />
+      </div>
+      <div class="feature__background--mobile feature__background--pattern-1">
+        <img class="feature__pattern-bg" src="{% static 'home-assets/assets/media/images/landing-page-v3/mobile-landing-page-v3-feature-pattern-1.svg' %}" alt="Background Pattern Feature Mobile" />
+      </div>
+      <div class="feature__background--mobile feature__background--pattern-2">
+        <img class="feature__pattern-bg" src="{% static 'home-assets/assets/media/images/landing-page-v3/mobile-landing-page-v3-feature-pattern-2.svg' %}" alt="Background Pattern Feature Mobile" />
+      </div>
+      <div class="feature__background--mobile feature__background--pattern-3">
+        <img class="feature__pattern-bg" src="{% static 'home-assets/assets/media/images/landing-page-v3/mobile-landing-page-v3-feature-pattern-3.svg' %}" alt="Background Pattern Feature Mobile" />
+      </div>
+      <div class="container">
+        <div class="feature__container">
+          <div class="feature__content">
+            <h2 class="feature__title" data-aos="fade-up">Your Secure Gateway to Smart Peer-to-Peer Trading</h2>
+            <p class="fb-regular feature__subtitle" data-aos="fade-up" data-aos-delay="100">
+              {{app_name}} blends innovation and trust to offer a seamless, transparent, and secure investment experience.
+            </p>
+            <div class="feature__group">
+              <div class="feature__items feature__items--1" data-aos="fade-right" data-aos-delay="300">
+                <div class="feature-items__img">
+                  <img src="{% static 'home-assets/assets/media/images/icons/icon-portofolio-manager.svg' %}" alt="Smart Investment Dashboard">
+                </div>
+                <h5 class="feature-items__title">Smart Investment Dashboard</h5>
+                <p class="fb-regular feature-items__desc">
+                  Monitor active trades, track profits in real time, and manage your portfolio—all in one powerful dashboard.
+                </p>
+              </div>
+              <div class="feature__items feature__items--2" data-aos="fade-right" data-aos-delay="400">
+                <div class="feature-items__img">
+                  <img src="{% static 'home-assets/assets/media/images/icons/lock.svg' %}" alt="Escrow Security">
+                </div>
+                <h5 class="feature-items__title">Escrow-Powered Transactions</h5>
+                <p class="fb-regular feature-items__desc">
+                  Every transaction is protected with our smart escrow layer, ensuring both traders and investors are safe at all times.
+                </p>
+              </div>
+              <div class="feature__items feature__items--3" data-aos="fade-right" data-aos-delay="500">
+                <div class="feature-items__img">
+                  <img src="{% static 'home-assets/assets/media/images/icons/phone.svg' %}" alt="Crypto Conversion & Stock Access">
+                </div>
+                <h5 class="feature-items__title">Crypto Conversion & Stock Access</h5>
+                <p class="fb-regular feature-items__desc">
+                  Seamlessly convert your crypto into fiat or other tokens, and use your profits to purchase stocks—all within Lumis X.
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="feature__illustration" data-aos="zoom-in-up" data-aos-delay="200">
+            <img src="{% static 'home-assets/assets/media/images/cryptolly-illustration-1.svg' %}" alt="{{app_name}} Illustration">
+          </div>
+        </div>
+      </div>
+      
+    </section>
+    <!-- End::Features Section -->
+    
+    <!-- Start::Exchange / Buy Sell Forms Section -->
+    <section class="exchange exchange--v3">
+      <div class="exchange__background--mobile exchange__background--gradient">
+        <img class="exchange__gradient-bg" src="{% static 'home-assets/assets/media/images/landing-page-v3/mobile-landing-page-v3-exchange-gradient.svg' %}" alt="Background Gradient Exchange Mobile" />
+      </div>
+      <div class="container">
+        <div class="exchange__container">
+          <div class="exchange__content">
+            <h2 class="exchange__title" data-aos="fade-up">One click, instant payout with credit or debit card.</h2>
+            <p class="fb-regular exchange__subtitle" data-aos="fade-up" data-aos-delay="100">Become a crypto owner in minutes using your debit or credit card and quickly purchase top cryptocurrencies.</p>
+          </div>
+          <div class="buy-sell-cards buy-sell-cards--v3" data-aos="zoom-in-up" data-aos-delay="200">
+            <div class="buy-sell-cards__container">
+              <div class="buy-sell-cards__header nav nav-tabs" id="buySellTab" role="tablist">
+                <div class="nav-item" role="presentation">
+                  <button class="nav-link fb-lg--bold buy-sell-cards__link active" id="buy-tab" data-bs-toggle="tab" data-bs-target="#buy-tab-pane" type="button" role="tab" aria-controls="buy-tab-pane" aria-selected="true">Buy</button>
+                </div>
+                <div class="separator"></div>
+                <div class="nav-item" role="presentation">
+                  <button class="nav-link fb-lg--bold buy-sell-cards__link" id="sell-tab" data-bs-toggle="tab" data-bs-target="#sell-tab-pane" type="button" role="tab" aria-controls="sell-tab-pane" aria-selected="false">Sell</button>
+                </div>
+              </div>
+              <div class="tab-content" id="buySellTabContent">
+                <div class="tab-pane fade show active" id="buy-tab-pane" role="tabpanel" aria-labelledby="buy-tab" tabindex="0">
+                  <div class="buy-sell-cards__detail text-center">
+                  </div>
+                  <div class="buy-sell-cards__forms">
+                    <div class="d-block forms-currency__box">
+                      <div class="forms-currency">
+                        <div class="forms-group forms-group--value">
+                          <input type="number" min="0" value="5000" class="form-control forms-currency__value">
+                        </div>
+                        <div class="forms-currency__line"></div>
+                        <div class="forms-group forms-group--currency js-forms-group--currency" id="custom-select1">
+                          <div class="forms-group__items selected" data-selected="usd">
+                            <img class="fg-items__icon" src="{% static 'home-assets/assets/media/images/icons/usd.svg' %}" alt="">
+                            <p class="fg-items__value">GBP</p>
+                          </div>
+                          <img class="forms-currency__icon-arrow-down" src="{% static 'home-assets/assets/media/images/icons/arrow-down.svg' %}" alt="">
+                          <div class="forms-group__dropdown js-forms-group__dropdown">
+                            <div class="forms-group__items active" data-selected="usd">
+                              <img class="fg-items__icon" src="{% static 'home-assets/assets/media/images/icons/usd.svg' %}" alt="">
+                              <p class="fg-items__value">USD</p>
+                            </div>
+                            <div class="forms-group__items" data-selected="btc">
+                              <img class="fg-items__icon" src="{% static 'home-assets/assets/media/images/icons/logo-btc.svg' %}" alt="">
+                              <p class="fg-items__value">BTC</p>
+                            </div>
+                            <div class="forms-group__items" data-selected="eth">
+                              <img class="fg-items__icon" src="{% static 'home-assets/assets/media/images/icons/logo-eth.svg' %}" alt="">
+                              <p class="fg-items__value">ETH</p>
+                            </div>
+                            <div class="forms-group__items" data-selected="bnb">
+                              <img class="fg-items__icon" src="{% static 'home-assets/assets/media/images/icons/logo-bnb.svg' %}" alt="">
+                              <p class="fg-items__value">BNB</p>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="d-block forms-currency__box">
+                      <div class="forms-currency">
+                        <div class="forms-group forms-group--value">
+                          <input type="number" min="0" value="0.8511" class="form-control forms-currency__value">
+                        </div>
+                        <div class="forms-currency__line"></div>
+                        <div class="forms-group forms-group--currency js-forms-group--currency" id="custom-select2">
+                          <div class="forms-group__items selected" data-selected="btc">
+                            <img class="fg-items__icon" src="{% static 'home-assets/assets/media/images/icons/logo-btc.svg' %}" alt="">
+                            <p class="fg-items__value">BTC</p>
+                          </div>
+                          <img class="forms-currency__icon-arrow-down" src="{% static 'home-assets/assets/media/images/icons/arrow-down.svg' %}" alt="">
+                          <div class="forms-group__dropdown js-forms-group__dropdown">
+                            <div class="forms-group__items active" data-selected="btc">
+                              <img class="fg-items__icon" src="{% static 'home-assets/assets/media/images/icons/logo-btc.svg' %}" alt="">
+                              <p class="fg-items__value">BTC</p>
+                            </div>
+                            <div class="forms-group__items" data-selected="usd">
+                              <img class="fg-items__icon" src="{% static 'home-assets/assets/media/images/icons/usd.svg' %}" alt="">
+                              <p class="fg-items__value">USD</p>
+                            </div>
+                            <div class="forms-group__items" data-selected="eth">
+                              <img class="fg-items__icon" src="{% static 'home-assets/assets/media/images/icons/logo-eth.svg' %}" alt="">
+                              <p class="fg-items__value">ETH</p>
+                            </div>
+                            <div class="forms-group__items" data-selected="bnb">
+                              <img class="fg-items__icon" src="{% static 'home-assets/assets/media/images/icons/logo-bnb.svg' %}" alt="">
+                              <p class="fg-items__value">BNB</p>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <a href="https://checkout.banxa.com/" class="btn btn-primary btn-lg btn-pill">Buy Now</a>
+                  </div>
+                </div>
+                <div class="tab-pane fade" id="sell-tab-pane" role="tabpanel" aria-labelledby="sell-tab" tabindex="0">
+                  <div class="buy-sell-cards__forms">
+                    <div class="d-block forms-currency__box">
+                      <div class="forms-currency">
+                        <div class="forms-group forms-group--value">
+                          <input type="number" min="0" value="5000" class="form-control forms-currency__value">
+                        </div>
+                        <div class="forms-currency__line"></div>
+                        <div class="forms-group forms-group--currency js-forms-group--currency" id="custom-select3">
+                          <div class="forms-group__items selected" data-selected="usd">
+                            <img class="fg-items__icon" src="{% static 'home-assets/assets/media/images/icons/usd.svg' %}" alt="">
+                            <p class="fg-items__value">GBP</p>
+                          </div>
+                          <img class="forms-currency__icon-arrow-down" src="{% static 'home-assets/assets/media/images/icons/arrow-down.svg' %}" alt="">
+                          <div class="forms-group__dropdown js-forms-group__dropdown">
+                            <div class="forms-group__items active" data-selected="usd">
+                              <img class="fg-items__icon" src="{% static 'home-assets/assets/media/images/icons/usd.svg' %}" alt="">
+                              <p class="fg-items__value">USD</p>
+                            </div>
+                            <div class="forms-group__items" data-selected="btc">
+                              <img class="fg-items__icon" src="{% static 'home-assets/assets/media/images/icons/logo-btc.svg' %}" alt="">
+                              <p class="fg-items__value">BTC</p>
+                            </div>
+                            <div class="forms-group__items" data-selected="eth">
+                              <img class="fg-items__icon" src="{% static 'home-assets/assets/media/images/icons/logo-eth.svg' %}" alt="">
+                              <p class="fg-items__value">ETH</p>
+                            </div>
+                            <div class="forms-group__items" data-selected="bnb">
+                              <img class="fg-items__icon" src="{% static 'home-assets/assets/media/images/icons/logo-bnb.svg' %}" alt="">
+                              <p class="fg-items__value">BNB</p>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="d-block forms-currency__box">
+                      <div class="forms-currency">
+                        <div class="forms-group forms-group--value">
+                          <input type="number" min="0" value="0.8511" class="form-control forms-currency__value">
+                        </div>
+                        <div class="forms-currency__line"></div>
+                        <div class="forms-group forms-group--currency js-forms-group--currency" id="custom-select4">
+                          <div class="forms-group__items selected" data-selected="btc">
+                            <img class="fg-items__icon" src="{% static 'home-assets/assets/media/images/icons/logo-btc.svg' %}" alt="">
+                            <p class="fg-items__value">BTC</p>
+                          </div>
+                          <img class="forms-currency__icon-arrow-down" src="{% static 'home-assets/assets/media/images/icons/arrow-down.svg' %}" alt="">
+                          <div class="forms-group__dropdown js-forms-group__dropdown">
+                            <div class="forms-group__items active" data-selected="btc">
+                              <img class="fg-items__icon" src="{% static 'home-assets/assets/media/images/icons/logo-btc.svg' %}" alt="">
+                              <p class="fg-items__value">BTC</p>
+                            </div>
+                            <div class="forms-group__items" data-selected="usd">
+                              <img class="fg-items__icon" src="{% static 'home-assets/assets/media/images/icons/usd.svg' %}" alt="">
+                              <p class="fg-items__value">USD</p>
+                            </div>
+                            <div class="forms-group__items" data-selected="eth">
+                              <img class="fg-items__icon" src="{% static 'home-assets/assets/media/images/icons/logo-eth.svg' %}" alt="">
+                              <p class="fg-items__value">ETH</p>
+                            </div>
+                            <div class="forms-group__items" data-selected="bnb">
+                              <img class="fg-items__icon" src="{% static 'home-assets/assets/media/images/icons/logo-bnb.svg' %}" alt="">
+                              <p class="fg-items__value">BNB</p>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <a href="https://checkout.banxa.com/" class="btn btn-primary btn-lg btn-pill">Sell Now</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <img class="buy-sell-cards__illustration" src="{% static 'home-assets/assets/media/images/buy-sell-illustration.svg' %}" alt="Illustration">
+            <img class="buy-sell-cards__pattern" src="{% static 'home-assets/assets/media/images/landing-page-v3/mobile-landing-page-v3-exchange-pattern.svg' %}" alt="Background Pattern Exchange Mobile" />
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- End::Exchange / Buy Sell Forms Section -->
+    
+    <!-- Start::Why Choose Us Section -->
+    <section class="why-choose-us why-choose-us--v3">
+      <div class="why-choose-us__background why-choose-us__background--pattern-1">
+        <img class="why-choose-us__pattern-bg" src="{% static 'home-assets/assets/media/images/landing-page-v3/landing-page-v3-why-choose-us-pattern-1.svg' %}" alt="Background Pattern why-choose-us" />
+      </div>
+      <div class="why-choose-us__background why-choose-us__background--pattern-2">
+        <img class="why-choose-us__pattern-bg" src="{% static 'home-assets/assets/media/images/landing-page-v3/landing-page-v3-why-choose-us-pattern-2.svg' %}" alt="Background Pattern why-choose-us" />
+      </div>
+      <div class="container">
+        <h2 class="why-choose-us__title text-center" data-aos="fade-up">Why {{app_name}} is the Future of Peer-to-Peer trading</h2>
+        <p class="fb-regular why-choose-us__subtitle text-center" data-aos="fade-up" data-aos-delay="100">
+          We empower you with tools, security, and real earning opportunities—all backed by trust and transparency.
+        </p>
+        <div class="why-choose-us__groups">
+          <div class="why-choose-us__items" data-aos="fade-up" data-aos-delay="200">
+            <div class="why-choose-us-items__header">
+              <img class="why-choose-us-items__icon" src="{% static 'home-assets/assets/media/images/icons/eyes-2.svg' %}" alt="Transparency" />
+            </div>
+            <div class="why-choose-us-items__content">
+              <h5 class="why-choose-us-item__title">Transparency</h5>
+              <p class="fb-regular why-choose-us-item__desc">
+                Every transaction is trackable, every agreement visible. No hidden terms—just open, clear investing.
+              </p>
+            </div>
+          </div>
+          <div class="why-choose-us__items" data-aos="fade-up" data-aos-delay="300">
+            <div class="why-choose-us-items__header">
+              <img class="why-choose-us-items__icon" src="{% static 'home-assets/assets/media/images/icons/shield-done-2.svg' %}" alt="Security" />
+            </div>
+            <div class="why-choose-us-items__content">
+              <h5 class="why-choose-us-item__title">Escrow Protection</h5>
+              <p class="fb-regular why-choose-us-item__desc">
+                Funds are held in escrow until both parties meet agreed terms—giving you peace of mind with every deal.
+              </p>
+            </div>
+          </div>
+          <div class="why-choose-us__items" data-aos="fade-up" data-aos-delay="400">
+            <div class="why-choose-us-items__header">
+              <img class="why-choose-us-items__icon" src="{% static 'home-assets/assets/media/images/icons/community-2.svg' %}" alt="Earning Together" />
+            </div>
+            <div class="why-choose-us-items__content">
+              <h5 class="why-choose-us-item__title">Community of Earners</h5>
+              <p class="fb-regular why-choose-us-item__desc">
+                Join a growing network of verified traders and investors working together to grow wealth safely and fairly.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="container features" data-aos="zoom-in-up" data-aos-delay="500">
+        <div class="features__items" data-aos="zoom-in-up" data-aos-delay="600">
+          <p class="fd-xl features-items__value">50+</p>
+          <p class="fb-lg features-items__name">Trusted Traders</p>
+        </div>
+        <div class="features__items" data-aos="zoom-in-up" data-aos-delay="700">
+          <p class="fd-xl features-items__value">15,000+</p>
+          <p class="fb-lg features-items__name">Successful Investments</p>
+        </div>
+        <div class="features__items" data-aos="zoom-in-up" data-aos-delay="800">
+          <p class="fd-xl features-items__value">100%</p>
+          <p class="fb-lg features-items__name">Escrow-backed Safety</p>
+        </div>
+      </div>
+    </section>
+    <!-- End::Why Choose Us Section -->
+
+    <!-- Start::Media News Carousel / Testimonial Section -->
+    <section class="testimonial testimonial--v3">
+      <div class="container">
+        <h4 class="text-center testimonial__title" data-aos="fade-up">
+          Featured In.
+        </h4>
+        <div class="testimonial__container" data-aos="zoom-in-up" data-aos-delay="200">
+          <div class="testimonial__carousel">
+            <div class="testimonial__items">
+              <img class="testimonial-items__img" src="{% static 'home-assets/assets/media/images/testimonial/testimonial-metronew.png' %}" alt="MetroNew" />
+            </div>
+            <div class="testimonial__items">
+              <img class="testimonial-items__img" src="{% static 'home-assets/assets/media/images/testimonial/testimonial-fores.png' %}" alt="Fores" />
+            </div>
+            <div class="testimonial__items">
+              <img class="testimonial-items__img" src="{% static 'home-assets/assets/media/images/testimonial/testimonial-euronew.png' %}" alt="EuroNew" />
+            </div>
+            <div class="testimonial__items">
+              <img class="testimonial-items__img" src="{% static 'home-assets/assets/media/images/testimonial/testimonial-newweks.png' %}" alt="Newweks" />
+            </div>
+            <div class="testimonial__items">
+              <img class="testimonial-items__img" src="{% static 'home-assets/assets/media/images/testimonial/testimonial-metronew.png' %}" alt="MetroNew" />
+            </div>
+            <div class="testimonial__items">
+              <img class="testimonial-items__img" src="{% static 'home-assets/assets/media/images/testimonial/testimonial-fores.png' %}" alt="Fores" />
+            </div>
+            <div class="testimonial__items">
+              <img class="testimonial-items__img" src="{% static 'home-assets/assets/media/images/testimonial/testimonial-euronew.png' %}" alt="EuroNew" />
+            </div>
+            <div class="testimonial__items">
+              <img class="testimonial-items__img" src="{% static 'home-assets/assets/media/images/testimonial/testimonial-newweks.png' %}" alt="Newweks" />
+            </div>
+            <div class="testimonial__items">
+              <img class="testimonial-items__img" src="{% static 'home-assets/assets/media/images/testimonial/testimonial-metronew.png' %}" alt="MetroNew" />
+            </div>
+            <div class="testimonial__items">
+              <img class="testimonial-items__img" src="{% static 'home-assets/assets/media/images/testimonial/testimonial-fores.png' %}" alt="Fores" />
+            </div>
+            <div class="testimonial__items">
+              <img class="testimonial-items__img" src="{% static 'home-assets/assets/media/images/testimonial/testimonial-euronew.png' %}" alt="EuroNew" />
+            </div>
+            <div class="testimonial__items">
+              <img class="testimonial-items__img" src="{% static 'home-assets/assets/media/images/testimonial/testimonial-newweks.png' %}" alt="Newweks" />
+            </div>
+          </div>
+          <div class="slick__pagination">
+            <div class="testimonial-carousel__arrows">
+              <a href="#" class="testimonial-carousel__prev">
+                <img src="{% static 'home-assets/assets/media/images/icons/arrow-circle-left.svg' %}" alt="Previous">
+              </a>
+              <a href="#" class="testimonial-carousel__next">
+                <img src="{% static 'home-assets/assets/media/images/icons/arrow-circle-right.svg' %}" alt="Next">
+              </a>
+            </div>
+            <div class="testimonial-carousel__pagination slick__pagination--dots">
+              <div class="testimonial-carousel__slick-slider-dots slick-slider-dots"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- End::Media News Carousel / Testimonial Section -->
+
+    <!-- Start::FAQs Section -->
+    <section id="faq" class="why-choose-us why-choose-us--v3">
+      <div class="container">
+        <h2 class="why-choose-us__title text-center" data-aos="fade-up">Frequently Asked Questions</h2>
+        <p class="fb-regular why-choose-us__subtitle text-center mb-4" data-aos="fade-up" data-aos-delay="100">
+          Get quick answers to common questions about investing with {{app_name}}.
+        </p>
+
+        <div class="why-choose-us__groups">
+          <!-- FAQ Item 1 -->
+          <div class="why-choose-us__items" data-aos="fade-up" data-aos-delay="200">
+            <div class="why-choose-us-items__header">
+              <img class="why-choose-us-items__icon" src="{% static 'home-assets/assets/media/images/icons/shield-done-2.svg' %}" alt="Escrow System" />
+            </div>
+            <div class="why-choose-us-items__content">
+              <h5 class="why-choose-us-item__title">How does the escrow system work?</h5>
+              <p class="fb-regular why-choose-us-item__desc">
+                {{app_name}} locks investment funds in escrow until the trader meets agreed terms. This ensures both parties are protected throughout the transaction.
+              </p>
+            </div>
+          </div>
+
+          <!-- FAQ Item 2 -->
+          <div class="why-choose-us__items" data-aos="fade-up" data-aos-delay="300">
+            <div class="why-choose-us-items__header">
+              <img class="why-choose-us-items__icon" src="{% static 'home-assets/assets/media/images/icons/shield-done-2.svg' %}" alt="Crypto Conversion" />
+            </div>
+            <div class="why-choose-us-items__content">
+              <h5 class="why-choose-us-item__title">Can I convert crypto to fiat or buy stocks?</h5>
+              <p class="fb-regular why-choose-us-item__desc">
+                Yes! {{app_name}} allows you to convert crypto to fiat and use your balance to purchase stocks—all within the platform.
+              </p>
+            </div>
+          </div>
+
+          <!-- FAQ Item 3 -->
+          <div class="why-choose-us__items" data-aos="fade-up" data-aos-delay="400">
+            <div class="why-choose-us-items__header">
+              <img class="why-choose-us-items__icon" src="{% static 'home-assets/assets/media/images/icons/shield-done-2.svg' %}" alt="Verified Traders" />
+            </div>
+            <div class="why-choose-us-items__content">
+              <h5 class="why-choose-us-item__title">Are the traders verified?</h5>
+              <p class="fb-regular why-choose-us-item__desc">
+                All traders on {{app_name}} go through identity and performance verification before they’re allowed to trade with investors.
+              </p>
+            </div>
+          </div>
+
+          <!-- FAQ Item 4 -->
+          <div class="why-choose-us__items" data-aos="fade-up" data-aos-delay="500">
+            <div class="why-choose-us-items__header">
+              <img class="why-choose-us-items__icon" src="{% static 'home-assets/assets/media/images/icons/shield-done-2.svg' %}" alt="Minimum Investment" />
+            </div>
+            <div class="why-choose-us-items__content">
+              <h5 class="why-choose-us-item__title">Is there a minimum investment?</h5>
+              <p class="fb-regular why-choose-us-item__desc">
+                {{app_name}} is beginner-friendly. Minimums vary by plan, but many allow you to start with as little as £500 or the equivalent in crypto.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- End::FAQs Section -->
+
+    
+    <!-- Start::Mobile Platform / Mobile Apps -->
+    <section class="mobile-platform mobile-platform--v3">
+      <div class="mobile-platform__background mobile-platform__background--gradient">
+        <img class="mobile-platform__gradient-bg" src="{% static 'home-assets/assets/media/images/landing-page-v3/landing-page-v3-mobile-platform-gradient.svg' %}" alt="Background Gradient Mobile Platform" />
+      </div>
+      <div class="mobile-platform__background mobile-platform__background--pattern-1">
+        <img class="mobile-platform__pattern-bg" src="{% static 'home-assets/assets/media/images/landing-page-v3/landing-page-v3-mobile-platform-pattern-1.svg' %}" alt="Background Pattern mobile-platform" />
+      </div>
+      <div class="mobile-platform__background mobile-platform__background--pattern-2">
+        <img class="mobile-platform__pattern-bg" src="{% static 'home-assets/assets/media/images/landing-page-v3/landing-page-v3-mobile-platform-pattern-2.svg' %}" alt="Background Pattern mobile-platform" />
+      </div>
+      <div class="container">
+        <div class="mobile-platform__container">
+          <div class="mobile-platform__content">
+            <h2 class="mobile-platform__title" data-aos="fade-up">Monitor your investment portfolio anywhere on the go.</h2>
+            <p class="fb-regular mobile-platform__subtitle" data-aos="fade-up" data-aos-delay="100">A powerful cryptocurrency wallet in your smartphone. Swap, Buy, sell and trade crypto seamlessly.</p>
+          </div>
+          <div class="mobile-platform__illustration" data-aos="zoom-in-up" data-aos-delay="200">
+            <img class="mobile-platform__img--dekstop" src="{% static 'home-assets/assets/media/images/cryptolly-illustration-2.png' %}" alt="Illustration">
+            <img class="mobile-platform__img--mobile" src="{% static 'home-assets/assets/media/images/cryptolly-illustration-2--mobile.png' %}" alt="Illustration">
+          </div>
+          <div class="mobile-platform__download">
+            <p class="fb-regular fb-regular--bold" data-aos="fade-up" data-aos-delay="300">Get the {{app_name}} Wallet Web App!</p>
+              <a style="width: 100%;" href="#" class="btn btn-download-app btn-appstore" data-aos="fade-up" data-aos-delay="400">
+                <svg width="33" height="33" viewBox="0 0 33 33" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <g clip-path="url(#clip0_1166_319)">
+                    <path d="M7.758 0.5H25.742C29.6125 0.5 32.75 3.6375 32.75 7.508V25.492C32.75 29.3625 29.6125 32.5 25.742 32.5H7.758C3.8875 32.5 0.75 29.3625 0.75 25.492V7.508C0.75 3.6375 3.8875 0.5 7.758 0.5Z" fill="url(#paint0_linear_1166_319)" />
+                    <path d="M11.0045 23.7266L11.0075 23.7276L9.91333 25.6226C9.51395 26.3143 8.62945 26.5513 7.9377 26.152C7.24608 25.7526 7.00895 24.8681 7.40833 24.1763L8.21433 22.7803L8.2917 22.6463C8.42983 22.4478 8.7707 22.1051 9.45258 22.1696C9.45258 22.1696 11.0572 22.3437 11.1733 23.1777C11.1733 23.1777 11.1891 23.4521 11.0045 23.7266ZM26.5223 18.8866H23.1106C22.8782 18.871 22.7768 18.788 22.7368 18.7397L22.7343 18.7353L19.0822 12.4096L19.0775 12.4127L18.8585 12.0987C18.4995 11.5497 17.9295 12.9537 17.9295 12.9537C17.2488 14.5182 18.0261 16.2968 18.297 16.8345L23.3697 25.6207C23.769 26.3123 24.6535 26.5495 25.3453 26.15C26.037 25.7506 26.2741 24.8661 25.8746 24.1743L24.6062 21.9773C24.5816 21.9241 24.5388 21.7796 24.799 21.779H26.5223C27.3211 21.779 27.9686 21.1315 27.9686 20.3327C27.9686 19.534 27.3211 18.8865 26.5223 18.8865V18.8866ZM19.8956 20.8526C19.8956 20.8526 20.0777 21.779 19.3731 21.779H6.7607C5.96195 21.779 5.31445 21.1315 5.31445 20.3327C5.31445 19.534 5.96195 18.8865 6.7607 18.8865H10.0032C10.5267 18.8562 10.6507 18.554 10.6507 18.554L10.6537 18.5555L14.8862 11.2245L14.885 11.2242C14.9621 11.0826 14.8978 10.9487 14.8867 10.9276L13.4888 8.50645C13.0895 7.81483 13.3265 6.9302 14.0182 6.53095C14.71 6.13158 15.5945 6.36845 15.9938 7.0602L16.6421 8.18308L17.2892 7.0622C17.6886 6.37058 18.5731 6.13345 19.2648 6.53295C19.9566 6.93233 20.1936 7.8167 19.7942 8.50845L13.9045 18.7097C13.8787 18.7718 13.8708 18.8693 14.0625 18.8865H17.583L17.5837 18.9208C17.5837 18.9208 19.6185 18.9525 19.8956 20.8526Z" fill="white" />
+                  </g>
+                  <defs>
+                    <linearGradient id="paint0_linear_1166_319" x1="16.75" y1="0.5" x2="16.75" y2="32.5" gradientUnits="userSpaceOnUse">
+                      <stop offset="1" stop-color="#17C9FB" />
+                      <stop offset="1" stop-color="#1A74E8" />
+                    </linearGradient>
+                    <clipPath id="clip0_1166_319">
+                      <rect width="32" height="32" fill="white" transform="translate(0.75 0.5)" />
+                    </clipPath>
+                  </defs>
+                </svg>
+                <svg width="33" height="33" viewBox="0 0 33 33" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <g clip-path="url(#clip0_1166_375)">
+                    <path d="M23.8517 21.3902C27.9092 19.3087 30.9851 17.7226 31.2502 17.5993C32.0984 17.1779 32.9742 16.0626 31.2502 15.1962C30.6936 14.9238 27.6967 13.3871 23.8517 11.4053L18.5215 16.4348L23.8517 21.3901V21.3902Z" fill="#FFD900" />
+                    <path d="M18.521 16.4346L1.54883 32.4162C1.9472 32.4655 2.39695 32.3668 2.9272 32.0945C4.04045 31.5251 15.842 25.5037 23.8512 21.3912L18.521 16.4346Z" fill="#F43249" />
+                    <path d="M18.5219 16.4351L23.8522 11.4303C23.8522 11.4303 4.12194 1.37006 2.92819 0.776189C2.47844 0.527313 1.97444 0.453386 1.52344 0.527313L18.5219 16.4351Z" fill="#00EE76" />
+                    <path d="M18.5214 16.437L1.52287 0.529297C0.833 0.678319 0.25 1.24778 0.25 2.41239V30.5356C0.25 31.6015 0.701125 32.3693 1.54925 32.4433L18.5214 16.437Z" fill="#00D3FF" />
+                  </g>
+                  <defs>
+                    <clipPath id="clip0_1166_375">
+                      <rect width="32" height="32" fill="white" transform="translate(0.25 0.5)" />
+                    </clipPath>
+                  </defs>
+                </svg>
+                <div class="btn-download-app__content">
+                  <p class="btn-download-app__subtitle">Swiftly</p>
+                  <p class="btn-download-app__title">Download Now</p>
+                </div>
+              </a>
+          </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- End::Mobile Platform / Mobile Apps -->
+    
+    <!-- Start::Call to Action Section -->
+    <section class="cta" data-aos="zoom-in-up">
+      <div class="cta__background">
+        <img width="100%" class="cta__pattern-bg" src="{% static 'home-assets/img/download-banner.png' %}" alt="Background Pattern CTA" />
+      </div>
+      <div class="container text-center">
+        <h2 class="cta__title" data-aos="zoom-in-up">
+          Ready to Start Earning with {{app_name}}?
+        </h2>
+        <p class="fb-regular cta__subtitle" data-aos="fade-up" data-aos-delay="100">
+          Join thousands of investors leveraging smart contracts and escrow protection to grow their wealth safely.
+        </p>
+        <a target="_blank" href="{% url 'signup' %}" class="btn btn-primary cta__btn" data-aos="fade-up" data-aos-delay="200">
+          Open Your Account Now
+        </a>
+      </div>
+    </section>
+    <!-- End::Call to Action Section -->
+
+    <!-- Start::Contact Us Section -->
+    <section id="contact-support" class="cta py-5">
+      <div class="container">
+        <h2 class="why-choose-us__title text-center" data-aos="zoom-in-up">
+          Contact Us
+        </h2>
+        <p class="fb-regular why-choose-us__subtitle text-center mb-4" data-aos="zoom-in-up" data-aos-delay="100">
+          Have questions or need help? Reach out to the {{app_name}} support team and we’ll get back to you within few minutes.
+        </p>
+
+        <form action="#" method="post" id="contactForm" class="sign-up__forms">
+
+          <div class="forms-name">
+            <div class="forms-group" data-aos="zoom-in-up" data-aos-delay="100">
+              <input
+                type="text"
+                class="form-control mb-4"
+                id="full_name"
+                name="full_name" 
+                placeholder="Enter your full name"
+                required
+              >
+            </div>
+          </div>
+
+          <div class="forms-group" data-aos="zoom-in-up" data-aos-delay="200">
+            <input
+              type="email"
+              class="form-control mb-4"
+              id="email"
+              name="email"
+              placeholder="Enter your email address"
+              required
+            >
+          </div>
+ 
+          <div class="forms-group" data-aos="zoom-in-up" data-aos-delay="250">
+            <input
+              type="text"
+              class="form-control mb-4"
+              id="subject"
+              name="subject"
+              placeholder="Subject"
+              required
+            >
+          </div>
+
+          <div class="forms-group" data-aos="zoom-in-up" data-aos-delay="300">
+            <textarea
+              style="padding: 40px;"
+              class="form-control mb-4"
+              id="message"
+              name="message"
+              rows="10"
+              placeholder="Write your message here..."
+              required
+            ></textarea>
+          </div> 
+          <div style="display: flex; align-items: center; justify-content: center;" class="my-4 col-12">
+            <div data-expired-callback="expiredCallback" class="g-recaptcha" data-type="checkbox" data-sitekey="6LdLciYrAAAAAO4Sv9Ol_uIgE-moLohS5lzBOFwV"></div>
+          </div>
+          <div style="display: flex; align-items: center; justify-content: center;" class="form-group mb-4">
+            <p id="feedback" data-aos="zoom-in-up" class="text-success "></p>
+          </div>
+
+          <div class="forms-group text-center" data-aos="zoom-in-up" data-aos-delay="350">
+            <button style="width: 100%" type="submit" class="btn btn-primary cta__btn">
+              Send Message
+            </button>
+          </div>
+        </form>
+      </div>
+    </section>
+    <!-- End::Contact Us Section -->
+
+
+    <!-- Start::Footer -->
+    <footer class="footer">
+      <div class="container">
+        <div class="footer__content">
+          <div class="footer__item footer-item-main" data-aos="fade-up">
+            <img class="footer-item-main__logo" src="{{app_logo}}" alt="{{app_name}}" />
+            <p class="fb-lg footer-item-main__desc">The destination for anything P2P investments.</p> 
+            <div class="footer-item-main__socmed">
+              <a href="#" class="footer-socmed">
+                <img class="footer-item-main__logo" src="{% static 'home-assets/assets/media/images/icons/logo-linkedin.svg' %}" alt="Linkedin" />
+              </a>
+              <a target="_blank" href="https://www.facebook.com/profile.php?id=61576188487668" class="footer-socmed">
+                <img class="footer-item-main__logo" src="{% static 'home-assets/assets/media/images/icons/logo-facebook.svg' %}" alt="Facebook" />
+              </a>
+              <a target="_blank" href="https://t.me/stephxtrades" class="footer-socmed">
+                <img class="footer-item-main__logo" src="{% static 'home-assets/assets/media/images/icons/telegram.svg' %}" alt="Telegram" />
+              </a>
+            </div>
+          </div>
+          <div class="footer__item footer-item-quick-links" data-aos="fade-up" data-aos-delay="100">
+            <h6 class="footer__item-title">Useful Links</h6>
+            <div class="footer-quick-links">
+              <a href="#about-us" class="fb-md footer-quick-links__link">About Company</a>
+              <a href="#faq" class="fb-md footer-quick-links__link">Frequently Asked Questions</a>
+              <a href="#contact-support" class="fb-md footer-quick-links__link">Contact support</a>
+            </div>
+          </div>
+          <div class="footer__item footer-item-updates" data-aos="fade-up" data-aos-delay="200">
+            <h6 class="footer__item-title">Submit for updates.</h6>
+            <p class="fb-md footer-item-updates__desc">Subscribe to get update and notify our exchange and products</p>
+            <div style="display: flex; align-items: center; justify-content: center;" class="form-group mb-4">
+              <p id="sub-feedback" data-aos="zoom-in-up" class="text-success "></p>
+            </div>
+            <div class="mini-form-sm__box"> 
+              <form id="subscribe" class="mini-form">
+                <input name="sub-email" type="email" class="form-control form-control-sm mini-form__input" placeholder="Enter you email address">
+                <input type="submit" class="btn btn-primary btn-sm mini-form__submit" value="Send">
+              </form>
+            </div>
+          </div>
+        </div>
+        <div class="footer__foot" data-aos="fade-up" data-aos-delay="300">
+          <p class="fb-md footer-foot__copyright">{{app_name}} © <span id="year"></span>. All rights reserved.</p>
+          <script>
+            document.getElementById('year').textContent = new Date().getFullYear();
+          </script>
+          <div class="footer-foot__tos-privacy">
+            <a href="{% url 'terms-of-service' %}" class="fb-md footer-foot__link">Term of Service</a>
+            <span class="separator"></span>
+            <a href="{% url 'terms-of-service' %}?#privacy-section" class="fb-md footer-foot__link">Privacy Policy</a>
+          </div>
+        </div>
+      </div>
+    </footer>
+    <!-- End::Footer -->
+
+    <!-- Start::Global Bundle Scripts (used by all pages) -->
+    <script src="{% static 'home-assets/assets/js/scripts.bundle.js' %}"></script>
+    <!-- End::Global Bundle Scripts -->
+    <!-- Start::Plugins (used by this page) -->
+    <script src="{% static 'home-assets/assets/plugins/slick/slick.min.js' %}"></script>
+    <script src="{% static 'home-assets/assets/plugins/aos-master/src/aos.js' %}"></script>
+    <script src="{% static 'home-assets/assets/plugins/apexcharts/apexcharts.min.js' %}"></script>
+    <!-- End::Plugins -->
+    <!-- Start::Page Scripts (used by this page) -->
+    <script src="{% static 'home-assets/assets/js/custom/custom-select.js' %}"></script>
+    <script src="{% static 'home-assets/assets/js/pages/landing-page-v3.js' %}"></script>
+    <script src="{% static 'home-assets/assets/js/custom/chart.js' %}"></script>
+    <!-- End::Page Scripts -->
+    <!-- google captcha js -->
+		<script src="https://www.google.com/recaptcha/api.js" async defer></script>
+    <!--Start::Custom JS -->
+    <script>
+      function expiredCallback() {
+        alert('Captcha response timeout expired. please try again!');
+      }
+      document.addEventListener("DOMContentLoaded", function() {
+
+        function getCookie(name){
+          let cookieValue = null;
+          if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+              const cookie = cookies[i].trim();
+              // Check if this cookie string begins with the name we want
+              if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+              }
+            }
+          }
+          return cookieValue
+        }
+        const csrftoken = getCookie('csrftoken');
+
+        const form = document.getElementById('contactForm');
+        const feedbackElement = document.getElementById('feedback'); 
+        form.addEventListener('submit', async function (e){
+          e.preventDefault();
+          const elements = form.elements;
+
+          for (let i = 0; i < elements.length; i++){
+            const element = elements[i];
+            if (element.type !== 'submit' && element.value === ''){
+              if (element.name === 'g-recaptcha-response') {
+                feedbackElement.classList.remove('alert-info');
+                feedbackElement.classList.add('alert-danger');
+                feedbackElement.innerHTML = 'Please solve the captcha challenge';
+                return;
+              }
+              element.classList.add('is-invalid');
+              element.focus();
+              feedbackElement.innerHTML = "Please enter all required fields";
+              feedbackElement.classList.add('alert-danger');
+              return;
+            } else {
+              element.classList.remove('is-invalid');
+              feedbackElement.classList.remove('alert-danger');
+              feedbackElement.innerHTML = "";
+            }
+          }
+        
+        
+          const name = elements['full_name'].value;
+          const email = elements['email'].value;
+          const message = elements['message'].value;
+          const captcha = elements['g-recaptcha-response'].value;
+
+
+          if (name.length < 5){
+            feedbackElement.innerHTML = "Please enter a valid name(firstname & lastname)";
+            feedbackElement.classList.remove('alert-info');
+            feedbackElement.classList.add('alert-danger');
+            return;
+          }
+
+          if (message.length <= 25){
+            feedbackElement.innerHTML = "Please enter more details about your inquiry";
+            feedbackElement.classList.remove('alert-info');
+            feedbackElement.classList.add('alert-danger');
+            return;
+          }
+          feedbackElement.innerHTML = "Sending...";
+          feedbackElement.classList.remove('alert-danger');
+          feedbackElement.classList.add('alert-info');
+
+          try{
+            const formData = new FormData(this);
+            const url = "{% url 'contact' %}";
+            const sendMessage = await fetch(url, {
+              method: 'POST',
+              headers: {
+                'X-CSRFToken': csrftoken
+              },
+              body: formData,
+            });
+            const result = await sendMessage.json();
+            if (result.success){
+              feedbackElement.innerHTML = result.success;
+              feedbackElement.classList.remove('alert-danger');
+              feedbackElement.classList.add('alert-success');
+              form.reset();
+            } else {
+              feedbackElement.innerHTML = result.error;
+              feedbackElement.classList.remove('alert-info');
+              feedbackElement.classList.add('alert-danger');
+            }
+          } catch (error){
+            console.error('Error:', error);
+            feedbackElement.innerHTML = "An error occurred. Please try again.";
+            feedbackElement.classList.remove('alert-info');
+            feedbackElement.classList.remove('alert-success');
+            feedbackElement.classList.add('alert-danger');
+          }
+
+        })
+        
+        
+        const subscribeForm = document.getElementById('subscribe');
+
+        subscribeForm.addEventListener('submit', async function (e){
+          e.preventDefault();
+          let subscription = null;
+          const email = this.elements['sub-email'].value;
+          const feedbackElement = document.getElementById('sub-feedback');
+          if (!email){
+            feedbackElement.innerHTML = "Please enter a valid email address";
+            feedbackElement.classList.remove('alert-info');
+            feedbackElement.classList.add('alert-danger');
+            return;
+          }
+          subscription = JSON.parse(localStorage.getItem('subscription'));
+          if (subscription && subscription.email === email){
+            feedbackElement.innerHTML = "You are already subscribed to our newsletter";
+            feedbackElement.classList.remove('alert-info');
+            feedbackElement.classList.add('alert-danger');
+            return;
+          } 
+
+          
+          feedbackElement.innerHTML = "Subscribing...";
+          subscription = {
+            email: email,
+            isSubscribed: true
+          }
+          localStorage.setItem('subscription', JSON.stringify(subscription));
+
+          feedbackElement.classList.remove('alert-danger');
+          feedbackElement.classList.add('alert-info');
+          const delay = Math.floor(Math.random() * 7000 - 3000) + 2000;
+          setTimeout(() => {
+            feedbackElement.innerHTML = "Subscription successful! You'll now receive our markets, products and services updates periodically. to unsubscribe, use the 'unsubscribe' link in the email.";
+            feedbackElement.classList.remove('alert-danger');
+            feedbackElement.classList.remove('alert-info');
+            feedbackElement.classList.add('alert-success');
+
+            // generate random timer for the timeout;
+          }, delay);
+        });
+
+
+      })
+    </script>
+    <!--End:: Smartsupp Live Chat script -->
+    <script type="text/javascript">
+      var _smartsupp = _smartsupp || {};
+      _smartsupp.key = 'e17750997929708d3395fda6238ef42a92e0a1b2';
+      _smartsupp.ratingEnabled = true;
+      window.smartsupp||(function(d) {
+      var s,c,o=smartsupp=function(){ o._.push(arguments)};o._=[];
+      s=d.getElementsByTagName('script')[0];c=d.createElement('script');
+      c.type='text/javascript';c.charset='utf-8';c.async=true;
+      c.src='https://www.smartsuppchat.com/loader.js?';s.parentNode.insertBefore(c,s);
+      })(document);
+
+      smartsupp('name', '{{user.get_full_name}}');
+      smartsupp('email', '{{user.email}}');
+
+    </script>
+    <!-- End::Smartsupp Live Chat script -->
+
+  </body>
+
+</html>

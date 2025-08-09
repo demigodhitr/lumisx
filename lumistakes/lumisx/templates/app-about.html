@@ -1,0 +1,324 @@
+{% load custom_filters %}
+{% load humanize %}
+{% load static %}
+<!doctype html>
+<html lang="en">
+
+<head>
+    <style>
+        .splide__slide {
+            background: rgba(10, 10, 20, 0.8);
+            border: 1px solid rgba(0, 123, 255, 0.2);
+            border-radius: 16px;
+            padding: 1.5rem;
+            height: 300px;
+            color: #e0f7ff;
+            backdrop-filter: blur(14px) saturate(180%);
+            -webkit-backdrop-filter: blur(14px) saturate(180%);
+            box-shadow:
+                0 0 10px rgba(0, 94, 255, 0.3),
+                0 0 20px rgba(0, 94, 255, 0.2) inset;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: left;
+        }
+
+        .splide__slide:hover {
+            transform: scale(1.03);
+            box-shadow:
+                0 0 15px rgba(0, 128, 255, 0.6),
+                0 0 30px rgba(0, 128, 255, 0.4) inset;
+        }
+
+        
+        .splide__slide .card-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #0368c7;
+            text-shadow: 0 0 6px rgba(25, 151, 229, 0.5);
+            margin-bottom: 1rem;
+            background: 0 0 6px rgba(25, 151, 229, 0.9);
+        }
+
+        .neon-glow {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #0084ff;
+            text-shadow: 0 0 6px rgba(25, 151, 229, 0.9);
+        }
+
+        .splide__slide .plan-info {
+            width: 100%;
+            max-width: 260px;
+            font-size: 0.95rem;
+            color: #7ab9fc;
+            text-shadow: 0 0 6px rgba(25, 151, 229, 0.7);
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .plan-info-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px dashed rgba(0, 255, 255, 0.1);
+            padding-bottom: 4px;
+        }
+        .plan-info-item span {
+            font-weight: 500;
+            font-family: monospace;
+        }
+
+    </style>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, viewport-fit=cover" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#000000">
+    <title>{{app_name}} - About app</title>
+    <meta name="description" content="{{app_name}} is a trading platform that offers online trading of complex derivative cryptocurrencies with leverage and copy trading. Log in to your personal area to access your accounts, deposit or withdraw funds, and claim bonuses.">
+    <meta name="keywords" content="Crypto, Cryptocurrency, best cryptocurrency, best performing crypto, best exchange 2025, worldwide trading, investments, how to invest safely, how to invest, how to invest online, how to invest, 2025, best cryptocurrency, how to withdraw crypto, buy crypto, sell crypto, convert crypto" />
+    <link rel="icon" type="image/png" href="{% static 'assets/img/favicon.png' %}" sizes="32x3">
+    <link rel="apple-touch-icon" sizes="180x180" href="{% static 'assets/img/icon/192x192.png' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/style.css' %}">
+    <link rel="manifest" href="{% static '__manifest.json' %}">
+</head>
+
+<body>
+
+    <!-- loader -->
+    <div id="loader">
+        <img src="{% static 'assets/img/loading-icon.png' %}" alt="icon" class="loading-icon">
+    </div>
+    <!-- * loader -->
+
+    <!-- App Header -->
+    <div class="appHeader">
+        <div class="left">
+            <a href="#" class="headerButton goBack">
+                <ion-icon name="chevron-back-outline"></ion-icon>
+            </a>
+        </div>
+        <div class="pageTitle">
+            About {{app_name}}
+        </div>
+        <div class="right">
+            <a href="{% url 'notifications' %}" class="headerButton">
+                <ion-icon class="icon" name="notifications-outline"></ion-icon>
+                {% if unreads > 0 %}
+                    <span class="badge badge-danger">{{ unreads }}</span>
+                {% endif %}
+            </a>
+        </div>
+    </div>
+    <!-- * App Header -->
+
+    <!-- App Capsule -->
+    <div id="appCapsule">
+
+
+        <div class="section full">
+            <img src="{% static 'assets/img/sample/photo/lumisx.png' %}" alt="image" class="imaged w-100 square">
+        </div>
+
+        <div class="section mt-3 mb-3">
+            <div class="card">
+                <div class="card-body">
+                    <h2 class="card-title neon-glow">About</h2>
+                    {{app_name}} is a next-gen peer-to-peer investment platform that connects traders and investors through secure, escrow-backed transactions. We empower individuals to grow wealth with transparency, safety, and confidence.
+                </div>
+            </div>
+        </div>
+        <!-- FAQs -->
+        <div class="section mt-3 mb-3">
+            <div class="card">
+                <div class="card-body">
+                    <div class="accordion">
+                        <div class="accordion-item">
+                        <h2 class="accordion-header bg-primary">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#accordiond1">
+                                ❓ HOW THE PROXY TRADE WORKS ❓
+                            </button>
+                        </h2>
+                        <div id="accordiond1" class="accordion-collapse collapse" data-bs-parent="#accordionExample5">
+                            <div class="accordion-body">
+                                {{app_name}} uses a proxy trading system backed by a secure escrow model. When you start a trade, your capital is temporarily held in a secure, isolated pool — not directly handed to the trader. Think of it like handing your sealed envelope of cash to a trusted vault while the trader gets access only to a dashboard showing how much they're allowed to trade with — not where it's stored.
+                                <br><br>
+                                They can influence how your capital is allocated for market actions, but they cannot move, withdraw, or access your funds. This setup allows professional traders to generate returns on your behalf without ever touching your actual wallet or bank.
+                                <br>
+                                <ul>
+                                    <li style="list-style-type: none;"> 
+                                        <strong>🔐 Security by design:</strong>
+                                        Traders never access your personal account, banking details, or wallet. They cannot view your sensitive data, perform withdrawals, or initiate any financial transactions.
+                                    </li>
+                                </ul>
+                                <strong>You remain in full control.</strong> Only you can withdraw your profits or capital at any time, based on your trading plan's terms. This ensures maximum privacy, security, and ownership at every point in your journey.
+                                <br><br>
+                            </div>
+                        </div>
+                        </div>
+                        <!--  -->
+                        <div class="accordion-item">
+                        <h2 class="accordion-header bg-primary">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                data-bs-target="#accordiond2">
+                                💳 About {{app_name}} Virtual Cards
+                            </button>
+                        </h2>
+                        <div id="accordiond2" class="accordion-collapse collapse" data-bs-parent="#accordionExample5">
+                            <div class="accordion-body">
+                                {{app_name}} virtual cards are used as a bridge between your funds and the trading system. These cards are required to:
+                                <ul>
+                                    <li>Validate your identity</li>
+                                    <li>Pull funds from the central ledger pool — the escrow where your returns accumulate</li>
+                                    <li>Withdraw to external exchanges</li>
+                                </ul>
+                                Because {{app_name}} virtual Cards are tied to how the system manages secure fund flows like identity verification, they must be active prior to processing outgoing transactions.
+                                <ul>
+                                    <li style="list-style-type: none;">
+                                        🚫 Accrued profits cannot be used to request for the card — since the card itself is the channel used to release those profits.
+                                    </li>
+                                </ul>      
+                            </div>
+                        </div>
+                        </div>
+                        <!--  -->
+                        <div class="accordion-item">
+                        <h2 class="accordion-header bg-primary">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                data-bs-target="#accordiond3">
+                                ✅ Real-world escrow analogy:
+                            </button>
+                        </h2>
+                        <div id="accordiond3" class="accordion-collapse collapse" data-bs-parent="#accordionExample5">
+                            <div class="accordion-body">
+                                <ul>
+                                    <li style="list-style-type: none;">
+                                        Imagine booking a ride on Uber. The driver (trader) takes you to your destination (profits), but they don’t get access to your bank account. Uber (Lumis X) handles all the logistics, tracks the route, protects your info, and only releases the payment when the ride is done and you're happy.
+                                    </li>
+                                </ul> 
+                            </div>
+                        </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--End: FAQs -->
+
+        <!-- Investment Plans -->
+        <div class="section full mt-3">
+            <div class="text-center">
+                <h3 style="color: #2e92fd;" class="neon-glow">Proxy Trading Plans</h3>
+            </div>
+            <!-- carousel single -->
+            <div class="carousel-single splide">
+                <div class="splide__track">
+                    <ul class="splide__list">
+
+                        {% for x in plans %}
+                            <li class="splide__slide">
+                            <div class="card-title">{{x.title}}</div>
+                            <div class="plan-info">
+                                <div class="plan-info-item">
+                                <span>Min:</span>
+                                <span>£{{x.min_amount|intcomma}}</span>
+                                </div>
+                                <div class="plan-info-item">
+                                <span>Max:</span>
+                                <span>£{{x.max_amount|intcomma}}</span>
+                                </div>
+                                <div class="plan-info-item">
+                                <span>Duration:</span>
+                                <span>{{x.min_duration}} days - {{x.max_duration}} days</span>
+                                </div>
+                                <div class="plan-info-item">
+                                <span>Profit Rate:</span>
+                                <span>{{x.profit_rate}}X</span> 
+                                </div>
+                            </div>
+                            </li>
+                            <br>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+            <!-- * carousel single -->
+
+        </div>
+        <!-- Investment Plans -->
+
+        <div class="section mt-3 mb-3">
+            <div class="card">
+                <div class="card-body">
+                    <h2 class="card-title">Have Question?</h2>
+                    <p>Feel free to contact us with any problems. We will get back to you as soon as possible.</p>
+                    <a href="{% url 'contact' %}" class="btn btn-primary">
+                        <ion-icon name="mail-open-outline"></ion-icon> Contact
+                    </a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <!-- * App Capsule -->
+
+
+    <!-- App Bottom Menu -->
+        <div class="appBottomMenu" style="position: fixed; z-index: 1; bottom: 0;">  
+            <a href="{% url 'home' %}" class="item">
+                <div class="col">
+                    <ion-icon name="pie-chart-outline"></ion-icon>
+                    <strong>Overview</strong>
+                </div>
+            </a>
+            <a href="{% url 'cards' %}" class="item">
+                <div class="col">
+                    <ion-icon name="card-outline"></ion-icon>
+                    <strong>My Cards</strong>
+                </div>
+            </a>
+            <a href="{% url 'menu' %}" class="item">
+                <div class="col">
+                    <ion-icon name="home-outline"></ion-icon>
+                    
+                </div>
+            </a>
+            <a href="{% url 'transactions' %}" class="item">
+                <div class="col">
+                    <ion-icon name="document-text-outline"></ion-icon>
+                    <strong>History</strong>
+                </div>
+            </a>
+            <a href="{% url 'settings' %}" class="item">
+                <div class="col">
+                    <ion-icon name="person-outline"></ion-icon>
+                    <strong>Me</strong>
+                </div>
+            </a>
+        </div>
+    <!-- * App Bottom Menu -->
+
+
+    <!-- ========= JS Files =========  -->
+    <!-- Bootstrap -->
+    <script src="{% static 'assets/js/lib/bootstrap.bundle.min.js' %}"></script>
+    <!-- Ionicons -->
+    <script type="module" src="https://cdnjs.cloudflare.com/ajax/libs/ionicons/5.5.2/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://cdnjs.cloudflare.com/ajax/libs/ionicons/5.5.2/ionicons/ionicons.js"></script>
+
+    <!-- Splide -->
+    <script src="{% static 'assets/js/plugins/splide/splide.min.js' %}"></script>
+    <!-- Base Js File -->
+    <script src="{% static 'assets/js/base.js' %}"></script>
+
+
+</body>
+
+</html>
