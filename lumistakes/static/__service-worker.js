@@ -4,7 +4,7 @@
 //--------------------------------------------------------------------------
 
 // Version
-var VERSION = '1.2.0';
+var VERSION = '1.2.1';
 
 // Cache name
 var CACHE_NAME = 'LumisX-' + VERSION;

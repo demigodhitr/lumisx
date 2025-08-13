@@ -115,16 +115,12 @@ WSGI_APPLICATION = 'lumistakes.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',  
-        'NAME': env('DATABASE_NAME', default='lumistakes_db'),               
+        'ENGINE': 'django.db.backends.postgresql', 
+        'NAME': env('DATABASE_NAME', default='lumis_d'),               
         'USER': env('DATABASE_USER', default='root'),                    
         'PASSWORD': env('DATABASE_PASSWORD', default=''),                 
         'HOST': 'localhost',                   
-        'PORT': '3306',  
-        'OPTIONS': {
-            'charset': 'utf8mb4',
-            'init_command': "SET sql_mode='STRICT_TRANS_TABLES'"
-        },                      
+        'PORT': '5432',                     
     }
 }
 

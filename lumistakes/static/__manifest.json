@@ -1,7 +1,7 @@
 {
     "name": "Lumis X",
     "short_name": "Lumis X",
-    "description": "Lumis X is a web application that provides a platform for managing invrestments and stocks. It allows users to create accounts, manage portfolios, track investments, and access various features and services. by Lumistakes.com",
+    "description": "Lumis X is a web application that provides a platform for managing investments and stocks. It allows users to create accounts, manage portfolios, track investments, and access various features and services. by Lumis X inc, in corporation with Profit Pulse LTD",
     "start_url": "/lumisx/",
     "display": "standalone",
     "scope" : "/",
