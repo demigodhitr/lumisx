@@ -1,10 +1,11 @@
 .zip
 *.zip
 lumistakes/*.zip
-**/.zip
+*/.zip
 .env
 .vscode
-/lumilibrary/
-.env
-**/.env
-lumistakes/templates.zip
+library/
+*/.env
+.DS_Store
+__pycache__/
+*.log
