@@ -10,7 +10,7 @@ Built with **Django**, **HTML/JS**, **Tailwind CSS**, and **React WalletConnect*
 > **Important:**  
 > Lumis X is a **simulated platform for demonstration purposes only.**  
 > Most logic (e.g., crypto conversions, trades, and user balances) are mock implementations and **should not be used in real financial environments without modification.**  
-> Though proper validations and real free APIs are implemented, For rea world use case, modifications must be made to various API logics and financial security practices must be heightened for production.
+> Though proper validations and real free APIs are implemented, For real world use case, modifications must be made to various API logics and financial security practices must be heightened for production.
 
 ---
 
@@ -19,11 +19,12 @@ Built with **Django**, **HTML/JS**, **Tailwind CSS**, and **React WalletConnect*
 ```bash
 lumistakes/
 ├── lumisx/               # Core app logic
+├── lumis_api             # DRF app for react native mobile app.
 ├── HomeApp/              # Static pages, landing, home
-├── WalletConnect/        # React app integration
+├── WalletConnect/        # React app integration, served with webpack.
 ├── templates/            # Custom admin HTML templates
 ├── static/               # Tailwind CSS, JS
-├── manage.py             # DO NOT MODIFY WITHOUT EXTENSIVE KNOWLEDGE OF DJANGO
+├── manage.py             # DO NOT MODIFY
 ```
 
 ---
@@ -183,8 +184,10 @@ python manage.py createcachetable
 
 ## App initialization
   this app requires some instances to be able to run, run the following command to create all neccesary instances before starting the server
+
     ```bash
     python manage.py init_app
+    
     ```
 
 ### Create superuser (for admin access)
