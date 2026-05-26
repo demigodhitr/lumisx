@@ -203,6 +203,8 @@ class LoggerAdmin(admin.ModelAdmin):
     search_fields = ('^user__username', '^user__email', '^path')
     ordering = ('-timestamp',)
 
+class TransactionFeeAdmin(admin.ModelAdmin):
+    list_display = ('withdrawal', 'deposit', 'card_funding', 'card_offloading')
 
 admin.site.register(ActivityLog, LoggerAdmin)
 

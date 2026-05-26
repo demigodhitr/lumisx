@@ -5,6 +5,7 @@ from django.core.cache import cache
 from lumisx.models import Stocks, CryptoExchangeRate, Currencies
 from decimal import Decimal
 import time
+from lumisx.helpers import fetch_crypto_rates
 
 class Command(BaseCommand):
     help = "Fetch and update crypto exchange rates and stock prices"
@@ -94,12 +95,12 @@ class Command(BaseCommand):
         if secondary_sort == 'latest':
             stocks = stocks_queryset[:5000]
         else:
-            stocks = stocks_queryset[-5000:]
+            stocks = stocks_queryset.reverse()[:5000]
 
-        if not stocks.exists():
-            self.stdout.write(self.style.WARNING("No stocks found in this batch."))
-            self._update_sort_states(primary_sort, secondary_sort, 0)
-            return
+        # if not stocks.exists():
+        #     self.stdout.write(self.style.WARNING("No stocks found in this batch."))
+        #     self._update_sort_states(primary_sort, secondary_sort, 0)
+        #     return
 
         base_url = "https://finnhub.io/api/v1/quote"
         headers = {"X-Finnhub-Token": api_key}
@@ -143,6 +144,8 @@ class Command(BaseCommand):
         if next_page >= total_pages:
             next_page = 0  # Reset to 0 if all stocks are processed
         cache.set(self.PAGE_KEY, next_page, timeout=None)
+        
+        self._update_sort_states(primary_sort, secondary_sort, 0)
 
         self.stdout.write(self.style.SUCCESS(
             f"Completed batch with {success_count}/{len(stocks)} successful updates."

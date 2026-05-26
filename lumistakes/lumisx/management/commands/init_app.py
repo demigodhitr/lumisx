@@ -109,12 +109,17 @@ class Command(BaseCommand):
                     }
                 )
 
+                # create default transaction fees
+                if not TransactionFees.objects.exists():
+                    TransactionFees.objects.create()
+
                 # initialization complete.
                 self.stdout.write(self.style.SUCCESS("App initialized successfully. created or updated instances for the following models:\n"))
                 self.stdout.write(self.style.SUCCESS("✅ Traders\n"))
                 self.stdout.write(self.style.SUCCESS("✅ InvestmentPlans\n"))
                 self.stdout.write(self.style.SUCCESS("✅ Currencies\n"))
                 self.stdout.write(self.style.SUCCESS("✅ CryptoExchangeRates\n"))
+                self.stdout.write(self.style.SUCCESS("✅ TransactionFees\n"))
 
                  
 

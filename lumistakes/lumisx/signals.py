@@ -270,6 +270,7 @@ def reverse_transactions(sender, instance, created, **kwargs):
         try:
             with transaction.atomic():
                 user = instance.user
+                user_card = tracker.transaction_card
                 balance = Balances.objects.get(user=user)
                 if tracker:
                     # Reverse the balances to their previous state
@@ -277,8 +278,10 @@ def reverse_transactions(sender, instance, created, **kwargs):
                     balance.profits = tracker.last_profits
                     balance.bonus = tracker.last_bonus
                     balance.save()
-                    tracker.reversed = True
-                    tracker.save()
+                    if user_card and tracker.last_card_balance:
+                        user_card.available_amount = tracker.last_card_balance
+                        user_card.save()
+                    tracker.delete()
 
         except Exception as e:
             logger.exception(f"Error reversing transaction: {e}")

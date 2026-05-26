@@ -17,7 +17,6 @@ logger = logging.getLogger(__name__)
 
 def save_profile(backend, user, response, *args, **kwargs):
     nationality = cache.get('nationality', None) 
-    print(response)
     default_currency = Currencies.objects.get(symbol="GBP")
     # Extract user information from the response based on backend
     if backend.name == 'google-oauth2':

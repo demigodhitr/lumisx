@@ -58,60 +58,130 @@
         <div class="section mt-2">
             <div class="section-title">All Transactions</div>
             <div class="transactions">
-                {% for x in transactions%}
-                <!-- item -->
-                <a href="{% url 'transaction-details' x.activity_type x.id %}" class="item">
-                    <div class="detail">
-                        <img src="{% static 'assets/img/sample/brand/1.jpg' %}" alt="img" class="image-block imaged w48">
-                        <div>
-                            <strong>{% if x.activity_type == 'Activity' %} {{ x.activity }}
-                                {% elif x.activity_type == 'Stock' %}{% if x.transaction_type == "BUY" %}Bought{% else %}Sold{% endif %}
-                                {{ x.stock.symbol }} {% else %} {{ x.activity_type }} {% endif %}
-                            </strong>
-                            <p
-                                class="{% if x.status|in_list:'Completed,Confirmed,Approved,Paid' %} text-success{% elif x.status|in_list:'Processing,In progress,In Progress,Under review,Active' %} text-warning {% elif x.status|in_list:'Failed,Rejected' %} text-danger {% endif %}">
+                {% for x in transactions|slice:":150" %}
+                    <!-- item -->
+                    <a href="{% url 'transaction-details' x.activity_type x.id %}" class="item">
+                        <div class="detail">
+                            <div class="t-img">
+                                {% if x.activity_type == 'Activity' %}
+                                    <img src="{% static 'assets/img/icon/contactless.svg' %}" alt="img" class="image-block imaged w48">
+                                {% elif x.activity_type == 'CardRequest' %}
+                                    <img src="{% static 'assets/img/icon/credit-card.svg' %}" alt="img" class="image-block imaged w48">
+                                {% elif x.activity_type == 'Stock' %}
+                                    {% if x.transaction_type == "BUY" %}
+                                        <img src="{% static 'assets/img/icon/deposit.svg' %}" alt="img" class="image-block imaged w48">
+                                    {% elif x.transaction_type == "SELL" %}
+                                        <img src="{% static 'assets/img/icon/send.svg' %}" alt="img" class="image-block imaged w48">
+                                    {% endif %}
+                                {% elif x.activity_type == 'InternalTransfer' %}
+                                    {% if x.recipient == user %}
+                                        <img src="{% static 'assets/img/icon/deposit.svg' %}" alt="img" class="image-block imaged w48">
+                                    {% else %}
+                                        <img src="{% static 'assets/img/icon/send.svg' %}" alt="img" class="image-block imaged w48">
+                                    {% endif %}
+                                {% elif x.activity_type|in_list:'Deposit,Earnings' %}
+                                    <img src="{% static 'assets/img/icon/deposit.svg' %}" alt="img" class="image-block imaged w48">
+                                {% else %}
+                                    <img src="{% static 'assets/img/icon/send.svg' %}" alt="img" class="image-block imaged w48">
+                                {% endif %}
+                            </div>
+                            <div>
+                                <strong>{% if x.activity_type == 'Activity' %} 
+                                        {{ x.activity }}
+                                    {% elif x.activity_type == 'Stock' %}
+                                        {% if x.transaction_type == "BUY" %}
+                                            Bought
+                                        {% else %}
+                                            Sold
+                                        {% endif %} 
+                                        {{ x.stock.symbol }}
+                                    {% elif x.activity_type == 'InternalTransfer' %}
+                                        {% if x.recipient == user %}
+                                            Received from {{ x.sender|truncatechars:6 }}
+                                        {% else %}
+                                            Sent to {{ x.recipient|truncatechars:6 }}
+                                        {% endif %}
+                                    {% else %} 
+                                        {{ x.activity_type }} 
+                                    {% endif %}
+                                </strong>
+                                <p class="{% if x.status|in_list:'Completed,Confirmed,Approved,Paid,Successful' %} 
+                                    text-success
+                                {% elif x.status|in_list:'Processing,In progress,In Progress,Under review,Active' %}
+                                    text-warning
+                                {% elif x.status|in_list:'Failed,Rejected' %} 
+                                    text-danger 
+                                {% endif %}">
                                 {{ x.status }}
-                            </p>
+                                </p>
+                            </div>
                         </div>
-                    </div>
-                    <div class="right">
-                        <div
-                            class="price {% if x.activity_type|in_list:'Deposit,Earnings' %} text-success {% elif x.activity_type == 'Stock' %} {% if x.transaction_type == 'BUY' %} text-danger {% else %} text-success {% endif %} {% else %} text-danger {% endif %}">
-                            {% with user.profiles.preferred_currency.symbol as to_currency %}
-                            {% if x.activity_type|in_list:'Deposit,Earnings' %}
-                            + {% elif x.activity_type == 'Stock' %}
-                            {% if x.transaction_type == "BUY" %} - {% else %} + {% endif %}
-                            {% else %}
-                            - {% endif %}
-                            {{ user.profiles.preferred_currency.code }}
-                            {% if to_currency == 'USD' %}
-                            {{ x.amount|converter:"GBP_USD"|intcomma }}
-                            {% elif to_currency == 'EUR' %}
-                            {{ x.amount|converter:"GBP_EUR"|intcomma }}
-                            {% else %}
-                            {{ x.amount }}
-                            {% endif %}
-                            {% endwith %}
-                            <p class="text-end">{{x.activity_date|time_since}}</p>
+                        <div class="right">
+                            <div
+                                class="price 
+                                {% if x.activity_type|in_list:'Deposit,Earnings' %} text-success 
+                                {% elif x.activity_type == 'InternalTransfer' %} 
+                                    {% if x.recipient == user %} 
+                                        text-success 
+                                    {% else %} 
+                                        text-danger 
+                                    {% endif %} 
+                                {% elif x.activity_type == 'Stock' %} 
+                                    {% if x.transaction_type == 'BUY' %} 
+                                        text-danger 
+                                    {% else %} 
+                                        text-success 
+                                    {% endif %} 
+                                {% else %} 
+                                    text-danger 
+                                {% endif %}">
+                                {% with user.profiles.preferred_currency.symbol as to_currency %}
+                                {% if x.activity_type|in_list:'Deposit,Earnings' %}
+                                    + 
+                                {% elif x.activity_type == 'InternalTransfer' %} 
+                                    {% if x.recipient == user %} 
+                                        + 
+                                    {% else %} 
+                                        -
+                                    {% endif %} 
+                                {% elif x.activity_type == 'Stock' %}
+                                    {% if x.transaction_type == "BUY" %} 
+                                        - 
+                                    {% else %} 
+                                        + 
+                                    {% endif %}
+                                {% else %}
+                                    - 
+                                {% endif %}
+                                {{ user.profiles.preferred_currency.code }}
+                                {% if to_currency == 'USD' %}
+                                    {{ x.amount|converter:"GBP_USD"|intcomma }}
+                                {% elif to_currency == 'EUR' %}
+                                    {{ x.amount|converter:"GBP_EUR"|intcomma }}
+                                {% else %}
+                                    {{ x.amount }}
+                                {% endif %}
+                                {% endwith %}
+                                <p class="text-end">{{x.activity_date|time_since}}</p>
+                            </div>
                         </div>
-                    </div>
-                </a>
-                <!-- * item -->
+                    </a>
+                    <!-- * item -->
                 {% empty %}
-                <!-- item -->
-                <a href="javascript:void(0)" class="item">
-                    <div class="detail">
-                        <img src="{% static 'assets/img/sample/brand/1.jpg' %}" alt="img" class="image-block imaged w48">
-                        <div>
-                            <strong>No Transactions</strong>
-                            <p>You have not made any transaction yet...</p>
+                    <!-- item -->
+                    <a href="javascript:void(0)" class="item">
+                        <div class="detail">
+                            <img src="{% static 'assets/img/icon/empty.svg' %}" alt="img" class="image-block imaged w48">
+                            <div>
+                                <strong>No Transactions</strong>
+                                <p>You have not made any transaction yet...</p>
+                            </div>
                         </div>
-                    </div>
-                    <div class="right">
-                        <div class="price text-danger"> - {{user.profiles.preferred_currency.code}} 0.00</div>
-                    </div>
-                </a>
-                <!-- * item -->
+                        <div class="right">
+                            <div class="price text-danger"> - {{user.profiles.preferred_currency.code}}0.00</div>
+                        </div>
+                    </a>
+                    <!-- * item -->
                 {% endfor %}
             </div>
         </div>

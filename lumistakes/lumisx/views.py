@@ -1,52 +1,53 @@
-from .helpers import convert_currency, fetch_exchange_rates, fetch_crypto_rates,send_telegram_message, generate_reference, safe_decimal, get_referral_code
-from django.contrib.auth.views import PasswordResetView, PasswordResetDoneView, PasswordResetConfirmView, PasswordResetCompleteView
-from django.shortcuts import render, redirect, HttpResponse, get_object_or_404
-from django.core.mail import EmailMultiAlternatives, get_connection
+from .helpers import (
+    convert_currency, 
+    fetch_exchange_rates, 
+    fetch_crypto_rates,
+    send_telegram_message, 
+    generate_reference, 
+    safe_decimal
+)
+from django.contrib.auth.views import (
+    PasswordResetView, 
+    PasswordResetDoneView, 
+    PasswordResetConfirmView, 
+    PasswordResetCompleteView
+)
+from django.shortcuts import render, redirect, get_object_or_404
+from django.core.mail import EmailMultiAlternatives
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required 
 from django.core.exceptions import ValidationError
-from django.core.files.temp import NamedTemporaryFile
 from django.views.decorators.csrf import csrf_exempt
 from django.template.loader import render_to_string
 from django.core.validators import validate_email
-from django.db.models import F, Value, CharField
-from django.core.files.base import ContentFile
-from django.utils.safestring import mark_safe
+from django.db.models import (
+    F, Value, CharField, Q, Sum
+)
 from django.core.paginator import Paginator
 from decimal import Decimal, ROUND_HALF_UP
-from django.core.mail import EmailMessage
 from django.utils.html import strip_tags
-from django.core.mail import send_mail
-from django.http import JsonResponse
-from django.db import IntegrityError
-from django.contrib import messages
+from django.http import (
+    JsonResponse,
+    Http404,
+)
 from django.core.cache import cache
-from django.http import Http404
 from django.utils import timezone
 from django.utils.timezone import now
-from django.db.models import Sum
 from django.conf import settings
-from django.urls import reverse
 from operator import attrgetter
-from datetime import timedelta
-from datetime import datetime
+from datetime import (datetime,timedelta)
 from itertools import chain
-from io import BytesIO
-from django.db.models import Q 
-from PIL import Image
 from .models import *
 import requests
 import logging
-import secrets
 import random
-import string
 import math
 import json
 import uuid
-import os
 import re
 
 
+logger = logging.getLogger(__name__)
 
 @login_required
 def app(request):
@@ -400,12 +401,14 @@ def fund_card(request):
                 if account_value == 'profits':
                     if profile.trade_status == 'Active' or Investments.objects.filter(investor=user, status__in=['Active', 'In progress']).exists():
                         return JsonResponse({'error': 'You cannot fund your card from your profits account while you have active investments'}, status=400)
-                    
-                if amount < Decimal('100'):
-                    return JsonResponse({'error': 'The minimum amount you can fund your card with is 100.00'},
+
+                local_amount = convert_currency(amount, preferred_currency.symbol, 'GBP') if preferred_currency.symbol != 'GBP' else amount
+
+                if local_amount < Decimal('100'):
+                    c_amount = convert_currency(Decimal('100'), 'GBP', preferred_currency.symbol)
+                    return JsonResponse({'error': f'The minimum amount you can fund your card with is {preferred_currency.code}{c_amount:,.2f}'},
                     status=400)
-                
-                local_amount = convert_currency(amount, preferred_currency.symbol, 'GBP') if preferred_currency.symbol != 'GBP' else amount 
+            
                 
                 if account_value == 'deposit':
                     if  amount > balance.deposits:
@@ -594,14 +597,6 @@ def get_card(request):
                 user=user, 
                 title=title, 
                 message=message
-            )
-
-            Activities.objects.create(
-                user=user,
-                activity='Transaction Card Request',
-                amount=sum_amount,
-                activity_description='Deposit wallet debited for virtual transaction card application',
-                date=datetime.now()
             )
 
             message = f"{user.get_full_name()} Just requested for a crypto card on your website with  {amount}. Login and check"
@@ -1644,6 +1639,7 @@ def authorize(request):
             preferred_card = getattr(user.profiles, 'preferred_card', None)
             data = json.loads(request.body.decode('utf-8'))
             pin = data.get('pin')
+            # check if request is toggling card status or not to avoid checking the card status.
             toggle = data.get('toggle', False)
 
             if not preferred_card:
@@ -1688,18 +1684,16 @@ def authorize(request):
 def transactions(request):
     user = request.user
     count = Notifications.objects.filter(user=user, seen=False).count()
-    # transaction models
+
     withdrawals = WithdrawalRequest.objects.filter(user=user).order_by('-created_at')
     deposits = Deposits.objects.filter(user=user).order_by('-created_at')
     investments = Investments.objects.filter(investor=user).order_by('-date')
-    active_investments = investments.filter(status__in=['Active', 'In progress'])
-    earnings = EarningsHistory.objects.filter(user=user).order_by('-timestamp')
-    losses = LossesHistory.objects.filter(user=user).order_by('-timestamp')
+    earnings = EarningsHistory.objects.filter(user=user).order_by('-timestamp')[:300]
+    losses = LossesHistory.objects.filter(user=user).order_by('-timestamp')[:300]
     activites = Activities.objects.filter(user=user).order_by('-date')
     card_requests = CardRequest.objects.filter(user=user).order_by('-date')
     internal_transfers = InternalTransfers.objects.filter(Q(sender=user) | Q(recipient=user))
     stock_transactions = StockTransactions.objects.filter(user=user).order_by('-date')
-
 
     transactions = sorted(
         chain(
@@ -1717,10 +1711,14 @@ def transactions(request):
         reverse=True
     )
 
+    paginator = Paginator(transactions, 20)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
 
     context = {
         'count': count,
-        'transactions': transactions
+        'transactions': page_obj,
+        'page_obj': page_obj,
     }
     return render(request, 'app-transactions.html', context)
 
@@ -2022,7 +2020,7 @@ def invest(request):
     main_balance = Balances.objects.get(user=user)
 
     if not user.accesssettings.can_invest:
-        return JsonResponse({'error': 'You can invest at this time, please try again later'}, status=400)
+        return JsonResponse({'error': 'You cannot invest at this time, please try again later'}, status=400)
     
     plan_id = request.POST.get('plan', None)
     amount = request.POST.get('investmentAmount', None)
@@ -2051,22 +2049,14 @@ def invest(request):
         return JsonResponse({'error': 'Amount and duration must be positive numbers'}, status=400)
 
     
-    if profile.preferred_currency.symbol == 'USD':
-        balance = USDBalance.objects.get(balance=main_balance)
-        converted_amount = convert_currency(amount, profile.preferred_currency.symbol, 'GBP')
-    elif profile.preferred_currency.symbol == 'EUR':
-        balance = EURBalance.objects.get(balance=main_balance)
-        converted_amount = convert_currency(amount, profile.preferred_currency.symbol, 'GBP')
-    else:
-        balance = main_balance
-        converted_amount = amount
+    converted_amount = convert_currency(amount, profile.preferred_currency.symbol, 'GBP') if profile.preferred_currency.symbol != 'GBP' else amount
     
     if account == 'profit':
-        available_balance = balance.profits
+        available_balance = main_balance.profits
     elif account == 'deposit':
-        available_balance = balance.deposits
+        available_balance = main_balance.deposits
     else:
-        return JsonResponse({'error': f'Staking with {account} account has been disabled due to abuse. please be reminded that this is not your fault'}, status=400)
+        return JsonResponse({'error': f'Staking with {account} account has been temporarily disabled due to integrity issues. please be reminded that this is not your fault'}, status=400)
 
     if converted_amount > available_balance:
         return JsonResponse({'error': f'Not enough balance. Top up your {account} account to continue.'}, status=400)
@@ -2100,20 +2090,23 @@ def invest(request):
     # checked passed.
     try:
         with transaction.atomic():
-            profit_rate = plan.profit_rate or (Decimal("10.00") if duration > 10 else Decimal("5.00"))
-            if account == 'deposit':
-                main_balance.deposits -= converted_amount
-            elif account == 'profit':
-                main_balance.profits -= converted_amount
-            main_balance.save()
+            # generate unique reference id
             for _ in range(15):
                 id = generate_reference(20)
                 if not Investments.objects.filter(reference=id).exists():
                     break
             else:
-                id = 'generating'
+                id = f"inv-{uuid.uuid4().hex[:20]}"
 
-            investment = Investments.objects.create(
+            profit_rate = plan.profit_rate or (Decimal("10.00") if duration > 10 else Decimal("5.00"))
+
+            if account == 'deposit':
+                main_balance.deposits -= converted_amount
+            elif account == 'profit':
+                main_balance.profits -= converted_amount
+            main_balance.save()
+
+            Investments.objects.create(
                 investor=user,
                 plan=plan,
                 amount=converted_amount,
@@ -2124,9 +2117,8 @@ def invest(request):
                 reference=id,
                 manager=manager
             )
-            investment.save()
-            title = "Application received!"
-            message = f"Hello {user.get_full_name()}, Your investment application was successfully received and is being reviewed. You will receive more updates once available!"
+            title = "Request received!"
+            message = f"Hello {user.get_full_name()}, Your investment request was successfully received and is being reviewed. You will receive more updates once available!"
 
             Notifications.objects.create(
                 user=user, 
@@ -2147,6 +2139,7 @@ def invest(request):
     
     except Exception as e:
         logger.exception('Error processing investment request: %s', e)
+        send_telegram_message(f"Error processing investment request for user {user.get_full_name()}: {e}")
         return JsonResponse({'error': 'An error occurred while processing your request'}, status=500)
 
 @login_required
@@ -2460,7 +2453,7 @@ def crypto_exchange(request):
                         user=user,
                         crypto=target_currency,
                         target_currency=target_currency,
-                        amount=amount,
+                        amount=local_amount,
                         transaction_type=cleaned_t_type,
                         status='COMPLETED',
                         description=f'Conversion completed, converted {preferred_currency.code}{amount} to {round(crypto_amount, 6)} {target_currency}. ',
@@ -2549,7 +2542,7 @@ def crypto_exchange(request):
                         user=user,
                         crypto=account,
                         target_currency=target_currency,
-                        amount=amount,
+                        amount=local_amount,
                         transaction_type=cleaned_t_type,
                         status='COMPLETED',
                         description=f'Conversion completed, converted {account} to {preferred_currency.code}{preferred_amount}',

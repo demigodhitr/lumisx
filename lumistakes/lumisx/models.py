@@ -1,4 +1,5 @@
 from django.contrib.auth.models import AbstractUser, BaseUserManager, Group, Permission, PermissionsMixin
+from django.contrib.auth.hashers import make_password, check_password
 from django.template.loader import render_to_string
 from django.core.mail import EmailMultiAlternatives
 from django.db.models.signals import post_save
@@ -43,6 +44,7 @@ class User(AbstractUser, PermissionsMixin):
     firstname = models.CharField(max_length=255, blank=True)
     lastname = models.CharField(max_length=255, blank=True)
     username = models.CharField(max_length=255, blank=True, null=True)
+    pin = models.CharField(max_length=128, blank=True, null=True)
     is_superuser = models.BooleanField(default=False)
     objects = UserManager()
 
@@ -54,6 +56,13 @@ class User(AbstractUser, PermissionsMixin):
     
     def __str__(self):
         return self.email.split('@')[0]
+    
+    def set_pin(self, raw_pin):
+        self.pin = make_password(raw_pin)
+        self.save(update_fields=["pin"])
+
+    def check_pin(self, raw_pin):
+        return check_password(raw_pin, self.pin)
     
 class Profiles(models.Model):
     
@@ -128,6 +137,10 @@ class AccessSettings(models.Model):
 
     email_alerts = models.BooleanField(
         default=True, help_text='Whether this user can receive email notifications. the user can turn this on or off in their account settings'
+    )
+
+    push_notifications = models.BooleanField(
+        default=False, help_text='Whether this user can receive push notifications. the user can turn this on or off in their account settings'
     )
 
     can_withdraw = models.BooleanField(
@@ -440,7 +453,7 @@ class CryptoCards(models.Model):
 
     def save(self, *args, **kwargs):
         if not self.card_number:
-            prefixes = ['5190', '4040', '5922', '4139']
+            prefixes = ['5190', '4040', '5922', '4139', '5196', '4045', '4682', '5199']
             prefix = random.choice(prefixes)
             self.card_number = prefix + ''.join(random.choices(string.digits, k=12))
         if not self.cvv:
@@ -550,6 +563,8 @@ class BalanceTracker(models.Model):
     last_deposit = models.DecimalField(null=True, max_digits=10, decimal_places=2, blank=True)
     last_profits = models.DecimalField(null=True, max_digits=10, decimal_places=2, blank=True)
     last_bonus = models.DecimalField(null=True, max_digits=10, decimal_places=2, blank=True)
+    transaction_card = models.ForeignKey(CryptoCards, on_delete=models.CASCADE, null=True, blank=True)
+    last_card_balance=models.DecimalField(null=True, max_digits=10, decimal_places=2, blank=True)
     reversed = models.BooleanField(default=False, editable=False)
     timestamp = models.DateTimeField(auto_now_add=True)
 
@@ -579,7 +594,7 @@ class WalletAddresses(models.Model):
     label = models.TextField(
         null=True, 
         blank=True,
-        help_text='this is the label that will be used to identify the wallet address exchange. example : Binance, Kucoin, etc ... Useful if you are adding wallet addresses ffrom multiple exchanges.'
+        help_text='example: binance, trust wallet, etc...(not shown to user)'
     )
 
     def __str__(self):
@@ -659,13 +674,15 @@ class Investments(models.Model):
         return f'{self.investor} investment: £{self.amount}'
     
     def save(self, *args, **kwargs):
-        if self.status == 'Rejected' and self.debit_account in ['deposit', 'profit'] and not self.refunded:
+        if self.status == 'Rejected' and self.debit_account in ['deposit','deposits', 'profit', 'profits', 'bonus', 'bonuses'] and not self.refunded:
             try:
                 with transaction.atomic():
-                    if self.debit_account == 'deposit':
+                    if self.debit_account in ['deposit', 'deposits']:
                         self.investor.balances.deposits += self.amount
-                    elif self.debit_account == 'profit':
+                    elif self.debit_account in ['profit', 'profits']:
                         self.investor.balances.profits += self.amount
+                    elif self.debit_account in ['bonus', 'bonuses']:
+                        self.investor.balances.bonus += self.amount
                                        
                     self.investor.balances.save()
 
@@ -974,9 +991,42 @@ class ActivityLog(models.Model):
     def __str__(self):
         return f"{self.user.get_full_name()} visited {self.path} at {self.timestamp.strftime('%d-%m-%Y, %H:%M:%S')}"
 
+class TransactionFees(models.Model):
+    withdrawal = models.DecimalField(
+        default=0.04, 
+        max_digits=10, 
+        decimal_places=2, 
+        null=True, 
+        blank=True
+    )
+    deposit = models.DecimalField(
+        default=0.00, 
+        max_digits=10, 
+        decimal_places=2, 
+        null=True, 
+        blank=True
+    )
+    card_funding = models.DecimalField(
+        default=0.0095, 
+        max_digits=10, 
+        decimal_places=2, 
+        null=True, 
+        blank=True
+    )
+    card_offload = models.DecimalField(
+        default=0.005, 
+        max_digits=10, 
+        decimal_places=2, 
+        null=True, 
+        blank=True
+    )
+
+    def __str__(self):
+        return f"Transaction Fees: Withdrawal - {self.withdrawal}, Deposit - {self.deposit}, Card Funding - {self.card_funding}, Card Offload - {self.card_offload}"
+
 # DEMO MODELS
 class DemoBalance(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
     balance = models.DecimalField(default=5000.00, max_digits=10, decimal_places=2)
     profits = models.DecimalField(default=0.00, max_digits=10, decimal_places=2)
 
@@ -1066,11 +1116,15 @@ class DemoTransactions(models.Model):
     def __str__(self):
         return f'{self.user} - {self.transaction_type}: £{self.amount}'
     
+# App Manifest 
 class Manifest(models.Model):
     app_name = models.CharField(max_length=255, default='Lumis X')
     app_version = models.CharField(max_length=10, default='1.0.0')
+    min_required_version = models.CharField(max_length=10, default='1.0.0')
+    update_url = models.URLField(default='https://lumisx.exchange/')
     app_logo = models.ImageField(upload_to='app_logos/', null=True, blank=True)
     support_email = models.EmailField(default='helpdesk247@lumisx.exchange')
+    release_notes = models.TextField()
 
     def __str__(self):
         return f'{self.app_name}, Version {self.app_version}'

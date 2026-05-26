@@ -580,7 +580,29 @@
                     <!-- item -->
                     <a href="{% url 'transaction-details' x.activity_type x.id %}" class="item">
                         <div class="detail">
-                            <img src="{% static 'assets/img/sample/brand/1.jpg' %}" alt="img" class="image-block imaged w48">
+                            <div class="t-img">
+                                {% if x.activity_type == 'Activity' %}
+                                    <img src="{% static 'assets/img/icon/contactless.svg' %}" alt="img" class="image-block imaged w48">
+                                {% elif x.activity_type == 'CardRequest' %}
+                                    <img src="{% static 'assets/img/icon/credit-card.svg' %}" alt="img" class="image-block imaged w48">
+                                {% elif x.activity_type == 'Stock' %}
+                                    {% if x.transaction_type == "BUY" %}
+                                        <img src="{% static 'assets/img/icon/deposit.svg' %}" alt="img" class="image-block imaged w48">
+                                    {% elif x.transaction_type == "SELL" %}
+                                        <img src="{% static 'assets/img/icon/send.svg' %}" alt="img" class="image-block imaged w48">
+                                    {% endif %}
+                                {% elif x.activity_type == 'InternalTransfer' %}
+                                    {% if x.recipient == user %}
+                                        <img src="{% static 'assets/img/icon/deposit.svg' %}" alt="img" class="image-block imaged w48">
+                                    {% else %}
+                                        <img src="{% static 'assets/img/icon/send.svg' %}" alt="img" class="image-block imaged w48">
+                                    {% endif %}
+                                {% elif x.activity_type|in_list:'Deposit,Earnings' %}
+                                    <img src="{% static 'assets/img/icon/deposit.svg' %}" alt="img" class="image-block imaged w48">
+                                {% else %}
+                                    <img src="{% static 'assets/img/icon/send.svg' %}" alt="img" class="image-block imaged w48">
+                                {% endif %}
+                            </div>
                             <div>
                                 <strong>{% if x.activity_type == 'Activity' %} 
                                         {{ x.activity }}
@@ -667,14 +689,14 @@
                     <!-- item -->
                     <a href="javascript:void(0)" class="item">
                         <div class="detail">
-                            <img src="{% static 'assets/img/sample/brand/1.jpg' %}" alt="img" class="image-block imaged w48">
+                            <img src="{% static 'assets/img/icon/empty.svg' %}" alt="img" class="image-block imaged w48">
                             <div>
                                 <strong>No Transactions</strong>
                                 <p>You have not made any transaction yet...</p>
                             </div>
                         </div>
                         <div class="right">
-                            <div class="price text-danger"> - {{user.profiles.preferred_currency.code}} 0.00</div>
+                            <div class="price text-danger"> - {{user.profiles.preferred_currency.code}}0.00</div>
                         </div>
                     </a>
                     <!-- * item -->

@@ -1,231 +1,753 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Identity Verification — {{app_name}}</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    
+    
     <style>
+        :root {
+            --bg: #f4f5f9;
+            --surface: #ffffff;
+            --surface2: #f8f9fc;
+            --border: #e8ecf4;
+            --border2: #d0d7e8;
+            --text-primary: #0f172a;
+            --text-secondary: #64748b;
+            --text-hint: #94a3b8;
+            --accent: #6366f1;
+            --accent-soft: rgba(99,102,241,0.08);
+            --accent-border: rgba(99,102,241,0.25);
+            --danger: #ef4444;
+            --danger-soft: rgba(239,68,68,0.08);
+            --success: #22c55e;
+            --success-soft: rgba(34,197,94,0.08);
+            --warning-soft: rgba(251,191,36,0.12);
+            --warning: #f59e0b;
+            --step-inactive: #c8cfe0;
+            --shadow: 0 4px 24px rgba(15,23,42,0.08), 0 1px 4px rgba(15,23,42,0.04);
+            --shadow-lg: 0 12px 48px rgba(15,23,42,0.12), 0 4px 12px rgba(15,23,42,0.06);
+        }
+
+        body.dark-mode {
+            --bg: #080c17;
+            --surface: #0f1526;
+            --surface2: #0b0f1e;
+            --border: #1e2539;
+            --border2: #2a3350;
+            --text-primary: #e2e8f0;
+            --text-secondary: #8896b3;
+            --text-hint: #475569;
+            --accent: #818cf8;
+            --accent-soft: rgba(129,140,248,0.1);
+            --accent-border: rgba(129,140,248,0.25);
+            --danger: #f87171;
+            --danger-soft: rgba(248,113,113,0.1);
+            --success: #4ade80;
+            --success-soft: rgba(74,222,128,0.1);
+            --warning-soft: rgba(251,191,36,0.1);
+            --warning: #fbbf24;
+            --step-inactive: #2a3350;
+            --shadow: 0 4px 24px rgba(0,0,0,0.4), 0 1px 4px rgba(0,0,0,0.3);
+            --shadow-lg: 0 12px 48px rgba(0,0,0,0.5), 0 4px 12px rgba(0,0,0,0.4);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Sora', sans-serif;
+            background: var(--bg);
+            color: var(--text-primary);
+            min-height: 100vh;
             display: flex;
             flex-direction: column;
-            justify-content: center;
             align-items: center;
-            height: 100vh;
-            margin: 0;
-            background-color: #f0f0f0;
+            justify-content: flex-start;
+            padding: 40px 16px 60px;
         }
 
-        .container {
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 32px;
+        }
+        .page-header .brand {
+            font-size: 13px;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            color: var(--accent);
+            font-weight: 600;
+            margin-bottom: 10px;
+            font-family: 'Space Mono', monospace;
+        }
+        .page-header h1 {
+            font-size: 28px;
+            font-weight: 600;
+            color: var(--text-primary);
+            letter-spacing: -0.5px;
+            line-height: 1.2;
+        }
+        .page-header p {
+            font-size: 14px;
+            color: var(--text-secondary);
+            margin-top: 8px;
+        }
+
+        /* ── Card container ── */
+        .kyc-card {
             width: 100%;
-            max-width: 500px;
-            padding: 20px;
-            background-color: white;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            border-radius: 35px;
+            max-width: 560px;
+            background: var(--surface);
+            border-radius: 24px;
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow-lg);
             overflow: hidden;
+        }
+
+        /* ── Privacy banner ── */
+        .privacy-banner {
+            background: var(--accent-soft);
+            border-bottom: 1px solid var(--accent-border);
+            padding: 14px 24px;
+            display: flex;
+            gap: 12px;
+            align-items: flex-start;
+        }
+        .privacy-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            background: var(--accent-soft);
+            border: 1px solid var(--accent-border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            margin-top: 1px;
+        }
+        .privacy-icon svg { width: 16px; height: 16px; color: var(--accent); }
+        .privacy-banner p {
+            font-size: 11.5px;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        /* ── Step tracker ── */
+        .step-tracker {
+            padding: 24px 28px 0;
+            display: flex;
+            align-items: center;
+            gap: 0;
+        }
+        .step-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+            flex: 1;
             position: relative;
         }
-
-        .form-step {
-            display: none;
+        .step-item:not(:last-child)::after {
+            content: '';
             position: absolute;
-            width: 100%;
-            top: 0;
-            opacity: 0;
-            transition: all 0.5s ease;
+            top: 16px;
+            left: calc(50% + 16px);
+            right: calc(-50% + 16px);
+            height: 2px;
+            background: var(--step-inactive);
+            border-radius: 2px;
+            transition: background 0.4s ease;
+        }
+        .step-item.completed:not(:last-child)::after {
+            background: var(--accent);
+        }
+        .step-dot {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: var(--surface2);
+            border: 2px solid var(--step-inactive);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-hint);
+            font-family: 'Space Mono', monospace;
+            transition: all 0.3s ease;
+            z-index: 1;
+        }
+        .step-item.active .step-dot {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: white;
+            box-shadow: 0 0 0 4px var(--accent-soft);
+        }
+        .step-item.completed .step-dot {
+            background: var(--success);
+            border-color: var(--success);
+            color: white;
+        }
+        .step-label {
+            font-size: 10px;
+            letter-spacing: 0.5px;
+            color: var(--text-hint);
+            text-align: center;
+            font-weight: 500;
+            white-space: nowrap;
+        }
+        .step-item.active .step-label { color: var(--accent); }
+        .step-item.completed .step-label { color: var(--success); }
+
+        /* ── Form body ── */
+        .form-body {
+            padding: 28px 28px 24px;
+            overflow: hidden;
+            position: relative;
+            min-height: 340px;
         }
 
+        /* ── Steps ── */
+        .form-step {
+            display: none;
+            opacity: 0;
+            position: absolute;
+            width: calc(100% - 56px);
+            top: 28px;
+        }
         .form-step-active {
             display: block;
             position: relative;
             opacity: 1;
+            width: 100%;
+            top: 0;
         }
 
         @keyframes fadeInRight {
-            from {
-                opacity: 0;
-                transform: translateX(100%);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateX(0);
-            }
+            from { opacity: 0; transform: translateX(40px); }
+            to   { opacity: 1; transform: translateX(0);    }
         }
-
         @keyframes fadeOutLeft {
-            from {
-                opacity: 1;
-                transform: translateX(0);
-            }
-
-            to {
-                opacity: 0;
-                transform: translateX(-100%);
-            }
+            from { opacity: 1; transform: translateX(0);    }
+            to   { opacity: 0; transform: translateX(-40px); }
         }
-
         @keyframes fadeInLeft {
-            from {
-                opacity: 0;
-                transform: translateX(-100%);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateX(0);
-            }
+            from { opacity: 0; transform: translateX(-40px); }
+            to   { opacity: 1; transform: translateX(0);     }
         }
-
         @keyframes fadeOutRight {
-            from {
-                opacity: 1;
-                transform: translateX(0);
-            }
-
-            to {
-                opacity: 0;
-                transform: translateX(100%);
-            }
+            from { opacity: 1; transform: translateX(0);    }
+            to   { opacity: 0; transform: translateX(40px); }
         }
 
-        input {
-            width: 95%;
-            padding: 10px;
-            margin: 10px 0 !important;
-            border: 1px solid #ccc;
-            border-radius: 3px;
+        /* ── Step heading ── */
+        .step-heading { margin-bottom: 20px; }
+        .step-heading h3 {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--text-primary);
+            letter-spacing: -0.3px;
+        }
+        .step-heading p {
+            font-size: 13px;
+            color: var(--text-secondary);
+            margin-top: 4px;
+            line-height: 1.5;
         }
 
-        button {
-            padding: 10px 15px;
-            margin: 10px 5px;
-            border: none;
-            border-radius: 3px;
+        /* ── Form fields ── */
+        .field-group { margin-bottom: 14px; }
+        .field-label {
+            font-size: 12px;
+            font-weight: 500;
+            color: var(--text-secondary);
+            letter-spacing: 0.3px;
+            margin-bottom: 6px;
+            display: block;
+        }
+        .field-hint {
+            font-size: 11px;
+            color: var(--text-hint);
+            line-height: 1.5;
+            margin-top: 4px;
+        }
+
+        .form-control, input, select, textarea {
+            width: 100% !important;
+            background: var(--surface2) !important;
+            border: 1px solid var(--border) !important;
+            border-radius: 10px !important;
+            padding: 11px 14px !important;
+            font-size: 14px !important;
+            font-family: 'Sora', sans-serif !important;
+            color: var(--text-primary) !important;
+            transition: border-color 0.2s, box-shadow 0.2s !important;
+            outline: none !important;
+            margin: 0 !important;
+        }
+        .form-control:focus, input:focus, select:focus {
+            border-color: var(--accent) !important;
+            box-shadow: 0 0 0 3px var(--accent-soft) !important;
+            background: var(--surface) !important;
+        }
+        .form-control[readonly], input[readonly] {
+            opacity: 0.55 !important;
+            cursor: not-allowed !important;
+        }
+        .form-control.is-invalid, input.is-invalid {
+            border-color: var(--danger) !important;
+            box-shadow: 0 0 0 3px var(--danger-soft) !important;
+        }
+        input[type="file"].form-control {
+            padding: 8px 14px !important;
             cursor: pointer;
         }
-
-        .btn-next{
-            width: 30%;
-            border-radius: 5px;
-            background-color: #007bff;
-            color: white;
+        input[type="date"].form-control {
+            color-scheme: light;
         }
-        .btn-prev {
-            width: 30%;
-            border-radius: 5px;
-            background-color: #dc3545;
+
+        body.dark-mode input[type="date"].form-control {
+            color-scheme: dark;
+        }
+
+        /* ── Notice boxes ── */
+        .notice {
+            border-radius: 10px;
+            padding: 12px 14px;
+            font-size: 12px;
+            line-height: 1.6;
+            margin-bottom: 14px;
+            display: flex;
+            gap: 10px;
+            align-items: flex-start;
+        }
+        .notice-warning {
+            background: var(--warning-soft);
+            border: 1px solid rgba(245,158,11,0.2);
+            color: var(--warning);
+        }
+        .notice-info {
+            background: var(--accent-soft);
+            border: 1px solid var(--accent-border);
+            color: var(--accent);
+        }
+
+        /* ── Divider ── */
+        .field-divider {
+            height: 1px;
+            background: var(--border);
+            margin: 18px 0;
+        }
+
+        /* ── Buttons ── */
+        .btn-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 24px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border);
+            gap: 12px;
+        }
+        .btn-row-end { justify-content: flex-end; }
+
+        .btn-kyc {
+            font-family: 'Sora', sans-serif;
+            font-size: 13px;
+            font-weight: 600;
+            padding: 10px 24px;
+            border-radius: 10px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            letter-spacing: 0.2px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .btn-kyc:active { transform: scale(0.97); }
+        .btn-kyc:disabled { opacity: 0.45; cursor: not-allowed; transform: none; }
+
+        .btn-next {
+            background: var(--accent);
             color: white;
+            box-shadow: 0 2px 8px rgba(99,102,241,0.3);
+        }
+        .btn-next:hover:not(:disabled) { filter: brightness(1.08); }
+
+        .btn-prev {
+            background: var(--surface2);
+            color: var(--text-secondary);
+            border: 1px solid var(--border);
+        }
+        .btn-prev:hover:not(:disabled) {
+            background: var(--border);
+            color: var(--text-primary);
         }
 
         .btn-submit {
-            width: 30%;
-            border-radius: 5px;
-            background-color: #28a745;
+            background: linear-gradient(135deg, #22c55e, #16a34a);
             color: white;
+            box-shadow: 0 2px 8px rgba(34,197,94,0.3);
+        }
+        .btn-submit:hover:not(:disabled) { filter: brightness(1.06); }
+
+        /* ── File upload styled area ── */
+        .file-upload-label {
+            display: block;
+            border: 1.5px dashed var(--border2);
+            border-radius: 10px;
+            padding: 16px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            background: var(--surface2);
+            position: relative;
+        }
+        .file-upload-label:hover {
+            border-color: var(--accent);
+            background: var(--accent-soft);
+        }
+        .file-upload-label .upload-icon {
+            font-size: 22px;
+            margin-bottom: 6px;
+            display: block;
+        }
+        .file-upload-label .upload-text {
+            font-size: 12px;
+            font-weight: 500;
+            color: var(--text-secondary);
+        }
+        .file-upload-label .upload-hint {
+            font-size: 11px;
+            color: var(--text-hint);
+            margin-top: 2px;
+        }
+        .file-upload-label input[type="file"] {
+            position: absolute !important;
+            inset: 0 !important;
+            opacity: 0 !important;
+            cursor: pointer !important;
+            width: 100% !important;
+            height: 100% !important;
+            padding: 0 !important;
+            border: none !important;
+            border-radius: 10px !important;
+        }
+        .file-upload-label.has-file {
+            border-color: var(--success);
+            background: var(--success-soft);
+        }
+        .file-upload-label.has-file .upload-text { color: var(--success); }
+
+        /* ── Code input ── */
+        .code-input {
+            text-align: center !important;
+            font-family: 'Space Mono', monospace !important;
+            font-size: 22px !important;
+            letter-spacing: 8px !important;
+            font-weight: 700 !important;
         }
 
-        .header {
-            padding: 10px; 
-            border-radius: 20px; border-bottom-left-radius: 0px;
-            box-shadow: 0 0 10px rgba(1, 54, 86, 0.9);
+        /* ── Bottom progress bar ── */
+        .progress-bar-wrap {
+            height: 3px;
+            background: var(--border);
+            border-radius: 0 0 24px 24px;
+            overflow: hidden;
+        }
+        .progress-bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #6366f1, #8b5cf6);
+            border-radius: 0 0 24px 24px;
+            transition: width 0.5s cubic-bezier(0.23,1,0.32,1);
+        }
+
+        @media (max-width: 480px) {
+            body { padding: 20px 12px 40px; }
+            .page-header h1 { font-size: 22px; }
+            .form-body { padding: 20px 20px 18px; }
+            .step-tracker { padding: 20px 20px 0; }
+            .step-label { display: none; }
+            .btn-kyc { padding: 10px 18px; }
         }
     </style>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Account Verification - {{app_name}} </title>
-    <!-- Stylesheet-->
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 </head>
 
 <body>
-    <h1>Identity Verification</h1>
-    <div style="overflow: auto !important;" class="container">
-        <div class="header bg-primary">
-            
-            <small class="">We prioritize the privacy and security of your information. All submitted data is encrypted and securely transmitted to our servers, used solely for verification purposes. This information is never shared with account managers or third parties. In accordance with data protection regulations, users in the European Union may request the deletion of their personal data. However, please note that such a request will result in the termination of our services.</small>
-        </div>
-        <form style="overflow: auto;" enctype="multipart/form-data" action="{% url 'verification' %}" id="verificationForm">
-            {% csrf_token %}
-            <div class="form-step form-step-active">
-                <h3>Personal Information</h3>
-                <div class="form-group">
-                    <input id="firstName" class="form-control" type="text" name="firstName" placeholder="First Name" readonly value="{{request.user.firstname}}" required>
-                    <input readonly value="{{request.user.lastname}}" class="form-control" type="text" name="lastName" placeholder="Last Name" readonly required>
-                    <input readonly value="{{ request.user.email }}" class="form-control" type="email" name="email" placeholder="Email address" required>
-                    <input class="form-control" type="text" name="nationality" placeholder="Enter your document nationality" required>
-                    <input class="form-control" type="tel" name="phone" placeholder="Enter your Phone Number with country code" required>
-                </div>
-               <div style="display: flex; justify-content: end; align-items: center;">
-                 <button type="button" class="btn-next">Next</button>
-               </div>
-            </div>
-            <div class="form-step">
-                <h2>Verify Email address</h2>
-                <label for="code">Verify Email:</label>
-                <small>verification code has been sent to your email address. enter the code below to continue</small>
-                <input placeholder="Enter the code sent to {{request.user.email}}" class="form-control" type="number" id="code" name="code" required>
-                <div style="display: flex; justify-content: space-around;">
-                    <button type="button" class="btn-prev">Previous</button>
-                    <button type="button" class="btn-next">Next</button>
-                </div>
-            </div>
-            <div class="form-step">
-                <h2>Upload Government issued Documents</h2>
-                <small class="text-danger">Allowed documents include driver's license, federal mortgage bills, National ID, Voter right ID, SSN, Int'l passport, id.me </small><br>
-                <label for="documentNumber">Enter document ID</label>
-                <small>Enter your document number, this is usually found on the back of your ID</small>
-                <input minlength="10" placeholder="Document Number" class="form-control" required type="text" name="documentNumber" id="documentNumber">
-                <label for="address">Full Residential Address: </label>
-                <small>Enter your full address including zip code and nearest landmark</small>
-                <input class="form-control" placeholder="Enter Residential address with zip code" name="address" required type="text" id="address"/>
-                <label for="dob">Date of Birth:</label><br>
-                <small>Enter your date of birth, must be at least 18 years old.</small>
-                <input class="form-control" type="date" name="dob" required id="dob"/>
-                <script>
-                    const today = new Date();
-                    const eighteenYears = new Date(today.getFullYear() - 18, today.getMonth(), today.getDate()).toISOString().split('T')[0];
-                    document.getElementById('dob').setAttribute('max', eighteenYears);
-                </script>
 
-                <label for="id-front">ID Front:</label>
-                <small>Take a photo of the front side of your ID</small><br>
-                <input class="form-control" accept="image/*" capture="environment" type="file" id="id-front" name="idFront"
-                    required>
-                <label for="id-back">ID Back:</label>
-                <small>Take a photo of the back side of your ID</small><br>
-                <input class="form-control" accept="image/*" capture="environment" type="file" id="id-back" name="idBack"
-                    required>
-                <div style="display: flex; justify-content: space-around;">
-                    <button type="button" class="btn-prev">Previous</button>
-                    <button type="button" class="btn-next">Next</button>
-                </div>
+    <div class="page-header">
+        <div class="brand">{{app_name}}</div>
+        <h1>Identity Verification</h1>
+        <p>Secure · Encrypted · Compliant</p>
+    </div>
+
+    <div class="kyc-card">
+
+        <!-- Privacy banner -->
+        <div class="privacy-banner">
+            <div class="privacy-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                </svg>
+            </div>
+            <p>All submitted data is encrypted and used solely for verification. Never shared with third parties or account managers. EU users may request data deletion under GDPR — note this will terminate services.</p>
+        </div>
+
+        <!-- Step tracker -->
+        <div class="step-tracker" id="stepTracker">
+            <div class="step-item active" data-step="0">
+                <div class="step-dot">1</div>
+                <span class="step-label">Personal</span>
+            </div>
+            <div class="step-item" data-step="1">
+                <div class="step-dot">2</div>
+                <span class="step-label">Email</span>
+            </div>
+            <div class="step-item" data-step="2">
+                <div class="step-dot">3</div>
+                <span class="step-label">Documents</span>
             </div>
             {% if settings.ask_for_token %}
+            <div class="step-item" data-step="3">
+                <div class="step-dot">4</div>
+                <span class="step-label">Token</span>
+            </div>
+            {% endif %}
+            <div class="step-item" data-step="{{ settings.ask_for_token|yesno:'4,3' }}">
+                <div class="step-dot">{{ settings.ask_for_token|yesno:'5,4' }}</div>
+                <span class="step-label">Selfie</span>
+            </div>
+        </div>
+
+        <!-- Form -->
+        <form class="form-body" enctype="multipart/form-data" action="{% url 'verification' %}" id="verificationForm">
+            {% csrf_token %}
+
+            <!-- Step 1: Personal Info -->
+            <div class="form-step form-step-active">
+                <div class="step-heading">
+                    <h3>Personal Information</h3>
+                    <p>Confirm your details below. Pre-filled fields are from your account.</p>
+                </div>
+
+                <div class="field-group">
+                    <label class="field-label">First Name</label>
+                    <input type="text" name="firstName" class="form-control" value="{{request.user.firstname}}" readonly>
+                </div>
+                <div class="field-group">
+                    <label class="field-label">Last Name</label>
+                    <input type="text" name="lastName" class="form-control" value="{{request.user.lastname}}" readonly>
+                </div>
+                <div class="field-group">
+                    <label class="field-label">Email Address</label>
+                    <input type="email" name="email" class="form-control" value="{{ request.user.email }}" readonly>
+                </div>
+                <div class="field-group">
+                    <label class="field-label">Document Nationality</label>
+                    <input type="text" name="nationality" class="form-control" placeholder="e.g. British, American, Canadian" required>
+                </div>
+                <div class="field-group">
+                    <label class="field-label">Phone Number</label>
+                    <input type="tel" name="phone" class="form-control" placeholder="+44 7700 900000" required>
+                    <p class="field-hint">Include your country code (e.g. +44, +1)</p>
+                </div>
+
+                <div class="btn-row btn-row-end">
+                    <button type="button" class="btn-kyc btn-next">
+                        Continue
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Step 2: Email Verification -->
             <div class="form-step">
-                <h2>Session Token Verification </h2>
-                <label for="token">Verify Token:</label>
-                <small>To pass vulnerability test, please provide your verification token key</small>
-                <input placeholder="Enter the unique verification token for {{request.user.username}}" class="form-control" type="text" id="token" name="token" required>
-                <div style="display: flex; justify-content: space-around;">
-                    <button type="button" class="btn-prev">Previous</button>
-                    <button type="button" class="btn-next">Next</button>
+                <div class="step-heading">
+                    <h3>Verify Your Email</h3>
+                    <p>A 6-digit code was sent to <strong>{{request.user.email}}</strong>. Enter it below.</p>
+                </div>
+
+                <div class="notice notice-info">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;margin-top:2px"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg>
+                    Check your spam folder if you don't see the email within a minute.
+                </div>
+
+                <div class="field-group">
+                    <label class="field-label">Verification Code</label>
+                    <input type="number" id="code" name="code" class="form-control code-input" placeholder="000000" required>
+                </div>
+
+                <div class="btn-row">
+                    <button type="button" class="btn-kyc btn-prev">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+                        Back
+                    </button>
+                    <button type="button" class="btn-kyc btn-next">
+                        Verify & Continue
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Step 3: Documents -->
+            <div class="form-step">
+                <div class="step-heading">
+                    <h3>Government ID & Documents</h3>
+                    <p>Upload clear, readable photos. Blurry or expired documents are rejected automatically.</p>
+                </div>
+
+                <div class="notice notice-warning">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;margin-top:2px"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                    Accepted: Driver's licence, National ID, Voter ID, SSN, International Passport, id.me
+                </div>
+
+                <div class="field-group">
+                    <label class="field-label">Document Number</label>
+                    <input type="text" name="documentNumber" id="documentNumber" class="form-control" placeholder="Found on the back of your ID" minlength="10" required>
+                    <p class="field-hint">Usually 10+ characters — check the back of your ID</p>
+                </div>
+
+                <div class="field-group">
+                    <label class="field-label">Full Residential Address</label>
+                    <input type="text" name="address" id="address" class="form-control" placeholder="Include zip/postal code and nearest landmark" required>
+                </div>
+
+                <div class="field-group">
+                    <label class="field-label">Date of Birth</label>
+                    <input type="date" name="dob" id="dob" class="form-control" required>
+                    <p class="field-hint">Must be at least 18 years old</p>
+                    <script>
+                        const today = new Date();
+                        const eighteenYears = new Date(today.getFullYear() - 18, today.getMonth(), today.getDate()).toISOString().split('T')[0];
+                        document.getElementById('dob').setAttribute('max', eighteenYears);
+                    </script>
+                </div>
+
+                <div class="field-divider"></div>
+
+                <div class="field-group">
+                    <label class="field-label">ID Front</label>
+                    <label class="file-upload-label" id="label-id-front">
+                        <span class="upload-icon">🪪</span>
+                        <div class="upload-text">Tap to capture or upload</div>
+                        <div class="upload-hint">Front side of your ID</div>
+                        <input accept="image/*" capture="environment" type="file" id="id-front" name="idFront" required>
+                    </label>
+                </div>
+
+                <div class="field-group">
+                    <label class="field-label">ID Back</label>
+                    <label class="file-upload-label" id="label-id-back">
+                        <span class="upload-icon">🪪</span>
+                        <div class="upload-text">Tap to capture or upload</div>
+                        <div class="upload-hint">Back side of your ID</div>
+                        <input accept="image/*" capture="environment" type="file" id="id-back" name="idBack" required>
+                    </label>
+                </div>
+
+                <div class="field-group">
+                    <label class="field-label">Bank Statement <span style="color:var(--text-hint); font-weight:400">(PDF or image)</span></label>
+                    <label class="file-upload-label" id="label-bank">
+                        <span class="upload-icon">📄</span>
+                        <div class="upload-text">Tap to upload statement</div>
+                        <div class="upload-hint">Issued within last 3 months · Must show your name & address</div>
+                        <input type="file" accept="image/*, .pdf" name="bankStatement" id="bank-statement-pdf" required>
+                    </label>
+                </div>
+
+                <div class="btn-row">
+                    <button type="button" class="btn-kyc btn-prev">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+                        Back
+                    </button>
+                    <button type="button" class="btn-kyc btn-next">
+                        Continue
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Step 4: Token (conditional) -->
+            {% if settings.ask_for_token %}
+            <div class="form-step">
+                <div class="step-heading">
+                    <h3>Session Token</h3>
+                    <p>Enter the unique verification token assigned to your account.</p>
+                </div>
+
+                <div class="field-group">
+                    <label class="field-label">Verification Token</label>
+                    <input type="text" id="token" name="token" class="form-control" placeholder="Enter the unique verification token for {{request.user.username}}" required>
+                    <p class="field-hint">This was provided to you separately. Contact support if you don't have it.</p>
+                </div>
+
+                <div class="btn-row">
+                    <button type="button" class="btn-kyc btn-prev">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+                        Back
+                    </button>
+                    <button type="button" class="btn-kyc btn-next">
+                        Verify Token
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                    </button>
                 </div>
             </div>
             {% endif %}
-            <div class="mt-4 form-step">
-                <label for="selfie">Face-only Selfie:</label>
-                <input accept="image/*" capture="user" class="form-control" type="file" id="selfie" name="selfie" required>
-                <label for="selfie">Selfie Video:</label><br>
-                <small>Please record a short selfie video of yourself. in the video, Please say out your full name, date of birth, todays date, the amount invested and the profits accrued</small><br>
-                <input class="form-control" accept="video/*" type="file" id="facial" name="facial" required>
-                <div style="display: flex; justify-content: space-around;">
-                    <button type="button" class="btn-prev">Previous</button>
-                    <button type="submit" class="btn-submit">Submit</button>
+
+            <!-- Step 5: Selfie -->
+            <div class="form-step">
+                <div class="step-heading">
+                    <h3>Selfie Verification</h3>
+                    <p>A photo and short video to confirm you're the document owner.</p>
+                </div>
+
+                <div class="field-group">
+                    <label class="field-label">Face-only Selfie</label>
+                    <label class="file-upload-label" id="label-selfie">
+                        <span class="upload-icon">🤳</span>
+                        <div class="upload-text">Take a selfie or upload a photo</div>
+                        <div class="upload-hint">Face must be clearly visible · No glasses or hats</div>
+                        <input accept="image/*" capture="user" type="file" id="selfie" name="selfie" required>
+                    </label>
+                </div>
+
+                <div class="field-group">
+                    <label class="field-label">Selfie Video</label>
+                    <label class="file-upload-label" id="label-facial">
+                        <span class="upload-icon">🎥</span>
+                        <div class="upload-text">Record a short video</div>
+                        <div class="upload-hint">State your full name, DOB, today's date, amount invested & profits</div>
+                        <input accept="video/*" type="file" id="facial" name="facial" required>
+                    </label>
+                </div>
+
+                <div class="btn-row">
+                    <button type="button" class="btn-kyc btn-prev">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+                        Back
+                    </button>
+                    <button type="submit" class="btn-kyc btn-submit">
+                        Submit Verification
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+                    </button>
                 </div>
             </div>
+
         </form>
+
+        <!-- Progress bar -->
+        <div class="progress-bar-wrap">
+            <div class="progress-bar-fill" id="progressBar" style="width: 20%"></div>
+        </div>
+
     </div>
+
     <script>
         function getCookie(name) {
             let cookieValue = null;
@@ -233,7 +755,6 @@
                 const cookies = document.cookie.split(';');
                 for (let i = 0; i < cookies.length; i++) {
                     const cookie = cookies[i].trim();
-                    // Does this cookie string begin with the name we want?
                     if (cookie.substring(0, name.length + 1) === (name + '=')) {
                         cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
                         break;
@@ -249,37 +770,57 @@
         const btnPrev = document.querySelectorAll('.btn-prev');
         const form = document.getElementById('verificationForm');
         const formElements = form.elements;
+        const stepItems = document.querySelectorAll('.step-item');
+        const progressBar = document.getElementById('progressBar');
         let currentStep = 0;
+
+        function updateStepTracker(step) {
+            stepItems.forEach((item, i) => {
+                item.classList.remove('active', 'completed');
+                if (i < step) item.classList.add('completed');
+                else if (i === step) item.classList.add('active');
+            });
+            const pct = Math.round(((step + 1) / formSteps.length) * 100);
+            progressBar.style.width = pct + '%';
+        }
+
+        // File upload feedback
+        document.querySelectorAll('.file-upload-label input[type="file"]').forEach(input => {
+            input.addEventListener('change', function () {
+                const label = this.closest('.file-upload-label');
+                const textEl = label.querySelector('.upload-text');
+                if (this.files && this.files[0]) {
+                    label.classList.add('has-file');
+                    textEl.textContent = this.files[0].name;
+                } else {
+                    label.classList.remove('has-file');
+                }
+            });
+        });
 
         btnNext.forEach(button => {
             button.addEventListener('click', async () => {
                 button.disabled = true;
                 button.style.opacity = '0.4';
 
-                // Validation logic
                 const currentInputs = formSteps[currentStep].querySelectorAll('input');
                 let allValid = true;
 
                 currentInputs.forEach(input => {
                     if (!input.checkValidity()) {
                         allValid = false;
-                        button.disabled = false;
-                        button.style.opacity = '1';
                         input.classList.add('is-invalid');
                     } else {
                         input.classList.remove('is-invalid');
                     }
-                    input.addEventListener('input', () => {
-                        input.classList.remove('is-invalid');
-                    });
+                    input.addEventListener('input', () => input.classList.remove('is-invalid'), { once: true });
                 });
 
                 if (allValid) {
-                    // If we are on the email verification step
                     if (currentStep === 0) {
                         const phoneElement = formElements['phone'];
                         const phone = phoneElement.value;
-                        if (!phone.startsWith('+') || phone.length < 10){
+                        if (!phone.startsWith('+') || phone.length < 10) {
                             allValid = false;
                             alert('Please enter a valid phone number with country code');
                             button.disabled = false;
@@ -290,17 +831,13 @@
                         const email = emailElement.value;
                         if (email) {
                             const url = '{% url "verification" %}';
-                            const data_type = 'get-code';
                             try {
                                 const postData = new FormData();
-                                postData.append('data-type', data_type);
+                                postData.append('data-type', 'get-code');
                                 postData.append('email', email);
-
                                 const response = await fetch(url, {
                                     method: 'POST',
-                                    headers: {
-                                        "X-CSRFToken": csrftoken,
-                                    },
+                                    headers: { "X-CSRFToken": csrftoken },
                                     body: postData,
                                 });
                                 const data = await response.json();
@@ -324,7 +861,6 @@
                         }
                     }
 
-                    // If we are on the code verification step
                     if (currentStep === 1) {
                         const codeElement = formElements['code'];
                         const code = codeElement.value;
@@ -334,16 +870,9 @@
                             try {
                                 const response = await fetch(url, {
                                     method: 'POST',
-                                    headers: {
-                                        'Content-Type': 'application/json',
-                                        'X-CSRFToken': csrftoken,
-                                    },
-                                    body: JSON.stringify({
-                                        'code': code,
-                                        'email': email,
-                                    }),
+                                    headers: { 'Content-Type': 'application/json', 'X-CSRFToken': csrftoken },
+                                    body: JSON.stringify({ 'code': code, 'email': email }),
                                 });
-                                console.log(response);
                                 const data = await response.json();
                                 if (!response.ok || !data.success) {
                                     allValid = false;
@@ -369,9 +898,10 @@
                             return;
                         }
                     }
-                    if (currentStep === 2){
+
+                    if (currentStep === 2) {
                         const documentNumber = formElements['documentNumber'].value;
-                        if (documentNumber.length < 10){
+                        if (documentNumber.length < 10) {
                             allValid = false;
                             button.disabled = false;
                             button.style.opacity = '1';
@@ -379,23 +909,23 @@
                             return;
                         }
                     }
-                    if (currentStep === 3){
+
+                    if (currentStep === 3) {
                         const tokenElement = formElements['token'];
-                        if (tokenElement){
+                        if (tokenElement) {
                             const token = tokenElement.value;
-                            if (!token){
+                            if (!token) {
                                 allValid = false;
                                 button.disabled = false;
                                 button.style.opacity = '1';
                                 alert("Please enter a valid token.");
                                 return;
                             }
-                            const url = `/lumisx/api/verify_token/${token}/`;
+                            const url = `/app/api/verify_token/${token}/`;
                             try {
                                 const response = await fetch(url);
-                                console.log(response);
                                 const data = await response.json();
-                                if (!response.ok ||!data.success) {
+                                if (!response.ok || !data.success) {
                                     allValid = false;
                                     tokenElement.classList.add('is-invalid');
                                     alert(data.error);
@@ -410,24 +940,24 @@
                                 console.error('Error occurred: ' + e);
                                 return;
                             }
-
                         }
                     }
+
                     button.disabled = false;
                     button.style.opacity = '1';
-                    // Proceed to the next step if all validations are successful
+
                     if (allValid && currentStep < formSteps.length - 1) {
-                        formSteps[currentStep].style.animation = 'fadeOutLeft 0.5s ease forwards';
+                        formSteps[currentStep].style.animation = 'fadeOutLeft 0.35s ease forwards';
                         setTimeout(() => {
                             formSteps[currentStep].classList.remove('form-step-active');
                             currentStep++;
                             formSteps[currentStep].classList.add('form-step-active');
-                            formSteps[currentStep].style.animation = 'fadeInRight 0.5s ease';
-                        }, 500);
+                            formSteps[currentStep].style.animation = 'fadeInRight 0.35s ease';
+                            updateStepTracker(currentStep);
+                        }, 350);
                     } else {
                         button.disabled = false;
                         button.style.opacity = '1';
-                        return;
                     }
                 } else {
                     button.disabled = false;
@@ -436,65 +966,62 @@
             });
         });
 
-
         btnPrev.forEach(button => {
             button.addEventListener('click', () => {
                 if (currentStep > 0) {
-                    formSteps[currentStep].style.animation = 'fadeOutRight 0.5s ease forwards';
+                    formSteps[currentStep].style.animation = 'fadeOutRight 0.35s ease forwards';
                     setTimeout(() => {
                         formSteps[currentStep].classList.remove('form-step-active');
                         currentStep--;
                         formSteps[currentStep].classList.add('form-step-active');
-                        formSteps[currentStep].style.animation = 'fadeInLeft 0.5s ease';
-                    }, 500);
+                        formSteps[currentStep].style.animation = 'fadeInLeft 0.35s ease';
+                        updateStepTracker(currentStep);
+                    }, 350);
                 }
             });
         });
 
-        form.addEventListener('submit', async function(event){
+        form.addEventListener('submit', async function (event) {
             event.preventDefault();
             const btn = this.querySelector('button[type="submit"]');
-            const formElements = this.elements;
+            const btnInitialState = btn.innerHTML;
             btn.disabled = true;
             btn.style.opacity = '0.4';
-            // AJAX request to submit form data
-            const formData = new FormData(this)
-            formData.append('data-type', 'form')
-            const result = confirm("Please check for any typo or light glares on the photos you're uploading. Ensure that the IDs you\'re submitting are clearly readable and valid. Blur IDs are automatically rejected upon submission. Submitting fake documents will result in your account being disabled. Do you want to continue?");
-            if (result){
+            btn.innerText = 'Submitting...';
+
+            const formData = new FormData(this);
+            formData.append('data-type', 'form');
+
+            const result = confirm("Please check for any typo or light glares on the photos. Ensure IDs are clearly readable. Submitting fake documents will disable your account. Continue?");
+            if (result) {
                 try {
                     const response = await fetch(this.action, {
                         method: 'POST',
                         body: formData,
-                        headers: {
-                            'X-CSRFToken': csrftoken,
-                        },
+                        headers: { 'X-CSRFToken': csrftoken },
                     });
-                    console.log(response);
                     const data = await response.json();
                     if (!response.ok || !data.success) {
-                        alert('An error occurred: ' + data.error)
+                        alert('An error occurred: ' + data.error);
                         btn.disabled = false;
                         btn.style.opacity = '1';
+                        btn.innerHTML = btnInitialState;
                         return;
                     }
-                    alert(data.success)
-                    setTimeout(() => {
-                        window.location.href = '{% url "settings" %}'
-                    }, 1000)
+                    alert(data.success);
+                    setTimeout(() => { window.location.href = '{% url "settings" %}'; }, 1000);
                 } catch (e) {
-                    allValid = false;
                     btn.disabled = false;
                     btn.style.opacity = '1';
+                    btn.innerHTML = btnInitialState;
                     console.error('Error occurred: ' + e);
-                    return;
                 }
             } else {
+                btn.innerHTML = btnInitialState;
                 btn.disabled = false;
                 btn.style.opacity = '1';
-                return;
-            } 
-        })
+            }
+        });
     </script>
 
     <script src="{% static 'js/jquery.min.js' %}"></script>

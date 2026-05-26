@@ -19,7 +19,12 @@
     <link rel="icon" type="image/png" href="{% static 'assets/img/favicon.png' %}" sizes="32x3">
     <link rel="apple-touch-icon" sizes="180x180" href="{% static 'assets/img/icon/192x192.png' %}">
     <link rel="stylesheet" href="{% static 'assets/css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/vcard.css' %}">
     <link rel="manifest" href="{% static '__manifest.json' %}">
+    <!-- google fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+
 </head>
 
     <!-- loader -->
@@ -197,122 +202,150 @@
     </div>
     <!-- * Defund Card Action Sheet -->
 
+    <!-- Manage Card Bottom Sheet -->
+    <div class="modal fade action-sheet" id="manageCardSheet" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Manage Card</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="action-sheet-content">
+
+                        <div class="manage-card-meta">
+                            <span class="manage-card-number" id="manageCardNumber">•••• •••• •••• ••••</span>
+                            <span class="manage-card-status-badge" id="manageCardStatusBadge"></span>
+                        </div>
+
+                        <div class="manage-actions">
+
+                            <!-- CHANGED: added fund-btn class -->
+                            <button id="manageCardFundBtn" class="manage-action-btn fund-btn" type="button">
+                                <div class="manage-action-icon">
+                                    <ion-icon name="arrow-down-circle-outline"></ion-icon>
+                                </div>
+                                <div class="manage-action-label">
+                                    <span>Fund</span>
+                                    <small>Add money to this card</small>
+                                </div>
+                                <ion-icon name="chevron-forward-outline" class="manage-action-chevron"></ion-icon>
+                            </button>
+
+                            <!-- CHANGED: added defund-btn class -->
+                            <button id="manageCardDefundBtn" class="manage-action-btn defund-btn" type="button">
+                                <div class="manage-action-icon">
+                                    <ion-icon name="arrow-up-circle-outline"></ion-icon>
+                                </div>
+                                <div class="manage-action-label">
+                                    <span>Defund</span>
+                                    <small>Withdraw money from this card</small>
+                                </div>
+                                <ion-icon name="chevron-forward-outline" class="manage-action-chevron"></ion-icon>
+                            </button>
+
+                            <!-- CHANGED: added toggle-btn class, id on btn itself for class toggling -->
+                            <button id="manageCardToggleBtn" class="manage-action-btn toggle-btn" type="button">
+                                <div class="manage-action-icon" id="manageToggleIcon">
+                                    <ion-icon name="power-outline"></ion-icon>
+                                </div>
+                                <div class="manage-action-label">
+                                    <span id="manageToggleLabel">Activate Card</span>
+                                    <small id="manageToggleSub">Enable card for transactions</small>
+                                </div>
+                                <input class="form-check-input" type="checkbox"
+                                    id="manageCardToggleInput"
+                                    onclick="event.stopPropagation();">
+                            </button>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- * Manage Card Bottom Sheet -->
+
     <!-- App Capsule -->
     <div id="appCapsule">
 
         <div class="section mt-2">
 
             <!-- card block -->
-             {% for x in cards %}
-                <div class="card-block mb-2">
-                <div class="card-main">
-                    <div class="card-button dropdown">
-                        <button type="button" class="btn btn-link btn-icon" data-bs-toggle="dropdown">
-                            <ion-icon name="ellipsis-horizontal"></ion-icon>
-                        </button>
-                        <div class="dropdown-menu dropdown-menu-end">
-                            {% if x.can_fund %}
-                                <a onclick="triggerModal('fundCardActionSheet', '{{x.pk}}')" id="fundCard" data-key="{{x.pk}}" class="dropdown-item" href="#">
-                                    <ion-icon name="arrow-down-circle"></ion-icon>Fund
-                                </a>
-                            {% endif %}
-                            {% if x.can_defund %}
-                                <a onclick="triggerModal('defundCardActionSheet', '{{x.pk}}')" id="defundCard" data-key="{{x.pk}}" class="dropdown-item" href="#">
-                                    <ion-icon name="arrow-up-circle"></ion-icon>Defund
-                                </a>
-                            {% endif %}
-                            <a class="dropdown-item" href="#">
-                                <div id="cardStatus" style="display: flex; align-items: center;" class="form-check cardStatus form-switch">
-                                    <span class="card-status">{{x.card_status}}</span>
-                                    {% if x.card_status == "Activated" %}
-                                    <input checked data-key="{{x.pk}}"  class="togglerInput form-check-input" type="checkbox" >
-                                    <label class="form-check-label label" for="togglerInput">   </label>
-                                    {% else %}
-                                    <input data-key="{{x.pk}}" class="togglerInput form-check-input" type="checkbox">
-                                    <label class="form-check-label label" for="togglerInput">   </label>
-                                    {% endif %}
-                                </div>
-                            </a>
+            {% for x in cards %}
+                <div 
+                class="card-scene mb-4" 
+                data-key="{{ x.pk }}" 
+                data-number="{{ x.card_number|space }}"
+                data-status="{{ x.card_status }}"
+                data-canFund="{{ x.can_fund }}"
+                data-canDefund="{{ x.can_defund }}"
+                >
+                <div class="virtual-card {% if x.card_status == 'Activated' %}card-dark{% else %}card-blocked{% endif %}">
+                    <div class="card-shimmer"></div>
+                    <div class="card-border-glow"></div>
+
+                    <div class="vc-top">
+                        <div class="vc-brand">
+                            <div class="vc-brand-name">Lumis X</div>
+                            <div class="vc-brand-sub">Virtual &middot; Crypto</div>
                         </div>
                     </div>
-                    <div class="balance">
-                        <span class="label">BALANCE</span>
-                        <h1 class="title">{{user.profiles.preferred_currency.code}}
-                            {{x.converted_balance}}
-                        </h1>
+
+                    <div class="vc-middle">
+                        <div class="vc-chip">
+                            <div class="vc-chip-inner"></div>
+                        </div>
+                        <svg width="22" height="22" viewBox="0 0 24 24" class="vc-nfc" fill="none">
+                            <path d="M6 12 Q8 8 12 8" stroke="rgba(255,255,255,0.4)" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+                            <path d="M6 12 Q9 5 14 5" stroke="rgba(255,255,255,0.6)" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+                            <path d="M6 12 Q10 2 16 2" stroke="rgba(255,255,255,0.8)" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+                        </svg>
+                        <div class="vc-balance">
+                            <div class="vc-field-label">Balance</div>
+                            <div class="vc-balance-amount">
+                            {{ user.profiles.preferred_currency.code }} {{ x.converted_balance }}
+                            </div>
+                        </div>
                     </div>
-                    <div class="in">
-                        <div class="card-number">
-                            <span class="label">Card Number</span>
-                            {{x.card_number|space}}
+
+                    <div class="vc-number" 
+                        data-number="{{ x.card_number|space }}" 
+                        data-revealed="false">
+                        <span class="vc-number-display">•••• •••• •••• ••••</span>
+                        <span class="vc-reveal-hint">tap to reveal</span>
+                    </div>
+
+                    <div class="vc-bottom">
+                    <div>
+                        <div class="vc-field-label">Card Holder</div>
+                        <div class="vc-field-value">{{ x.card_holder|upper }}</div>
+                    </div>
+                    <div class="vc-bottom-right">
+                        <div class="vc-expiry-cvv">
+                        <div>
+                            <div class="vc-field-label">Expires</div>
+                            <div class="vc-field-value">{{ x.expiry_date|date:"m / Y" }}</div>
                         </div>
-                        <div class="bottom">
-                            <div class="card-expiry">
-                                <span class="label">Expiry</span>
-                                {{x.expiry_date|date:"m / Y"}}
-                            </div>
-                            <div class="card-ccv">
-                                <span class="label">CCV</span>
-                                {{x.cvv}}
-                            </div>
+                        <div>
+                            <div class="vc-field-label">CVV</div>
+                            <div class="vc-field-value">{{ x.cvv }}</div>
                         </div>
+                        </div>
+                        <div class="vc-network">{% if x.card_number|startswith:"5" %}MASTER{% else %}VISA{% endif %}</div>
+                    </div>
+                    </div>
+
+                    <div class="vc-status-pill {% if x.card_status == 'Activated' %}vc-active{% else %}vc-blocked{% endif %}">
+                    ● {{ x.card_status }}
                     </div>
                 </div>
                 </div>
             {% empty %}
-                <div class="card-block mb-2">
-                    <div class="card-main">
-                        <div class="card-button dropdown">
-                            <button type="button" class="btn btn-link btn-icon" data-bs-toggle="dropdown">
-                                <ion-icon name="ellipsis-horizontal"></ion-icon>
-                            </button>
-                            <div class="dropdown-menu dropdown-menu-end">
-                                <a data-key="{{x.pk}}" class="dropdown-item" href="#">
-                                    <ion-icon name="arrow-down-circle"></ion-icon>Fund
-                                </a>
-                                <a data-key="{{x.pk}}" class="dropdown-item" href="#">
-                                    <ion-icon name="arrow-up-circle"></ion-icon>Defund
-                                </a>
-                                <a data-key="{{x.pk}}" class="dropdown-item" href="#">
-                                    <div style="display: flex; align-items: center;" class="form-check form-switch">
-                                        Activate/Deactivate
-                                        <input class="form-check-input" type="checkbox" id="cardStatus">
-                                        <label class="form-check-label" for="cardStatus"></label>
-                                    </div>
-                                </a>
-                            </div>
-                        </div>
-                        <div class="balance">
-                            <span class="label">BALANCE</span>
-                            <h1 class="title">
-                                {{user.profiles.preferred_currency.code}}
-                                0.00
-                            </h1>
-                        </div>
-                        <div class="in">
-                            <div class="card-number">
-                                <span class="label">Card Number</span>
-                                1234 5678 91011 1213
-                                <div class="bottom">
-                                    <div class="card-expiry">
-                                        <span class="label">Expiry</span>
-                                        01/27
-                                    </div>
-                                    <div class="card-ccv">
-                                        <span class="label">CCV</span>
-                                        Unactivated
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                <div class="vc-empty-state">
+                    <p>No cards yet. Tap <strong>+</strong> to create your first virtual card.</p>
                 </div>
-                <div>
-                    <p class="text-center">To request a new card, click on the + icon at the top right of this screen</p>
-                </div>
-
-            <!-- * card block -->
-             {% endfor %}
+            {% endfor %}
 
         </div>
 
@@ -452,6 +485,14 @@
         </div>
     <!-- * App Bottom Menu -->
 
+    <div class="vc-hold-hint" id="vcHoldHint" style="display:none;">
+        <ion-icon name="hand-left-outline" class="vc-hold-hint-icon"></ion-icon>
+        <div>
+            <div class="vc-hold-hint-text">Hold card to manage</div>
+            <div class="vc-hold-hint-sub">press &amp; hold for options</div>
+        </div>
+    </div>
+
 
     <!-- ========= JS Files =========  -->
     <!-- Bootstrap -->
@@ -464,30 +505,28 @@
     <!-- Base Js File -->
     <script src="{% static 'assets/js/base.js' %}"></script>
     <script>
-
-    function triggerModal(modalId, key){
-        if (!key){
-            key = document.getElementById(modalId).getAttribute('data-key');
+        function triggerModal(modalId, key) {
+            if (!key) {
+                key = document.getElementById(modalId).getAttribute('data-key');
+            }
+            if (!key) {
+                console.error('No key provided for the modal');
+                return;
+            }
+            const modalElement = document.getElementById(modalId);
+            sessionStorage.setItem('cardId', key);
+            const modal = new bootstrap.Modal(modalElement);
+            modal.show();
         }
-        if(!key){
-            console.error('No key provided for the modal');
-            return;
-        }
-        const modalElement = document.getElementById(modalId);
-        sessionStorage.setItem('cardId', key);
-        console.log(sessionStorage.getItem('cardId'));
-        const modal = new bootstrap.Modal(modalElement);
-        modal.show();
-    }
 
-        document.addEventListener("DOMContentLoaded", function(e){
+        document.addEventListener("DOMContentLoaded", function () {
+
             function getCookie(name) {
                 let cookieValue = null;
                 if (document.cookie && document.cookie !== '') {
                     const cookies = document.cookie.split(';');
                     for (let i = 0; i < cookies.length; i++) {
                         const cookie = cookies[i].trim();
-                        // Does this cookie string begin with the name we want?
                         if (cookie.substring(0, name.length + 1) === (name + '=')) {
                             cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
                             break;
@@ -496,192 +535,42 @@
                 }
                 return cookieValue;
             }
+
             const csrftoken = getCookie('csrftoken');
-
-
-            const form = document.getElementById("requestCardForm");
+            const successToast = document.getElementById("feedbackSuccess");
+            const errorToast = document.getElementById("feedbackError");
             const successDialog = document.getElementById("successModal");
             const errorDialog = document.getElementById("errorModal");
 
-            const successToast = document.getElementById("feedbackSuccess");
-            const errorToast = document.getElementById("feedbackError");
 
-            form.addEventListener("submit", async function(e){
-                e.preventDefault();
-                this.querySelectorAll('small').forEach(small => small.remove());
-                const button = this.querySelector('button[type="submit"]');
-                const preloader = document.getElementById('requestLoader');
-
-                const formElements = this.elements;
-
-                for (let i = 0; i < formElements.length; i++) {
-                    const element = formElements[i];
-                    if (element.type !== 'submit' && element.value.trim() === ''){
-                        const small = document.createElement('small');
-                        small.style.color ='red';
-                        small.textContent = `You have not entered the ${element.dataset.name}`;
-                        element.parentElement.appendChild(small);
-                        element.addEventListener('input', function(e) {
-                            this.parentElement.querySelector('small').remove();
-                        }, {'once': true});
-                        return false;
-                    }
-                }
-                const totalCost = sessionStorage.getItem('totalCost') ||  null;
-                if (!totalCost)return;
-                const balance = parseFloat("{{balance.deposits}}");
-                if (totalCost > balance){
-                    const element = form.elements['funding-amount'];
-                    const small = document.createElement('small');
-                    small.style.color = 'red';
-                    small.textContent = `Insufficient funds`;
-                    element.parentElement.appendChild(small);
-                    element.addEventListener('input', function(e) {
-                        this.parentElement.querySelector('small').remove();
-                    }, {'once': true});
-                    return;
-                }
-                try{
-                   document.getElementById("closeButton").click();
-                   const msg = "You will be charged from your deposit balance directly for this request. you cannot change the debit account. Your card request may still undergo manual review for compliance. Click PROCEED to continue with your request or CANCEL to go back."
-                    const authorization = await authorizeRequest(msg);
-
-                    loader.style.display = 'flex';
-
-                    const url = "{% url 'getcard' %}"
-                    const formData = new FormData(this);
-
-                    const request = await fetch(url, {
-                        method: 'POST',
-                        body: formData,
-                        headers: {
-                            'X-CSRFToken': csrftoken,
-                        }
-                    });
-                    const response = await  request.json();
-                    if(response.success){
-                        successDialog.querySelector('.message').textContent = response.success;
-                        showModal(successDialog.id, 15000)
-
-                    } else {
-                        errorDialog.querySelector('.message').textContent = response.error;
-                        showModal(errorDialog.id, 20000)
-                    }
-                    
-                }catch(e){
-                    errorToast.querySelector('.message').textContent = "An error occurred while processing your request. Please try again later.";
-                    toastbox(errorToast.id, 10000)
-                } finally {
-                    setTimeout(()=>{
-                        loader.style.display = "none";
-                        button.disabled = false;
-                        form.reset();
-                    })
-                }
-            });
-
-            function showModal(modalID, timeout=null) {
-                const modal = new bootstrap.Modal(document.getElementById(modalID));
-                modal.show();
-                if (timeout){
-                    setTimeout(() => {
-                        modal.hide();
-                    }, timeout);
-                }
-            }
-
-            document.getElementById("cardAmount").addEventListener("input", (e) => {
-                const creationFee = parseFloat("{{creation_fee}}");
-                const min_funding = parseFloat("{{min_funding}}");
-                const totalCostContainer = document.getElementById("totalCostContainer");
-                const totalCostElement = document.getElementById("totalCost");
-                const currencyCode = "{{user.profiles.preferred_currency.code}}";
-                const availableBalance = parseFloat('{{balance.deposits}}')
-                let value = e.target.value;
-                let isValid = true;
-                
-
-
-                if (!value){
-                    totalCostElement.innerHTML = "";
-                    totalCostContainer.style.display = "none";
-                    isValid = false;
-                    return;
-                }
-
-                // Remove non-numeric characters except for a single period (.)
-                value = value.replace(/[^0-9.]/g, '');
-
-                // Ensure only one decimal point is allowed
-                const parts = value.split('.');
-                if (parts.length > 2) {
-                    value = parts[0] + '.' + parts.slice(1).join('');
-                }
-
-                // Prevent multiple leading zeroes (except for decimals like "0.5")
-                if (value.startsWith("00")) {
-                    value = value.slice(1);
-                } else if (value.startsWith("0") && value.length > 1 && value[1] !== ".") {
-                    value = value.slice(1);
-                }
-
-                // Ensure a leading zero for decimal inputs like ".5"
-                if (value.startsWith(".")) {
-                    value = "0" + value;
-                }
-
-                // Update input field with sanitized value
-                e.target.value = value;
-                const fundingAmount = parseFloat(value);
-                const totalCost = parseFloat(fundingAmount + creationFee);
-
-                if (parseFloat(fundingAmount) < min_funding) {
-                    totalCostElement.innerHTML = `Less than minimum: ${currencyCode}${min_funding}`;
-                    totalCostContainer.style.display = 'flex';
-                    isValid = false;
-                } 
-
-                if (totalCost > availableBalance){
-                    totalCostElement.innerHTML = `Insufficient funds: ${currencyCode}${availableBalance}. Total Cost: ${totalCost.toFixed(2)}`;
-                    totalCostContainer.style.display = 'flex';
-                    isValid = false;
-                
-                } else {
-                    isValid = true;
-                }
-                if (!isValid){
-                    document.getElementById("cardRequestButton").disabled = true;
-                    return;
-                } 
-                else {
-                    document.getElementById("cardRequestButton").disabled = false;
-                }
-
-                
-                totalCostElement.innerHTML = `${currencyCode}${totalCost.toFixed(2)}`;
-                totalCostContainer.style.display = 'flex';
-                sessionStorage.setItem('totalCost', totalCost)
-            });
-
-            function authorizeRequest(msg, type=null) {
+            function authorizeRequest(msg, type = null) {
                 return new Promise((resolve, reject) => {
                     const modalElement = document.getElementById('authorizationModal');
                     modalElement.querySelector('.message').textContent = msg;
+
+                    const pinSection = modalElement.querySelector('.pin-section');
+                    const pinInput = modalElement.querySelector("#PIN");
+
+                    pinSection.style.display = type !== null ? 'block' : 'none';
+                    pinInput.value = '';
+
                     const modal = new bootstrap.Modal(modalElement);
-                    if (type !== null){
-                        const pinSection = modalElement.querySelector('.pin-section');
-                        pinSection.style.display = 'block';
-                    }
                     modal.show();
-                    const resolveButton = modalElement.querySelector('#resolve');
-                    const closeButton = modalElement.querySelectorAll('.close');
-                    closeButton.forEach(close => close.addEventListener('click', () => {
-                        reject('Authorization Canceled')
-                    }))
-                    resolveButton.addEventListener('click', function (e) {
-                        e.preventDefault(); 
+
+                    const oldResolve = modalElement.querySelector('#resolve');
+                    const newResolve = oldResolve.cloneNode(true);
+                    oldResolve.replaceWith(newResolve);
+
+                    modalElement.querySelectorAll('.close').forEach(btn => {
+                        const fresh = btn.cloneNode(true);
+                        btn.replaceWith(fresh);
+                        fresh.addEventListener('click', () => reject('Authorization Canceled'));
+                    });
+
+                    newResolve.addEventListener('click', function (e) {
+                        e.preventDefault();
+
                         if (type !== null) {
-                            const pinInput = modalElement.querySelector("#PIN");
                             if (!pinInput.value || pinInput.value.length < 4) {
                                 const existingColor = pinInput.style.borderColor;
                                 pinInput.style.borderColor = 'red';
@@ -690,42 +579,41 @@
                                     if (pinInput.value.length === 4) {
                                         pinInput.style.borderColor = existingColor;
                                     }
-                                }, { 'once': true });
+                                }, { once: true });
                                 return;
                             }
+
                             const pin = pinInput.value;
                             const url = '{% url "authorize" %}';
+
                             fetch(url, {
                                 method: 'POST',
-                                body: JSON.stringify({ 'pin': pin, 'toggle':type === 'cardStatus' }),
+                                body: JSON.stringify({ pin, toggle: type === 'cardStatus' }),
                                 headers: {
                                     'Content-Type': 'application/json',
                                     'X-CSRFToken': csrftoken
                                 }
                             })
-                                .then(response => response.json())
+                                .then(r => r.json())
                                 .then(data => {
                                     if (data.success) {
                                         modal.hide();
                                         resolve(data.success);
-
                                     } else {
                                         pinInput.value = '';
                                         errorToast.querySelector('.message').innerHTML = data.error;
                                         toastbox(errorToast.id, 10000);
                                         modal.hide();
                                         reject(data.error);
-                                        return;
                                     }
                                 })
-                                .catch((e) => {
-                                    console.error(`An error occurred while processing request: ${e.toString()}`);
+                                .catch(err => {
+                                    console.error(`Authorization request failed: ${err}`);
                                     modal.hide();
                                     reject('An error occurred...');
                                 })
-                                .finally(() => {
-                                    pinInput.value = '';
-                                });
+                                .finally(() => { pinInput.value = ''; });
+
                         } else {
                             modal.hide();
                             resolve('Authorization Granted');
@@ -733,196 +621,493 @@
                     });
                 });
             }
-            
+
+            function showModal(modalID, timeout = null) {
+                const modal = new bootstrap.Modal(document.getElementById(modalID));
+                modal.show();
+                if (timeout) setTimeout(() => modal.hide(), timeout);
+            }
+
+            const form = document.getElementById("requestCardForm");
+
+            form.addEventListener("submit", async function (e) {
+                e.preventDefault();
+                this.querySelectorAll('small').forEach(s => s.remove());
+
+                const button = this.querySelector('button[type="submit"]');
+
+                for (const element of this.elements) {
+                    if (element.type !== 'submit' && element.value.trim() === '') {
+                        const small = document.createElement('small');
+                        small.style.color = 'red';
+                        small.textContent = `You have not entered the ${element.dataset.name}`;
+                        element.parentElement.appendChild(small);
+                        element.addEventListener('input', function () {
+                            this.parentElement.querySelector('small')?.remove();
+                        }, { once: true });
+                        return;
+                    }
+                }
+
+                const totalCost = sessionStorage.getItem('totalCost');
+                if (!totalCost) return;
+
+                const balance = parseFloat("{{ balance.deposits }}");
+                if (parseFloat(totalCost) > balance) {
+                    const element = form.elements['funding-amount'];
+                    const small = document.createElement('small');
+                    small.style.color = 'red';
+                    small.textContent = 'Insufficient funds';
+                    element.parentElement.appendChild(small);
+                    element.addEventListener('input', function () {
+                        this.parentElement.querySelector('small')?.remove();
+                    }, { once: true });
+                    return;
+                }
+
+                try {
+                    document.getElementById("closeButton").click();
+                    const msg = "You will be charged from your deposit balance directly for this request. Your card request may still undergo manual review for compliance. Click PROCEED to continue or CANCEL to go back.";
+                    await authorizeRequest(msg);
+
+                    loader.style.display = 'flex';
+
+                    const url = "{% url 'getcard' %}";
+                    const formData = new FormData(this);
+
+                    const request = await fetch(url, {
+                        method: 'POST',
+                        body: formData,
+                        headers: { 'X-CSRFToken': csrftoken }
+                    });
+                    const response = await request.json();
+
+                    if (response.success) {
+                        successDialog.querySelector('.message').textContent = response.success;
+                        showModal(successDialog.id, 15000);
+                    } else {
+                        errorDialog.querySelector('.message').textContent = response.error;
+                        showModal(errorDialog.id, 20000);
+                    }
+                } catch (err) {
+                    errorToast.querySelector('.message').textContent = "An error occurred while processing your request. Please try again later.";
+                    toastbox(errorToast.id, 10000);
+                } finally {
+                    setTimeout(() => {
+                        loader.style.display = "none";
+                        button.disabled = false;
+                        form.reset();
+                    });
+                }
+            });
+
+
+            document.getElementById("cardAmount").addEventListener("input", (e) => {
+                const creationFee = parseFloat("{{ creation_fee }}");
+                const min_funding = parseFloat("{{ min_funding }}");
+                const totalCostContainer = document.getElementById("totalCostContainer");
+                const totalCostElement = document.getElementById("totalCost");
+                const currencyCode = "{{ user.profiles.preferred_currency.code }}";
+                const availableBalance = parseFloat('{{ balance.deposits }}');
+                let value = e.target.value;
+                let isValid = true;
+
+                if (!value) {
+                    totalCostElement.innerHTML = "";
+                    totalCostContainer.style.display = "none";
+                    return;
+                }
+
+                value = value.replace(/[^0-9.]/g, '');
+                const parts = value.split('.');
+                if (parts.length > 2) value = parts[0] + '.' + parts.slice(1).join('');
+                if (value.startsWith("00")) value = value.slice(1);
+                else if (value.startsWith("0") && value.length > 1 && value[1] !== ".") value = value.slice(1);
+                if (value.startsWith(".")) value = "0" + value;
+
+                e.target.value = value;
+
+                const fundingAmount = parseFloat(value);
+                const totalCost = fundingAmount + creationFee;
+
+                if (fundingAmount < min_funding) {
+                    totalCostElement.innerHTML = `Less than minimum: ${currencyCode}${min_funding}`;
+                    totalCostContainer.style.display = 'flex';
+                    isValid = false;
+                }
+
+                if (totalCost > availableBalance) {
+                    totalCostElement.innerHTML = `Insufficient funds: ${currencyCode}${availableBalance}. Total: ${totalCost.toFixed(2)}`;
+                    totalCostContainer.style.display = 'flex';
+                    isValid = false;
+                } else if (fundingAmount >= min_funding) {
+                    isValid = true;
+                }
+
+                document.getElementById("cardRequestButton").disabled = !isValid;
+
+                if (isValid) {
+                    totalCostElement.innerHTML = `${currencyCode}${totalCost.toFixed(2)}`;
+                    totalCostContainer.style.display = 'flex';
+                    sessionStorage.setItem('totalCost', totalCost);
+                }
+            });
+
+
             document.querySelectorAll(".cardStatus").forEach(card => {
-                card.addEventListener("click", async function (e){
+                card.addEventListener("click", async function (e) {
                     e.preventDefault();
                     try {
                         const toggler = this.querySelector(".togglerInput");
+                        const statusLabel = this.querySelector(".card-status-label");
                         const cardStatus = toggler.checked ? "Blocked" : "Activated";
-                        const msg = "Please enter your current preferred card PIN";
-                        const authorization = await authorizeRequest(msg, 'cardStatus');
-                        if (authorization){
-                            const url = "{% url 'togglecard' %}";
-                            const toggle = await fetch(url, {
-                                method: 'POST',
-                                body: JSON.stringify({ 'status': cardStatus, 'id': toggler.dataset.key }),
-                                headers: {
-                                    'Content-Type': 'application/json',
-                                    'X-CSRFToken': csrftoken
-                                }
-                            });
-                            const result = await toggle.json();
-                            if (result.success) {
-                                toggler.checked = !toggler.checked;
-                                successToast.querySelector('.message').innerHTML = result.success;
-                                document.querySelector(".card-status").innerHTML = cardStatus;
-                                toastbox(successToast.id, 10000);
+
+                        await authorizeRequest("Please enter your current preferred card PIN", 'cardStatus');
+
+                        const url = "{% url 'togglecard' %}";
+                        const toggle = await fetch(url, {
+                            method: 'POST',
+                            body: JSON.stringify({ status: cardStatus, id: toggler.dataset.key }),
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRFToken': csrftoken
                             }
-                            else {
-                                errorToast.querySelector('.message').textContent = result.error;
-                                toastbox(errorToast.id, 10000)
-                                return;
-                                
-                            }
-    
-                            
+                        });
+                        const result = await toggle.json();
+
+                        if (result.success) {
+                            toggler.checked = !toggler.checked;
+                            if (statusLabel) statusLabel.innerHTML = cardStatus;
+                            successToast.querySelector('.message').innerHTML = result.success;
+                            toastbox(successToast.id, 10000);
+                        } else {
+                            errorToast.querySelector('.message').textContent = result.error;
+                            toastbox(errorToast.id, 10000);
                         }
-                    } catch (e) {
-                        console.log(`An error occurred, details: ${e}`);
-                        errorToast.querySelector('.message').innerHTML = e;
-                        toastbox(errorToast.id, 10000)
+                    } catch (err) {
+                        errorToast.querySelector('.message').innerHTML = err;
+                        toastbox(errorToast.id, 10000);
                     }
                 });
             });
-           
+
+            // ── Fund Card Form ──
             const fundCardForm = document.getElementById("fundCardForm");
-            fundCardForm.addEventListener("submit", async function (e){
+
+            fundCardForm.addEventListener("submit", async function (e) {
                 e.preventDefault();
 
                 const accountInput = this.elements['debit-account'];
                 const amountInput = this.elements['funding-amount'];
-                if (accountInput.value === ''){
+
+                if (!accountInput.value) {
                     errorToast.querySelector('.message').innerHTML = "Please select a debit account";
                     toastbox(errorToast.id, 5000);
-                    return false;
+                    return;
                 }
-                if (amountInput.value === '' || isNaN(amountInput.value)){
+                if (!amountInput.value || isNaN(amountInput.value)) {
                     errorToast.querySelector('.message').innerHTML = "Please enter the amount you want to fund";
                     toastbox(errorToast.id, 5000);
-                    return false;
+                    return;
                 }
-                if (parseFloat(amountInput.value) < 100){
+                if (parseFloat(amountInput.value) < 100) {
                     errorToast.querySelector('.message').innerHTML = "Enter figures from 100+";
                     toastbox(errorToast.id, 5000);
-                    return false;
+                    return;
                 }
-                
-                // posting...
+
                 try {
                     document.getElementById('fundCardActionSheet').querySelector('.dismiss').click();
-                    const msg = "To complete this transaction, kindly prove your identity using your preferred card PIN.";
-                    const authorizationResult = await authorizeRequest(msg, 'fundCard');
-                    if (authorizationResult) {
-                        const amount = amountInput.value;
-                        const account = accountInput.value;
-                        const id = sessionStorage.getItem('cardId');
-                        if (!id){
-                            errorToast.querySelector('.message').innerHTML = "There's an internal problem. it's not your fault";
-                            toastbox(errorToast.id, 5000);
-                            return;
-                        }
-                        loader.style.display = 'flex';
-                        const url = '{% url "fundcard" %}';
-                        try{
-                            const response = await fetch(url, {
-                                method: 'POST',
-                                headers: {
-                                    'Content-Type': 'application/json',
-                                    'X-CSRFToken': csrftoken,
-                                },
-                                body: JSON.stringify({ 'amount': amount, 'account': account, 'id': id }),
-                            })
-                            const data = await response.json();
-                                if (data.success){
-                                    successToast.querySelector('.message').innerHTML = data.success;
-                                    toastbox(successToast.id, 10000);
-                                    setTimeout(() => window.location.reload(), 3250)
-                                }else{
-                                    const responseElement = document.getElementById('response-canvas');
-                                    errorToast.querySelector('.message').innerHTML = data.error ? data.error : 'There was a problem funding your card. Please try again.';
-                                    toastbox(errorToast.id, 5000);
-                                }
-                        }catch(e){
-                                console.error('Error during API call:', e);
-                                errorToast.querySelector('.message').innerHTML = 'An error occurred while processing your request. Please try again later.';
-                                toastbox(errorToast.id, 5000);
-                                return;
-                        } finally {
-                            loader.style.display = 'none';
-                        }
+                    await authorizeRequest("To complete this transaction, kindly prove your identity using your preferred card PIN.", 'fundCard');
 
-                    } else {
-                        errorToast.querySelector('.message').innerHTML = "Authorization failed. Please try again.";
+                    const id = sessionStorage.getItem('cardId');
+                    if (!id) {
+                        errorToast.querySelector('.message').innerHTML = "Internal error — card ID missing.";
                         toastbox(errorToast.id, 5000);
                         return;
                     }
-                } catch (error) {
-                    console.error('Error during authorization:', error);
-                    errorToast.querySelector('.message').innerHTML = error.toString();
+
+                    loader.style.display = 'flex';
+
+                    const response = await fetch('{% url "fundcard" %}', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json', 'X-CSRFToken': csrftoken },
+                        body: JSON.stringify({ amount: amountInput.value, account: accountInput.value, id })
+                    });
+                    const data = await response.json();
+
+                    if (data.success) {
+                        successToast.querySelector('.message').innerHTML = data.success;
+                        toastbox(successToast.id, 10000);
+                        setTimeout(() => window.location.reload(), 3250);
+                    } else {
+                        errorToast.querySelector('.message').innerHTML = data.error || 'There was a problem funding your card.';
+                        toastbox(errorToast.id, 5000);
+                    }
+                } catch (err) {
+                    errorToast.querySelector('.message').innerHTML = err.toString();
                     toastbox(errorToast.id, 5000);
+                } finally {
+                    loader.style.display = 'none';
                 }
             });
 
-            const defundCardForm = document.getElementById("defundCardActionSheet"); 
+            // ── Defund Card Form ──
+            const defundCardForm = document.getElementById("defundCardForm");
 
             defundCardForm.addEventListener('submit', async function (e) {
                 e.preventDefault();
+
                 const amountInput = document.getElementById("defundingAmount");
                 const accountInput = document.getElementById("creditAccount");
-                if (amountInput.value === '' || isNaN(amountInput.value) || amountInput.value <= 0){
-                    errorToast.querySelector('.message').innerHTML = "Please enter the amount you want to defund";
+
+                if (!amountInput.value || isNaN(amountInput.value) || parseFloat(amountInput.value) <= 0) {
+                    errorToast.querySelector('.message').innerHTML = "Please enter a valid amount to defund";
                     toastbox(errorToast.id, 5000);
-                    return false;
+                    return;
                 }
-                if (accountInput.value === ''){
+                if (!accountInput.value) {
                     errorToast.querySelector('.message').innerHTML = "Please select the account to credit";
                     toastbox(errorToast.id, 5000);
-                    return false;
+                    return;
                 }
+
                 try {
                     document.getElementById('defundCardActionSheet').querySelector('.dismiss').click();
-                    const msg = "To complete this transaction, kindly prove your identity using your preferred card PIN.";
-                    const authorizationResult = await authorizeRequest(msg, 'defundCard');
-                    if (authorizationResult) {
-                        const amount = amountInput.value;
-                        const account = accountInput.value;
-                        const id = sessionStorage.getItem('cardId');
-                        if (!id){
-                            errorToast.querySelector('.message').innerHTML = "There's an internal problem. it's not your fault";
-                            toastbox(errorToast.id, 5000);
-                            return;
-                        }
-                        loader.style.display = 'flex';
-                        const url = '{% url "defundcard" %}';
-                        try{
-                            const response = await fetch(url, {
-                                method: 'POST',
-                                headers: {
-                                    'Content-Type': 'application/json',
-                                    'X-CSRFToken': csrftoken,
-                                },
-                                body: JSON.stringify({ 'amount': amount, 'account': account, 'id': id }),
-                            })
-                            const data = await response.json();
-                                if (data.success){
-                                    successToast.querySelector('.message').innerHTML = data.success;
-                                    toastbox(successToast.id, 10000);
-                                    setTimeout(() => window.location.reload(), 3250)
-                                }else{
-                                    errorToast.querySelector('.message').innerHTML = data.error ? data.error : 'There was a problem funding your card. Please try again.';
-                                    toastbox(errorToast.id, 5000);
-                                }
-                        }catch(e){
-                                console.error('Error during API call:', e);
-                                errorToast.querySelector('.message').innerHTML = 'An error occurred while processing your request. Please try again later.';
-                                toastbox(errorToast.id, 5000);
-                                return;
-                        } finally {
-                            loader.style.display = 'none'
-                        }
-                    } else {
-                        errorToast.querySelector('.message').innerHTML = "Authorization failed. Please try again.";
+                    await authorizeRequest("To complete this transaction, kindly prove your identity using your preferred card PIN.", 'defundCard');
+
+                    const id = sessionStorage.getItem('cardId');
+                    if (!id) {
+                        errorToast.querySelector('.message').innerHTML = "Internal error — card ID missing.";
                         toastbox(errorToast.id, 5000);
                         return;
                     }
-                } catch (error) {
-                    console.error('Error during authorization:', error);
-                    errorToast.querySelector('.message').innerHTML = error.toString();
+
+                    loader.style.display = 'flex';
+
+                    const response = await fetch('{% url "defundcard" %}', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json', 'X-CSRFToken': csrftoken },
+                        body: JSON.stringify({ amount: amountInput.value, account: accountInput.value, id })
+                    });
+                    const data = await response.json();
+
+                    if (data.success) {
+                        successToast.querySelector('.message').innerHTML = data.success;
+                        toastbox(successToast.id, 10000);
+                        setTimeout(() => window.location.reload(), 3250);
+                    } else {
+                        errorToast.querySelector('.message').innerHTML = data.error || 'There was a problem defunding your card.';
+                        toastbox(errorToast.id, 5000);
+                    }
+                } catch (err) {
+                    errorToast.querySelector('.message').innerHTML = err.toString();
                     toastbox(errorToast.id, 5000);
+                } finally {
+                    loader.style.display = 'none';
                 }
-            });       
+            });
+
+            // ── Tap to Reveal Card Number ──
+            let revealTimers = {};
+
+            document.querySelectorAll('.vc-number').forEach(el => {
+                el.addEventListener('click', function () {
+                    const isRevealed = this.dataset.revealed === 'true';
+                    const display = this.querySelector('.vc-number-display');
+                    const hint = this.querySelector('.vc-reveal-hint');
+                    const cardKey = this.closest('.card-scene')?.dataset.key || this.dataset.key;
+
+                    if (isRevealed) {
+                        display.textContent = '•••• •••• •••• ••••';
+                        hint.textContent = 'tap to reveal';
+                        this.dataset.revealed = 'false';
+                        clearTimeout(revealTimers[cardKey]);
+                    } else {
+                        display.textContent = this.dataset.number;
+                        hint.textContent = 'tap to hide';
+                        this.dataset.revealed = 'true';
+
+                        // - auto-hide after 8 seconds
+                        clearTimeout(revealTimers[cardKey]);
+                        revealTimers[cardKey] = setTimeout(() => {
+                            display.textContent = '•••• •••• •••• ••••';
+                            hint.textContent = 'tap to reveal';
+                            this.dataset.revealed = 'false';
+                        }, 8000);
+                    }
+                });
+            });
+        
+
+            // ── Tap-and-Hold to open Manage Card sheet ─
+            const HOLD_DURATION = 500; // ms
+            let holdTimer = null;
+            let activeCardData = {};
+
+            document.querySelectorAll('.virtual-card').forEach(card => {
+                const scene = card.closest('.card-scene');
+                const cardKey     = scene?.dataset.key;
+                const cardNumber  = scene?.dataset.number;
+                const cardStatus  = scene?.dataset.status;
+                const canFund     = scene?.dataset.canfund === 'True';
+                const canDefund   = scene?.dataset.candefund === 'True';
+
+                function startHold(e) {
+                    card.classList.add('holding');
+                    holdTimer = setTimeout(() => {
+                        card.classList.remove('holding');
+                        openManageSheet({ cardKey, cardNumber, cardStatus, canFund, canDefund });
+                    }, HOLD_DURATION);
+                }
+
+                function cancelHold() {
+                    clearTimeout(holdTimer);
+                    card.classList.remove('holding');
+                }
+
+                // touch
+                card.addEventListener('touchstart',  startHold,  { passive: true });
+                card.addEventListener('touchend',    cancelHold);
+                card.addEventListener('touchmove',   cancelHold);
+                // mouse (desktop)
+                card.addEventListener('mousedown',   startHold);
+                card.addEventListener('mouseup',     cancelHold);
+                card.addEventListener('mouseleave',  cancelHold);
+            });
+
+            function openManageSheet({ cardKey, cardNumber, cardStatus, canFund, canDefund }) {
+                const sheet = document.getElementById('manageCardSheet');
+                const isActive = cardStatus === 'Activated';
+
+                sheet.querySelector('#manageCardNumber').textContent = cardNumber
+                    ? `•••• •••• •••• ${cardNumber.trim().slice(-4)}`
+                    : '•••• •••• •••• ••••';
+
+                const badge = sheet.querySelector('#manageCardStatusBadge');
+                badge.textContent = isActive ? 'Active' : 'Blocked';
+                badge.className   = 'manage-card-status-badge ' + (isActive ? 'active' : 'blocked');
+
+                const toggleBtn   = sheet.querySelector('#manageCardToggleBtn');
+                const toggleInput = sheet.querySelector('#manageCardToggleInput');
+                const toggleLabel = sheet.querySelector('#manageToggleLabel');
+                const toggleSub   = sheet.querySelector('#manageToggleSub');
+                const toggleIcon  = sheet.querySelector('#manageToggleIcon');
+
+                toggleInput.checked = isActive;
+                toggleLabel.textContent = isActive ? 'Deactivate Card' : 'Activate Card';
+                toggleSub.textContent   = isActive ? 'Block card from transactions' : 'Enable card for transactions';
+
+                toggleBtn.classList.toggle('is-blocked', !isActive);
+                toggleIcon.classList.toggle('is-blocked', !isActive);
+
+                sheet.querySelector('#manageCardFundBtn').style.display   = canFund   ? 'flex' : 'none';
+                sheet.querySelector('#manageCardDefundBtn').style.display = canDefund ? 'flex' : 'none';
+
+                sessionStorage.setItem('cardId', cardKey);
+                activeCardData = { cardKey, cardStatus };
+
+                new bootstrap.Modal(sheet).show();
+            }
+
+            // ── Manage sheet button wiring ──
+            document.getElementById('manageCardFundBtn').addEventListener('click', function () {
+                bootstrap.Modal.getInstance(document.getElementById('manageCardSheet'))?.hide();
+                setTimeout(() => triggerModal('fundCardActionSheet', sessionStorage.getItem('cardId')), 300);
+            });
+
+            document.getElementById('manageCardDefundBtn').addEventListener('click', function () {
+                bootstrap.Modal.getInstance(document.getElementById('manageCardSheet'))?.hide();
+                setTimeout(() => triggerModal('defundCardActionSheet', sessionStorage.getItem('cardId')), 300);
+            });
+
+            document.getElementById('manageCardToggleBtn').addEventListener('click', async function () {
+                try {
+                    const toggler     = document.getElementById('manageCardToggleInput');
+                    const cardStatus  = toggler.checked ? 'Blocked' : 'Activated';
+                    const cardKey     = sessionStorage.getItem('cardId');
+
+                    bootstrap.Modal.getInstance(document.getElementById('manageCardSheet'))?.hide();
+
+                    await authorizeRequest('Please enter your current preferred card PIN', 'cardStatus');
+
+                    const response = await fetch('{% url "togglecard" %}', {
+                        method: 'POST',
+                        body: JSON.stringify({ status: cardStatus, id: cardKey }),
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRFToken': csrftoken
+                        }
+                    });
+                    const result = await response.json();
+
+                    if (result.success) {
+                        // update the card on the page without reload
+                        const scene = document.querySelector(`.card-scene[data-key="${cardKey}"]`);
+                        if (scene) {
+                            scene.dataset.status = cardStatus;
+                            const pill = scene.querySelector('.vc-status-pill');
+                            if (pill) {
+                                pill.textContent = `● ${cardStatus}`;
+                                pill.className = 'vc-status-pill ' + (cardStatus === 'Activated' ? 'vc-active' : 'vc-blocked');
+                            }
+                        }
+                        successToast.querySelector('.message').innerHTML = result.success;
+                        toastbox(successToast.id, 10000);
+                    } else {
+                        errorToast.querySelector('.message').textContent = result.error;
+                        toastbox(errorToast.id, 10000);
+                    }
+                } catch (err) {
+                    errorToast.querySelector('.message').innerHTML = err;
+                    toastbox(errorToast.id, 10000);
+                }
+            });
+
+
+            // ── Hold hint tooltip ──
+            (function () {
+                const HINT_KEY = 'vc_hint_seen';
+                const hint = document.getElementById('vcHoldHint');
+                if (!hint) return;
+
+                const hasCards = ("{{ has_card }}").toLowerCase() === 'true';
+                if (!hasCards) {
+                    hint.remove();
+                    return;
+                }
+
+                try {
+                    if (localStorage.getItem(HINT_KEY) === '1') {
+                        hint.remove();
+                        return;
+                    }
+                } catch (e) {
+                    if (sessionStorage.getItem(HINT_KEY)) {
+                        hint.remove();
+                        return;
+                    }
+                }
+
+                setTimeout(() => {
+                    hint.style.display = 'flex';
+
+                    setTimeout(() => {
+                        hint.classList.add('fade-out');
+                        setTimeout(() => {
+                            hint.remove();
+                            try {
+                                localStorage.setItem(HINT_KEY, '1');
+                            } catch (e) {
+                                sessionStorage.setItem(HINT_KEY, '1');
+                            }
+                        }, 650);
+                    }, 3500);
+                }, 800);
+            })();
+
         });
+  
     </script>
 
 
