@@ -655,6 +655,7 @@ class Investments(models.Model):
 
     reference = models.CharField(max_length=30, default='')
     date = models.DateTimeField(auto_now_add=True)
+    date_started = models.DateTimeField(null=True, blank=True, editable=False, default=None)
     status = models.CharField(
         max_length=100,
         choices=status_choices, 
@@ -668,7 +669,7 @@ class Investments(models.Model):
     def progress_percentage(self):
         if self.days_remaining is not None and self.duration > 0:
             progress = Decimal(100) * (1 - Decimal(self.days_remaining) / Decimal(self.duration))
-            return max(0, min(100, round(progress, 2)))  # Ensure it's within 0-100 range
+            return max(0, min(100, round(progress, 2)))  
         return 0
     def __str__(self):
         return f'{self.investor} investment: £{self.amount}'
@@ -698,6 +699,10 @@ class Investments(models.Model):
             except Exception:
                 logger.exception(f'Error while reversing investment capital to {self.investor.username}\'s {self.debit_account} account')
         
+        if self.status == 'Active' and not self.date_started:
+            self.date_started = timezone.now()
+
+
         if self.days_remaining is None:
             self.days_remaining = self.duration
 
