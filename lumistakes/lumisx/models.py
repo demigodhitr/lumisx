@@ -640,7 +640,13 @@ class Investments(models.Model):
         ('Cancelled', 'Cancelled'),
         ('Completed', 'Completed'),
         ('Rejected', 'Rejected'),
-          ]
+    ]
+    
+    MARKET_CHOICES = [
+        ('NASDAQ', 'NASDAQ (New York)'),
+        ('LSE', 'LSE (London)'),
+        ('NYSE', 'NYSE (New York)'),
+    ]
     investor = models.ForeignKey(User, on_delete=models.CASCADE)
     plan = models.ForeignKey('InvestmentPlans', on_delete=models.CASCADE)
     amount = models.DecimalField(default=0.00, max_digits=10, decimal_places=2)
@@ -652,6 +658,11 @@ class Investments(models.Model):
     last_decrement = models.DateField(editable=False, null=True, blank=True)
     debit_account = models.CharField(max_length=100, default='')
     manager = models.ForeignKey('Traders', blank=True, null=True, related_name='trader', on_delete=models.CASCADE)
+    market = models.CharField(
+        max_length=10,
+        choices=MARKET_CHOICES,
+        default='NASDAQ'
+    )
 
     reference = models.CharField(max_length=30, default='')
     date = models.DateTimeField(auto_now_add=True)
@@ -731,7 +742,7 @@ class LossesHistory(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     investment = models.ForeignKey(Investments, on_delete=models.CASCADE)
     amount = models.DecimalField(max_digits=10, decimal_places=2)
-    timestamp = models.DateTimeField(auto_now_add=True)
+    timestamp = models.DateTimeField(default=timezone.now)
 
     def __str__(self):
         return f"{self.investment.investor.get_full_name()} - £{self.investment.amount} - Loss: £{self.amount}"

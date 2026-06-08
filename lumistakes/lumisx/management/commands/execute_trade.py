@@ -16,30 +16,44 @@ from lumisx.helpers import send_telegram_message, convert_currency
 
 logger = logging.getLogger('django')
 
-NASDAQ_TZ = pytz.timezone('America/New_York')
-MARKET_OPEN = time(9, 30)
-MARKET_CLOSE = time(16, 0)
+# -----------------------------
+# MARKET TIMEZONE + HOURS MAP
+# -----------------------------
+MARKET_TIMEZONES = {
+    'NASDAQ': 'America/New_York',
+    'NYSE':   'America/New_York',
+    'LSE':    'Europe/London',
+}
+
+MARKET_HOURS = {
+    'NASDAQ': (time(9, 30),  time(16, 0)),
+    'NYSE':   (time(9, 30),  time(16, 0)),
+    'LSE':    (time(8, 0),   time(16, 30)),
+}
 
 
-def is_market_open(dt_utc):
-    """Returns True if the given UTC datetime falls within NASDAQ trading hours (Mon–Fri, 9:30–16:00 ET)."""
-    dt_et = dt_utc.astimezone(NASDAQ_TZ)
-    if dt_et.weekday() >= 5: 
+def is_market_open(dt_utc, market):
+    """Returns True if the given UTC datetime falls within the specified market's trading hours (Mon–Fri)."""
+    tz = pytz.timezone(MARKET_TIMEZONES.get(market, 'America/New_York'))
+    open_time, close_time = MARKET_HOURS.get(market, (time(9, 30), time(16, 0)))
+
+    dt_local = dt_utc.astimezone(tz)
+    if dt_local.weekday() >= 5:  # Saturday=5, Sunday=6
         return False
-    return MARKET_OPEN <= dt_et.time() < MARKET_CLOSE
+    return open_time <= dt_local.time() < close_time
 
 
-def market_hours_elapsed(start_utc, end_utc):
+def market_hours_elapsed(start_utc, end_utc, market):
     """
     Count the number of hours between start and end that fall within
-    NASDAQ market hours (Mon–Fri, 9:30–16:00 ET).
+    the specified market's trading hours (Mon–Fri).
     Iterates hour by hour — fine for investment durations in days/weeks.
     """
     elapsed = 0
     cursor = start_utc.replace(minute=0, second=0, microsecond=0)
 
     while cursor < end_utc:
-        if is_market_open(cursor):
+        if is_market_open(cursor, market):
             elapsed += 1
         cursor += timedelta(hours=1)
 
@@ -60,31 +74,26 @@ class Command(BaseCommand):
         holdings = StockHoldings.objects.all()
         pending_referral_credits = ReferralCredits.objects.filter(credited=False)
 
-
-        # MARKET HOURS CHECK
-        market_is_open = is_market_open(now)
-
-
+        # -----------------------------
         # STOCK HOLDINGS DAY DECREMENT
-        if market_is_open:
-            for holding in holdings:
-                if holding.days_until_sell and holding.days_until_sell > 0:
-                    last_day = holding.last_decrement or holding.date_added.date()
-                    if last_day != today:
-                        holding.days_until_sell = max(holding.days_until_sell - 1, 0)
-                        holding.last_decrement = today
-                        holding.save(update_fields=['days_until_sell', 'last_decrement'])
+        # -----------------------------
+        for holding in holdings:
+            if holding.days_until_sell and holding.days_until_sell > 0:
+                last_day = holding.last_decrement or holding.date_added.date()
+                if last_day != today:
+                    holding.days_until_sell = max(holding.days_until_sell - 1, 0)
+                    holding.last_decrement = today
+                    holding.save(update_fields=['days_until_sell', 'last_decrement'])
 
-
-        # INVESTMENTS 
+        # -----------------------------
+        # INVESTMENTS
+        # -----------------------------
         for investment in active_investments:
             try:
+                market = investment.market or 'NASDAQ'
 
-                # MARKET GATE - skip if closed.
-                if not market_is_open:
-                    send_telegram_message(
-                        f"⏸️ Skipping investment {investment.pk} for {investment.investor.username} - market closed"
-                    )
+                # MARKET GATE
+                if not is_market_open(now, market):
                     continue
 
                 profile = investment.investor.profiles
@@ -174,10 +183,11 @@ class Command(BaseCommand):
 
                 profit_target = investment.amount * rate
 
-                # Total tradeable hours across the full duration.
+
                 total_market_hours = market_hours_elapsed(
                     investment.date_started,
-                    investment.date_started + timedelta(days=duration_days)
+                    investment.date_started + timedelta(days=duration_days),
+                    market
                 )
                 total_intervals = max(total_market_hours, 1)
 
@@ -186,7 +196,7 @@ class Command(BaseCommand):
                 ).quantize(Decimal('0.01'), rounding=ROUND_DOWN)
 
                 # Elapsed market hours since investment actually started
-                elapsed_hours = market_hours_elapsed(investment.date_started, now)
+                elapsed_hours = market_hours_elapsed(investment.date_started, now, market)
                 expected_total_profit = profit_per_interval * Decimal(elapsed_hours)
 
 
@@ -239,7 +249,7 @@ class Command(BaseCommand):
 
                     else:
 
-                        # LOSS 
+                        # LOSS — capped and shallow
                         loss_multiplier = Decimal(str(random.uniform(0.1, 0.4)))
                         loss = (profit_diff * investment.losses_rate * loss_multiplier).quantize(
                             Decimal('0.01'), rounding=ROUND_DOWN
